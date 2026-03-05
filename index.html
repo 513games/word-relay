@@ -3,19 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Custom Building Products (Prototype)</title>
+<title>System Selector v2 (Prototype)</title>
 
-<!-- Modern font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
 
 <style>
   :root{
-    /* ORANGE SITE BACKGROUND (your swatch vibe) */
     --orange0:#a84b00;
     --orange1:#b55200;
     --orange2:#c25a00;
 
-    /* BLACK UI AREAS */
     --panel: rgba(0,0,0,.78);
     --panel2: rgba(0,0,0,.86);
     --stroke: rgba(255,255,255,.12);
@@ -23,8 +20,6 @@
 
     --text:#ffffff;
     --muted:rgba(255,255,255,.70);
-
-    /* Accent: subtle warm highlight */
     --accent:#ffb46a;
 
     --chip: rgba(255,255,255,.06);
@@ -42,10 +37,9 @@
     margin:0;
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     color:var(--text);
-
     background:
-      radial-gradient(1200px 700px at 18% 20%, rgba(0,0,0,.22), transparent 62%),
-      radial-gradient(1000px 700px at 78% 30%, rgba(0,0,0,.18), transparent 64%),
+      radial-gradient(1400px 820px at 18% 20%, rgba(0,0,0,.22), transparent 62%),
+      radial-gradient(1200px 820px at 78% 30%, rgba(0,0,0,.18), transparent 64%),
       linear-gradient(180deg, var(--orange2), var(--orange1) 55%, var(--orange0));
     min-height:100vh;
   }
@@ -55,10 +49,11 @@
     letter-spacing:.2px;
   }
 
+  /* ✅ Bigger overall canvas */
   .shell{
-    max-width: 1260px;
+    max-width: 1560px;              /* was 1260 */
     margin: 0 auto;
-    padding: 18px 18px 28px;
+    padding: 22px 22px 34px;        /* a bit roomier */
   }
 
   /* Top bar */
@@ -66,8 +61,8 @@
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:14px;
-    padding: 12px 14px;
+    gap:16px;
+    padding: 14px 16px;             /* was 12/14 */
     border-radius: var(--radius2);
     background: var(--panel);
     border: 1px solid var(--stroke2);
@@ -77,10 +72,11 @@
     display:flex;
     align-items:flex-start;
     gap:12px;
-    min-width: 320px;
+    min-width: 360px;
   }
   .orb{
-    width:36px;height:36px;border-radius:12px;
+    width:40px;height:40px;         /* was 36 */
+    border-radius:14px;
     background:
       radial-gradient(circle at 30% 30%, rgba(255,255,255,.30), transparent 55%),
       radial-gradient(circle at 70% 20%, rgba(255,180,106,.35), transparent 55%),
@@ -89,13 +85,13 @@
     border: 1px solid rgba(255,255,255,.12);
   }
   .brand h1{
-    font-size: 18px;
+    font-size: 20px;                /* was 18 */
     margin:0;
     line-height:1.1;
   }
   .brand p{
     margin:4px 0 0;
-    font-size: 12.5px;
+    font-size: 13px;                /* was 12.5 */
     color: var(--muted);
     line-height:1.25;
   }
@@ -111,38 +107,38 @@
     display:flex;
     align-items:center;
     gap:8px;
-    padding: 8px 10px;
+    padding: 9px 12px;              /* was 8/10 */
     border-radius: 999px;
     background: rgba(255,255,255,.06);
     border:1px solid rgba(255,255,255,.14);
-    font-size: 12px;
+    font-size: 12.5px;              /* was 12 */
     color: var(--muted);
     user-select:none;
   }
   .toggle input{accent-color: var(--accent);}
 
   .btn{
-    padding: 9px 12px;
+    padding: 10px 14px;             /* was 9/12 */
     border-radius: 12px;
     border:1px solid rgba(255,255,255,.14);
     background: var(--btn);
     color: var(--text);
-    font-size: 12.5px;
+    font-size: 13px;                /* was 12.5 */
     cursor:pointer;
   }
   .btn:hover{ background: var(--btnHover); }
-
   .btn.primary{
     border-color: rgba(255,180,106,.55);
     background: linear-gradient(180deg, rgba(255,180,106,.22), rgba(255,180,106,.10));
   }
 
-  /* Main grid */
+  /* ✅ Layout: 3 columns (builder / results / details) */
   .grid{
-    margin-top: 14px;
+    margin-top: 16px;
     display:grid;
-    grid-template-columns: 360px 1fr;
-    gap: 14px;
+    grid-template-columns: 420px minmax(440px, 1fr) 520px; /* bigger, more pro */
+    gap: 16px;
+    align-items: start;
   }
 
   .panel{
@@ -152,31 +148,19 @@
     box-shadow: 0 18px 45px rgba(0,0,0,.32);
     overflow:hidden;
   }
-
-  .panel .inner{ padding: 16px; }
+  .panel .inner{ padding: 18px; }   /* was 16 */
 
   /* Left builder */
-  .builder h2{
-    margin: 0;
-    font-size: 15px;
-  }
-  .builder .sub{
-    margin:4px 0 0;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .steps{
-    margin-top: 10px;
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
+  .builder h2{ margin: 0; font-size: 16px; } /* was 15 */
+  .builder .sub{ margin:4px 0 0; font-size: 12.5px; color: var(--muted); }
+
+  .steps{ margin-top: 10px; display:flex; align-items:center; gap:8px; }
   .step{
-    width: 26px; height: 26px;
+    width: 28px; height: 28px;      /* slightly bigger */
     border-radius: 999px;
     display:grid;
     place-items:center;
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--muted);
     border:1px solid rgba(255,255,255,.16);
     background: rgba(255,255,255,.06);
@@ -188,16 +172,12 @@
   }
 
   .section{ margin-top: 14px; }
-  .label{
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
+  .label{ font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
 
   .choice{
     display:flex;
     gap:10px;
-    padding: 12px;
+    padding: 13px;                  /* was 12 */
     border-radius: 16px;
     border:1px solid rgba(255,255,255,.14);
     background: rgba(0,0,0,.70);
@@ -207,36 +187,30 @@
   }
   .choice:hover{ border-color: rgba(255,180,106,.50); }
   .choice input{ margin-top: 2px; accent-color: var(--accent); }
-  .choice .title{ font-size: 13px; font-weight: 600; margin:0; }
-  .choice .desc{ margin:2px 0 0; font-size: 12px; color: var(--muted); }
+  .choice .title{ font-size: 13.5px; font-weight: 600; margin:0; }
+  .choice .desc{ margin:2px 0 0; font-size: 12.5px; color: var(--muted); }
 
   .field{ margin-top: 10px; }
   select, input[type="text"]{
     width:100%;
-    padding: 11px 12px;
+    padding: 12px 12px;             /* was 11/12 */
     border-radius: 14px;
     border:1px solid rgba(255,255,255,.14);
     background: rgba(0,0,0,.78);
     color: var(--text);
     outline:none;
+    font-size: 13px;
   }
   select:focus, input[type="text"]:focus{ border-color: rgba(255,180,106,.60); }
 
   .note{
     margin-top: 12px;
-    font-size: 12px;
+    font-size: 12.5px;
     color: var(--muted);
     line-height:1.35;
   }
 
-  /* Right side */
-  .right{
-    display:grid;
-    grid-template-columns: 420px 1fr;
-    gap: 14px;
-    align-items:stretch;
-  }
-
+  /* Results panel */
   .resultsHead{
     display:flex;
     align-items:flex-start;
@@ -244,8 +218,8 @@
     gap:10px;
     margin-bottom: 10px;
   }
-  .resultsHead h2{ margin:0; font-size: 15px; }
-  .resultsHead .crumbs{ margin-top:2px; font-size: 12px; color: var(--muted); }
+  .resultsHead h2{ margin:0; font-size: 16px; }
+  .resultsHead .crumbs{ margin-top:2px; font-size: 12.5px; color: var(--muted); }
   .pill{
     padding: 6px 10px;
     border-radius: 999px;
@@ -260,7 +234,7 @@
     border-radius: 20px;
     border:1px solid rgba(255,255,255,.14);
     background: rgba(0,0,0,.74);
-    padding: 14px;
+    padding: 16px;                  /* was 14 */
   }
   .cardTitle{
     display:flex;
@@ -268,10 +242,7 @@
     justify-content:space-between;
     gap:10px;
   }
-  .cardTitle h3{
-    margin:0;
-    font-size: 13.5px;
-  }
+  .cardTitle h3{ margin:0; font-size: 14px; } /* was 13.5 */
   .chip{
     padding: 6px 10px;
     border-radius: 999px;
@@ -282,129 +253,86 @@
     white-space:nowrap;
   }
   .card p{
-    margin:8px 0 0;
-    font-size: 12px;
+    margin:10px 0 0;
+    font-size: 12.5px;
     color: var(--muted);
     line-height:1.35;
   }
 
-  .kvHead{
-    margin-top: 12px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .kv{
-    margin-top: 8px;
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-  }
+  .kvHead{ margin-top: 12px; font-size: 12.5px; color: var(--muted); }
+  .kv{ margin-top: 8px; display:flex; flex-direction:column; gap:10px; }
+
   .row{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:10px;
-    padding: 10px 12px;
+    padding: 11px 12px;             /* was 10/12 */
     border-radius: 14px;
     border:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.05);
-    font-size: 12.5px;
+    font-size: 13px;
   }
   .row .left{ font-weight: 600; }
   .row .right{
     opacity:.95;
     color: rgba(255,255,255,.82);
-    font-size: 12px;
-    justify-content:flex-end;
+    font-size: 12.5px;
   }
 
-  .cardActions{
-    margin-top: 12px;
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-  }
+  .cardActions{ margin-top: 12px; display:flex; gap:10px; flex-wrap:wrap; }
   .mini{
-    padding: 8px 10px;
+    padding: 9px 12px;              /* bigger chips */
     border-radius: 999px;
     border: 1px solid rgba(255,255,255,.16);
     background: rgba(255,255,255,.06);
     color: var(--text);
-    font-size: 12px;
+    font-size: 12.5px;
     cursor:pointer;
   }
   .mini:hover{ background: rgba(255,255,255,.10); }
 
-  /* Preview area */
-  .preview{
+  /* ✅ Right details area (always there, scrolls) */
+  .detailsWrap{
     border-radius: var(--radius2);
     border:1px solid var(--stroke2);
     background: rgba(0,0,0,.70);
-    position:relative;
+    box-shadow: 0 18px 45px rgba(0,0,0,.25);
     overflow:hidden;
-  }
-  .preview::before{
-    content:"";
-    position:absolute; inset:-40px;
-    background:
-      radial-gradient(700px 440px at 20% 25%, rgba(255,255,255,.05), transparent 62%),
-      radial-gradient(900px 520px at 65% 65%, rgba(0,0,0,.18), transparent 60%);
-    pointer-events:none;
+    position:sticky;
+    top: 18px;                      /* stays visible while scrolling page */
   }
 
-  .preview .ghost{
-    position:absolute;
-    left: 20px; bottom: 20px;
-    font-size: 12px;
-    color: rgba(255,255,255,.55);
-    z-index:1;
-  }
-
-  /* ✅ IN-PANEL DETAILS (replaces the old drawer/overlay) */
-  .detailsPanel{
-    position:absolute;
-    inset: 12px;
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.80);
-    box-shadow: 0 18px 45px rgba(0,0,0,.35);
-    z-index:2;
-
-    display:none;
+  .detailsScroll{
+    max-height: calc(100vh - 120px);
     overflow:auto;
   }
-  .detailsPanel.on{ display:block; }
-
-  .detailsInner{ padding: 16px; }
 
   .detailsTop{
+    padding: 14px 16px;
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
     gap:12px;
+    background: rgba(0,0,0,.88);
+    border-bottom: 1px solid rgba(255,255,255,.10);
     position: sticky;
     top: 0;
-    background: rgba(0,0,0,.92);
-    border-bottom: 1px solid rgba(255,255,255,.10);
-    padding: 12px 12px;
-    margin: -16px -16px 14px;
-    border-top-left-radius: 18px;
-    border-top-right-radius: 18px;
-    z-index:3;
+    z-index: 2;
   }
   .detailsTop h2{
     margin:0;
-    font-size: 14.5px;
+    font-size: 15px;
     line-height:1.25;
   }
   .detailsTop .sub{
     margin-top:6px;
     color: rgba(255,255,255,.65);
-    font-size:12px;
+    font-size:12.5px;
     line-height:1.35;
   }
-  .closeDetails{
-    padding: 8px 10px;
+  .close{
+    padding: 9px 12px;
     border-radius: 999px;
     border:1px solid rgba(255,255,255,.16);
     background: rgba(255,255,255,.06);
@@ -412,27 +340,22 @@
     cursor:pointer;
     white-space:nowrap;
   }
-  .closeDetails:hover{ background: rgba(255,255,255,.10); }
+  .close:hover{ background: rgba(255,255,255,.10); }
+
+  .detailsBody{ padding: 16px; }
 
   .meta{
     margin-top: 10px;
     display:grid;
-    grid-template-columns: 120px 1fr;
+    grid-template-columns: 130px 1fr;
     gap: 8px 14px;
-    font-size: 12.5px;
+    font-size: 13px;
     color: rgba(255,255,255,.85);
   }
   .meta .k{ color: rgba(255,255,255,.60); }
 
-  .divider{
-    margin: 14px 0;
-    border-top:1px solid rgba(255,255,255,.10);
-  }
-
-  .sectionTitle{
-    margin:0 0 10px;
-    font-size: 13px;
-  }
+  .divider{ margin: 14px 0; border-top:1px solid rgba(255,255,255,.10); }
+  .sectionTitle{ margin:0 0 10px; font-size: 13.5px; }
 
   .prodBox{
     border:1px solid rgba(255,255,255,.12);
@@ -440,31 +363,27 @@
     border-radius: 16px;
     padding: 12px;
     margin-bottom: 10px;
-    font-size: 12.5px;
+    font-size: 13px;
   }
   .prodBox .small{ color: rgba(255,255,255,.65); font-size: 12px; }
 
   .emptyState{
-    position:absolute;
-    inset: 12px;
-    border-radius: 18px;
-    border:1px dashed rgba(255,255,255,.18);
-    background: rgba(0,0,0,.35);
-    display:flex;
-    align-items:flex-end;
-    justify-content:flex-start;
-    padding: 16px;
-    z-index:1;
-  }
-  .emptyState span{
-    font-size:12px;
+    padding: 22px;
     color: rgba(255,255,255,.55);
+    font-size: 13px;
+    line-height: 1.35;
   }
 
-  @media (max-width: 1040px){
-    .grid{ grid-template-columns: 1fr; }
-    .right{ grid-template-columns: 1fr; }
-    .preview{ min-height: 420px; }
+  /* Responsive */
+  @media (max-width: 1200px){
+    .grid{
+      grid-template-columns: 1fr;
+    }
+    .detailsWrap{
+      position:relative;
+      top:auto;
+    }
+    .detailsScroll{ max-height: none; }
   }
 </style>
 </head>
@@ -476,7 +395,7 @@
       <div class="brand">
         <div class="orb" aria-hidden="true"></div>
         <div>
-          <h1>Custom Building Products<span style="opacity:.65;font-weight:600">(Prototype)</span></h1>
+          <h1>Custom Building Products <span style="opacity:.65;font-weight:600">(Prototype)</span></h1>
           <p>TCNA Spec, CAD and Install Method</p>
         </div>
       </div>
@@ -585,77 +504,85 @@
         </div>
       </section>
 
-      <!-- RIGHT -->
-      <section class="right">
-        <section class="panel">
-          <div class="inner">
-            <div class="resultsHead">
-              <div>
-                <h2>Results</h2>
-                <div class="crumbs">Tile · Shower Wall · Cement Board · Waterproofing</div>
-              </div>
-              <div class="pill">1 match</div>
+      <!-- MIDDLE: RESULTS -->
+      <section class="panel">
+        <div class="inner">
+          <div class="resultsHead">
+            <div>
+              <h2>Results</h2>
+              <div class="crumbs">Tile · Shower Wall · Cement Board · Waterproofing</div>
             </div>
-
-            <div class="card">
-              <div class="cardTitle">
-                <h3>Shower Wall – Tile over Cement Board (Waterproofing)</h3>
-                <div class="chip">TCNA W244C</div>
-              </div>
-              <p>A typical tile shower wall assembly using a waterproofing membrane over cement board.</p>
-
-              <div class="kvHead">Key layers</div>
-              <div class="kv">
-                <div class="row">
-                  <div class="left">Ceramic / Porcelain Tile</div>
-                  <div class="right">ANSI A137.1</div>
-                </div>
-                <div class="row">
-                  <div class="left">Polymer-Modified Thin-Set Mortar</div>
-                  <div class="right">ANSI A118.4 / A118.15</div>
-                </div>
-                <div class="row">
-                  <div class="left">Waterproofing Membrane</div>
-                  <div class="right">ANSI A118.10</div>
-                </div>
-                <div class="row">
-                  <div class="left">Cement Board</div>
-                  <div class="right">ANSI A118.9 / ASTM C1325</div>
-                </div>
-              </div>
-
-              <div class="cardActions">
-                <button class="mini" id="viewDetailsBtn">View details</button>
-                <button class="mini">Method PDF</button>
-                <button class="mini">CAD</button>
-                <button class="mini">Short spec</button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ✅ This is the area that will populate instead of opening a drawer -->
-        <section class="preview" aria-label="preview">
-          <div class="emptyState" id="emptyState">
-            <span>Preview area (diagram / product stack / CAD preview) — click <b>View details</b> to load specs here.</span>
+            <div class="pill">1 match</div>
           </div>
 
-          <div class="detailsPanel" id="detailsPanel" aria-hidden="true">
-            <div class="detailsInner" id="detailsInner">
-              <!-- filled by JS -->
+          <div class="card">
+            <div class="cardTitle">
+              <h3>Shower Wall – Tile over Cement Board (Waterproofing)</h3>
+              <div class="chip">TCNA W244C</div>
+            </div>
+            <p>A typical tile shower wall assembly using a waterproofing membrane over cement board.</p>
+
+            <div class="kvHead">Key layers</div>
+            <div class="kv">
+              <div class="row">
+                <div class="left">Ceramic / Porcelain Tile</div>
+                <div class="right">ANSI A137.1</div>
+              </div>
+              <div class="row">
+                <div class="left">Polymer-Modified Thin-Set Mortar</div>
+                <div class="right">ANSI A118.4 / A118.15</div>
+              </div>
+              <div class="row">
+                <div class="left">Waterproofing Membrane</div>
+                <div class="right">ANSI A118.10</div>
+              </div>
+              <div class="row">
+                <div class="left">Cement Board</div>
+                <div class="right">ANSI A118.9 / ASTM C1325</div>
+              </div>
+            </div>
+
+            <div class="cardActions">
+              <button class="mini" id="viewDetailsBtn">View details</button>
+              <button class="mini">Method PDF</button>
+              <button class="mini">CAD</button>
+              <button class="mini">Short spec</button>
             </div>
           </div>
-        </section>
+        </div>
       </section>
+
+      <!-- RIGHT: DETAILS (bigger, in-page) -->
+      <aside class="detailsWrap" aria-label="details">
+        <div class="detailsScroll" id="detailsScroll">
+          <div class="detailsTop">
+            <div>
+              <h2 id="dTitle">Details</h2>
+              <div class="sub" id="dSub">Click <b>View details</b> to load the full method stack here.</div>
+            </div>
+            <button class="close" id="closeDetailsBtn" style="display:none;">Close ✕</button>
+          </div>
+
+          <div class="detailsBody" id="detailsBody">
+            <div class="emptyState">
+              This area is intentionally larger and scrollable so it feels like a real “spec panel”.
+              <br><br>
+              Once loaded, it can show: requirements, substrate notes, fastener schedules, membrane type,
+              movement joints, download links, etc.
+            </div>
+          </div>
+        </div>
+      </aside>
     </main>
   </div>
 
 <script>
-  // --- In-panel details renderer (no overlay/drawer) ---
   const viewBtn = document.getElementById('viewDetailsBtn');
-  const detailsPanel = document.getElementById('detailsPanel');
-  const detailsInner = document.getElementById('detailsInner');
-  const emptyState = document.getElementById('emptyState');
+  const closeBtn = document.getElementById('closeDetailsBtn');
+
+  const dTitle = document.getElementById('dTitle');
+  const dSub   = document.getElementById('dSub');
+  const dBody  = document.getElementById('detailsBody');
 
   const detailsData = {
     title: "Shower Wall – Tile over Cement Board (Waterproofing)",
@@ -688,7 +615,7 @@
     ).join("");
 
     const layerRows = d.layers.map(([l,r], idx) =>
-      `<div class="row" style="${idx ? "margin-top:8px;" : ""}">
+      `<div class="row" style="${idx ? "margin-top:10px;" : ""}">
          <div class="left">${l}</div>
          <div class="right">${r}</div>
        </div>`
@@ -703,14 +630,6 @@
     ).join("");
 
     return `
-      <div class="detailsTop">
-        <div>
-          <h2>${d.title}</h2>
-          <div class="sub">${d.desc}</div>
-        </div>
-        <button class="closeDetails" id="closeDetailsBtn">Close ✕</button>
-      </div>
-
       <div class="meta">${metaRows}</div>
 
       <div class="divider"></div>
@@ -735,38 +654,38 @@
       <div class="divider"></div>
 
       <h3 class="sectionTitle">Notes</h3>
-      <div style="color:rgba(255,255,255,.70);font-size:12.5px;line-height:1.35;">
-        This panel is scrollable. Use it for requirements, method steps, and product callouts.
+      <div style="color:rgba(255,255,255,.70);font-size:12.75px;line-height:1.4;">
+        Keep it simple for prototype. This is where your detailed method steps, requirements,
+        and product callouts would live.
       </div>
     `;
   }
 
   function openDetails(){
-    detailsInner.innerHTML = renderDetails(detailsData);
-    detailsPanel.classList.add('on');
-    detailsPanel.setAttribute('aria-hidden','false');
-    emptyState.style.display = 'none';
-
-    // wire close
-    const closeBtn = document.getElementById('closeDetailsBtn');
-    closeBtn.addEventListener('click', closeDetails);
-
-    // scroll to top each open
-    detailsPanel.scrollTop = 0;
+    dTitle.textContent = detailsData.title;
+    dSub.textContent   = detailsData.desc;
+    dBody.innerHTML    = renderDetails(detailsData);
+    closeBtn.style.display = "inline-flex";
+    // jump to top of scroll area
+    document.getElementById('detailsScroll').scrollTop = 0;
   }
 
   function closeDetails(){
-    detailsPanel.classList.remove('on');
-    detailsPanel.setAttribute('aria-hidden','true');
-    detailsInner.innerHTML = "";
-    emptyState.style.display = 'flex';
+    dTitle.textContent = "Details";
+    dSub.innerHTML = 'Click <b>View details</b> to load the full method stack here.';
+    dBody.innerHTML = `
+      <div class="emptyState">
+        This area is intentionally larger and scrollable so it feels like a real “spec panel”.
+        <br><br>
+        Once loaded, it can show: requirements, substrate notes, fastener schedules, membrane type,
+        movement joints, download links, etc.
+      </div>
+    `;
+    closeBtn.style.display = "none";
   }
 
   viewBtn.addEventListener('click', openDetails);
-
-  document.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape' && detailsPanel.classList.contains('on')) closeDetails();
-  });
+  closeBtn.addEventListener('click', closeDetails);
 </script>
 </body>
 </html>
