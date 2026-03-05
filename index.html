@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>System Selector v2 (Prototype)</title>
+<title>Custom Building Products (Prototype)</title>
 
 <!-- Modern font -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
@@ -24,7 +24,7 @@
     --text:#ffffff;
     --muted:rgba(255,255,255,.70);
 
-    /* Accent: subtle warm highlight (not blue) */
+    /* Accent: subtle warm highlight */
     --accent:#ffb46a;
 
     --chip: rgba(255,255,255,.06);
@@ -43,7 +43,6 @@
     font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     color:var(--text);
 
-    /* Light orange background with modern depth */
     background:
       radial-gradient(1200px 700px at 18% 20%, rgba(0,0,0,.22), transparent 62%),
       radial-gradient(1000px 700px at 78% 30%, rgba(0,0,0,.18), transparent 64%),
@@ -352,54 +351,59 @@
       radial-gradient(900px 520px at 65% 65%, rgba(0,0,0,.18), transparent 60%);
     pointer-events:none;
   }
+
   .preview .ghost{
     position:absolute;
     left: 20px; bottom: 20px;
     font-size: 12px;
     color: rgba(255,255,255,.55);
+    z-index:1;
   }
 
-  /* Details overlay: ORANGE tint behind drawer, drawer stays black */
-  .overlay{
-    position:fixed;
-    inset:0;
-    z-index:999;
-    background: rgba(181, 82, 0, 0.55);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+  /* ✅ IN-PANEL DETAILS (replaces the old drawer/overlay) */
+  .detailsPanel{
+    position:absolute;
+    inset: 12px;
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.80);
+    box-shadow: 0 18px 45px rgba(0,0,0,.35);
+    z-index:2;
+
     display:none;
-  }
-  .overlay.on{ display:block; }
-
-  .drawer{
-    position:fixed;
-    top:0; right:0;
-    height:100vh;
-    width:min(560px, 92vw);
-    z-index:1000;
-    background:#0b0d10;
-    color:#fff;
-    border-left:1px solid rgba(255,255,255,.12);
-    box-shadow: -18px 0 60px rgba(0,0,0,.55);
     overflow:auto;
-    transform: translateX(110%);
-    transition: transform .22s ease;
   }
-  .drawer.on{ transform: translateX(0); }
+  .detailsPanel.on{ display:block; }
 
-  .drawerInner{ padding: 18px 18px 26px; }
-  .drawerTop{
+  .detailsInner{ padding: 16px; }
+
+  .detailsTop{
     display:flex;
     align-items:flex-start;
     justify-content:space-between;
     gap:12px;
+    position: sticky;
+    top: 0;
+    background: rgba(0,0,0,.92);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+    padding: 12px 12px;
+    margin: -16px -16px 14px;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    z-index:3;
   }
-  .drawerTop h2{
+  .detailsTop h2{
     margin:0;
-    font-size: 15px;
+    font-size: 14.5px;
     line-height:1.25;
   }
-  .close{
+  .detailsTop .sub{
+    margin-top:6px;
+    color: rgba(255,255,255,.65);
+    font-size:12px;
+    line-height:1.35;
+  }
+  .closeDetails{
     padding: 8px 10px;
     border-radius: 999px;
     border:1px solid rgba(255,255,255,.16);
@@ -408,7 +412,7 @@
     cursor:pointer;
     white-space:nowrap;
   }
-  .close:hover{ background: rgba(255,255,255,.10); }
+  .closeDetails:hover{ background: rgba(255,255,255,.10); }
 
   .meta{
     margin-top: 10px;
@@ -425,10 +429,11 @@
     border-top:1px solid rgba(255,255,255,.10);
   }
 
-  .drawerSection h3{
+  .sectionTitle{
     margin:0 0 10px;
     font-size: 13px;
   }
+
   .prodBox{
     border:1px solid rgba(255,255,255,.12);
     background: rgba(255,255,255,.04);
@@ -439,9 +444,27 @@
   }
   .prodBox .small{ color: rgba(255,255,255,.65); font-size: 12px; }
 
+  .emptyState{
+    position:absolute;
+    inset: 12px;
+    border-radius: 18px;
+    border:1px dashed rgba(255,255,255,.18);
+    background: rgba(0,0,0,.35);
+    display:flex;
+    align-items:flex-end;
+    justify-content:flex-start;
+    padding: 16px;
+    z-index:1;
+  }
+  .emptyState span{
+    font-size:12px;
+    color: rgba(255,255,255,.55);
+  }
+
   @media (max-width: 1040px){
     .grid{ grid-template-columns: 1fr; }
     .right{ grid-template-columns: 1fr; }
+    .preview{ min-height: 420px; }
   }
 </style>
 </head>
@@ -453,8 +476,8 @@
       <div class="brand">
         <div class="orb" aria-hidden="true"></div>
         <div>
-          <h1>System Selector v2 <span style="opacity:.65;font-weight:600">(Prototype)</span></h1>
-          <p>Modern, spec-friendly flow: pick the install context → get the method, layers, products, and downloads.</p>
+          <h1>Custom Building Products<span style="opacity:.65;font-weight:600">(Prototype)</span></h1>
+          <p>TCNA Spec, CAD and Install Method</p>
         </div>
       </div>
 
@@ -510,7 +533,7 @@
             <div class="label">Application</div>
             <div class="field">
               <select>
-                <option>Shower Wall</option>
+                <option selected>Shower Wall</option>
                 <option>Shower Pan</option>
                 <option>Floor</option>
                 <option>Countertop</option>
@@ -523,7 +546,7 @@
             <div class="field">
               <select>
                 <option>Gypsum Board</option>
-                <option>Cement Board</option>
+                <option selected>Cement Board</option>
                 <option>Concrete</option>
                 <option>Plywood</option>
               </select>
@@ -535,18 +558,19 @@
             <div class="field">
               <select>
                 <option>Waterproof</option>
+                <option selected>Waterproofing</option>
                 <option>Crack Isolation</option>
                 <option>Exterior</option>
                 <option>Steam shower</option>
               </select>
             </div>
-            <div class="note">Examples: Waterproof, Crack Isolation, Exterior, Steam shower.</div>
+            <div class="note">Examples: Waterproofing, Crack Isolation, Exterior, Steam shower.</div>
           </div>
 
           <div class="section">
             <div class="label">Search / filter (optional)</div>
             <div class="field">
-              <input type="text" value="C312" />
+              <input type="text" value="W244C" />
             </div>
           </div>
 
@@ -568,17 +592,17 @@
             <div class="resultsHead">
               <div>
                 <h2>Results</h2>
-                <div class="crumbs">Tile · Shower Wall · Gypsum Board · Waterproof</div>
+                <div class="crumbs">Tile · Shower Wall · Cement Board · Waterproofing</div>
               </div>
               <div class="pill">1 match</div>
             </div>
 
             <div class="card">
               <div class="cardTitle">
-                <h3>Shower Wall – Tile over Gypsum Board (Waterproof)</h3>
-                <div class="chip">TCNA C312</div>
+                <h3>Shower Wall – Tile over Cement Board (Waterproofing)</h3>
+                <div class="chip">TCNA W244C</div>
               </div>
-              <p>A typical tile shower wall assembly using a liquid waterproofing membrane.</p>
+              <p>A typical tile shower wall assembly using a waterproofing membrane over cement board.</p>
 
               <div class="kvHead">Key layers</div>
               <div class="kv">
@@ -591,12 +615,12 @@
                   <div class="right">ANSI A118.4 / A118.15</div>
                 </div>
                 <div class="row">
-                  <div class="left">Liquid Waterproofing Membrane</div>
+                  <div class="left">Waterproofing Membrane</div>
                   <div class="right">ANSI A118.10</div>
                 </div>
                 <div class="row">
-                  <div class="left">Gypsum Board</div>
-                  <div class="right">Interior only</div>
+                  <div class="left">Cement Board</div>
+                  <div class="right">ANSI A118.9 / ASTM C1325</div>
                 </div>
               </div>
 
@@ -610,134 +634,138 @@
           </div>
         </section>
 
-        <section class="preview">
-          <div class="ghost">Preview area (diagram / product stack / CAD preview)</div>
+        <!-- ✅ This is the area that will populate instead of opening a drawer -->
+        <section class="preview" aria-label="preview">
+          <div class="emptyState" id="emptyState">
+            <span>Preview area (diagram / product stack / CAD preview) — click <b>View details</b> to load specs here.</span>
+          </div>
+
+          <div class="detailsPanel" id="detailsPanel" aria-hidden="true">
+            <div class="detailsInner" id="detailsInner">
+              <!-- filled by JS -->
+            </div>
+          </div>
         </section>
       </section>
     </main>
   </div>
 
-  <!-- ORANGE TINT OVERLAY + BLACK DRAWER (page stays visible) -->
-  <div class="overlay" id="overlay"></div>
-
-  <aside class="drawer" id="drawer" aria-hidden="true">
-    <div class="drawerInner">
-      <div class="drawerTop">
-        <div>
-          <h2>Shower Wall – Tile over Gypsum Board (Waterproof)</h2>
-          <div style="margin-top:6px;color:rgba(255,255,255,.65);font-size:12px;">
-            A typical tile shower wall assembly using a liquid waterproofing membrane.
-          </div>
-        </div>
-        <button class="close" id="closeDrawer">Close ✕</button>
-      </div>
-
-      <div class="meta">
-        <div class="k">Category</div><div>Tile</div>
-        <div class="k">Application</div><div>Shower Wall</div>
-        <div class="k">Substrate</div><div>Gypsum Board</div>
-        <div class="k">Condition</div><div>Waterproof</div>
-        <div class="k">TCNA</div><div>C312</div>
-        <div class="k">TTMac</div><div>—</div>
-        <div class="k">Assembly ID</div><div>T-C312-INT-SHWR-GB</div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="drawerSection">
-        <h3>Full layer stack</h3>
-
-        <div class="row">
-          <div class="left">Ceramic / Porcelain Tile</div>
-          <div class="right">ANSI A137.1</div>
-        </div>
-        <div class="row" style="margin-top:8px;">
-          <div class="left">Polymer-Modified Thin-Set Mortar</div>
-          <div class="right">ANSI A118.4 / A118.15</div>
-        </div>
-        <div class="row" style="margin-top:8px;">
-          <div class="left">Liquid Waterproofing Membrane</div>
-          <div class="right">ANSI A118.10</div>
-        </div>
-        <div class="row" style="margin-top:8px;">
-          <div class="left">Gypsum Board</div>
-          <div class="right">Interior only</div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="drawerSection">
-        <h3>Recommended products</h3>
-
-        <div class="prodBox">
-          <div class="small">Mortar</div>
-          <div><b>ProLite®</b>, <b>FlexBond®</b></div>
-          <div class="small" style="margin-top:6px;">CBP</div>
-        </div>
-
-        <div class="prodBox">
-          <div class="small">Waterproof</div>
-          <div><b>RedGard®</b> Waterproofing and Crack Prevention Membrane</div>
-          <div class="small" style="margin-top:6px;">CBP</div>
-        </div>
-
-        <div class="prodBox">
-          <div class="small">Grout</div>
-          <div><b>Prism®</b> Ultimate Performance Grout</div>
-          <div class="small" style="margin-top:6px;">CBP</div>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="drawerSection">
-        <h3>Downloads</h3>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn primary">Method PDF</button>
-          <button class="btn">CAD</button>
-          <button class="btn">Short spec</button>
-        </div>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="drawerSection">
-        <h3>Notes</h3>
-        <div style="color:rgba(255,255,255,.70);font-size:12.5px;line-height:1.35;">
-          Keep it simple for prototype. This drawer is where your detailed method steps, requirements,
-          and product callouts would live.
-        </div>
-      </div>
-
-    </div>
-  </aside>
-
 <script>
-  const overlay = document.getElementById('overlay');
-  const drawer  = document.getElementById('drawer');
-  const openBtn = document.getElementById('viewDetailsBtn');
-  const closeBtn= document.getElementById('closeDrawer');
+  // --- In-panel details renderer (no overlay/drawer) ---
+  const viewBtn = document.getElementById('viewDetailsBtn');
+  const detailsPanel = document.getElementById('detailsPanel');
+  const detailsInner = document.getElementById('detailsInner');
+  const emptyState = document.getElementById('emptyState');
 
-  function openDrawer(){
-    overlay.classList.add('on');
-    drawer.classList.add('on');
-    drawer.setAttribute('aria-hidden','false');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeDrawer(){
-    overlay.classList.remove('on');
-    drawer.classList.remove('on');
-    drawer.setAttribute('aria-hidden','true');
-    document.body.style.overflow = '';
+  const detailsData = {
+    title: "Shower Wall – Tile over Cement Board (Waterproofing)",
+    desc: "A typical tile shower wall assembly using a waterproofing membrane over cement board.",
+    meta: [
+      ["Category", "Tile"],
+      ["Application", "Shower Wall"],
+      ["Substrate", "Cement Board"],
+      ["Condition", "Waterproofing"],
+      ["TCNA", "W244C"],
+      ["TTMac", "—"],
+      ["Assembly ID", "T-W244C-INT-SHWR-CB"]
+    ],
+    layers: [
+      ["Ceramic / Porcelain Tile", "ANSI A137.1"],
+      ["Polymer-Modified Thin-Set Mortar", "ANSI A118.4 / A118.15"],
+      ["Waterproofing Membrane", "ANSI A118.10"],
+      ["Cement Board", "ANSI A118.9 / ASTM C1325"]
+    ],
+    products: [
+      { label: "Mortar", value: "ProLite®, FlexBond®", brand: "CBP" },
+      { label: "Waterproof", value: "RedGard® Waterproofing and Crack Prevention Membrane", brand: "CBP" },
+      { label: "Grout", value: "Prism® Ultimate Performance Grout", brand: "CBP" }
+    ]
+  };
+
+  function renderDetails(d){
+    const metaRows = d.meta.map(([k,v]) =>
+      `<div class="k">${k}</div><div>${v}</div>`
+    ).join("");
+
+    const layerRows = d.layers.map(([l,r], idx) =>
+      `<div class="row" style="${idx ? "margin-top:8px;" : ""}">
+         <div class="left">${l}</div>
+         <div class="right">${r}</div>
+       </div>`
+    ).join("");
+
+    const productBoxes = d.products.map(p =>
+      `<div class="prodBox">
+         <div class="small">${p.label}</div>
+         <div><b>${p.value}</b></div>
+         <div class="small" style="margin-top:6px;">${p.brand}</div>
+       </div>`
+    ).join("");
+
+    return `
+      <div class="detailsTop">
+        <div>
+          <h2>${d.title}</h2>
+          <div class="sub">${d.desc}</div>
+        </div>
+        <button class="closeDetails" id="closeDetailsBtn">Close ✕</button>
+      </div>
+
+      <div class="meta">${metaRows}</div>
+
+      <div class="divider"></div>
+
+      <h3 class="sectionTitle">Full layer stack</h3>
+      ${layerRows}
+
+      <div class="divider"></div>
+
+      <h3 class="sectionTitle">Recommended products</h3>
+      ${productBoxes}
+
+      <div class="divider"></div>
+
+      <h3 class="sectionTitle">Downloads</h3>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn primary">Method PDF</button>
+        <button class="btn">CAD</button>
+        <button class="btn">Short spec</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <h3 class="sectionTitle">Notes</h3>
+      <div style="color:rgba(255,255,255,.70);font-size:12.5px;line-height:1.35;">
+        This panel is scrollable. Use it for requirements, method steps, and product callouts.
+      </div>
+    `;
   }
 
-  openBtn.addEventListener('click', openDrawer);
-  closeBtn.addEventListener('click', closeDrawer);
-  overlay.addEventListener('click', closeDrawer);
+  function openDetails(){
+    detailsInner.innerHTML = renderDetails(detailsData);
+    detailsPanel.classList.add('on');
+    detailsPanel.setAttribute('aria-hidden','false');
+    emptyState.style.display = 'none';
+
+    // wire close
+    const closeBtn = document.getElementById('closeDetailsBtn');
+    closeBtn.addEventListener('click', closeDetails);
+
+    // scroll to top each open
+    detailsPanel.scrollTop = 0;
+  }
+
+  function closeDetails(){
+    detailsPanel.classList.remove('on');
+    detailsPanel.setAttribute('aria-hidden','true');
+    detailsInner.innerHTML = "";
+    emptyState.style.display = 'flex';
+  }
+
+  viewBtn.addEventListener('click', openDetails);
 
   document.addEventListener('keydown', (e)=>{
-    if(e.key === 'Escape') closeDrawer();
+    if(e.key === 'Escape' && detailsPanel.classList.contains('on')) closeDetails();
   });
 </script>
 </body>
