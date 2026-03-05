@@ -1,916 +1,737 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CBP System Selector v2 (Prototype)</title>
-  <style>
-    :root{
-      --bg:#0b1220;
-      --panel:#0f1a2e;
-      --card:#111f38;
-      --card2:#0d1730;
-      --text:#eaf0ff;
-      --muted:#a9b7d6;
-      --line:rgba(255,255,255,.10);
-      --line2:rgba(255,255,255,.06);
-      --accent:#6ea8ff;
-      --accent2:#64f1c8;
-      --warn:#ffcc66;
-      --bad:#ff6b7a;
-      --good:#50fa7b;
-      --shadow:0 18px 50px rgba(0,0,0,.35);
-      --radius:18px;
-      --radius2:14px;
-      --pad:18px;
-      --pad2:14px;
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>System Selector v2 (Prototype)</title>
+<style>
+  :root{
+    --bg0:#070a12;
+    --bg1:#0b1020;
+    --bg2:#0a0f1a;
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:var(--sans);
-      background:
-        radial-gradient(1200px 700px at 10% 10%, rgba(110,168,255,.22), transparent 55%),
-        radial-gradient(900px 600px at 80% 0%, rgba(100,241,200,.16), transparent 55%),
-        radial-gradient(900px 700px at 50% 100%, rgba(255,204,102,.08), transparent 55%),
-        var(--bg);
-      color:var(--text);
-    }
+    --panel: rgba(255,255,255,.04);
+    --panel2: rgba(255,255,255,.06);
+    --stroke: rgba(255,255,255,.10);
+    --stroke2: rgba(255,255,255,.08);
 
-    a{color:inherit}
+    --text:#eaf0ff;
+    --muted:rgba(234,240,255,.68);
 
-    .wrap{max-width:1200px;margin:0 auto;padding:28px 18px 80px}
+    --accent:#6ea8ff;         /* subtle blue */
+    --chip: rgba(255,255,255,.06);
+    --chipStroke: rgba(255,255,255,.12);
 
-    /* Header */
-    .top{
-      display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
-      padding:18px 18px 10px;border:1px solid var(--line2);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      position:sticky;top:16px;backdrop-filter: blur(10px);
-      z-index:10;
-    }
+    --btn: rgba(255,255,255,.06);
+    --btnHover: rgba(255,255,255,.10);
 
-    .brand{display:flex;gap:14px;align-items:center}
-    .logo{
-      width:44px;height:44px;border-radius:14px;
-      background:
-        radial-gradient(16px 16px at 30% 30%, rgba(110,168,255,.95), rgba(110,168,255,.15)),
-        radial-gradient(18px 18px at 70% 70%, rgba(100,241,200,.90), rgba(100,241,200,.08)),
-        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.16);
-      position:relative;
-      overflow:hidden;
-    }
-    .logo:before{content:"";position:absolute;inset:-40px;transform:rotate(25deg);
-      background:linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
-      animation:shine 6s linear infinite;
-    }
-    @keyframes shine{0%{left:-120%}100%{left:120%}}
+    --radius:18px;
+    --radius2:22px;
+  }
 
-    .title h1{margin:0;font-size:18px;letter-spacing:.2px}
-    .title p{margin:3px 0 0;color:var(--muted);font-size:13px;line-height:1.25}
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:var(--text);
 
-    .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    background:
+      radial-gradient(900px 520px at 20% 22%, rgba(46, 85, 200, .22), transparent 60%),
+      radial-gradient(700px 480px at 78% 18%, rgba(0, 255, 190, .10), transparent 60%),
+      radial-gradient(900px 600px at 70% 75%, rgba(120, 80, 255, .10), transparent 55%),
+      linear-gradient(180deg, var(--bg1), var(--bg0));
+    min-height:100vh;
+  }
 
-    .chip{
-      display:inline-flex;align-items:center;gap:8px;
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.18);
-      padding:8px 10px;border-radius:999px;
-      color:var(--muted);font-size:12px;
-    }
+  .shell{
+    max-width: 1260px;
+    margin: 0 auto;
+    padding: 18px 18px 28px;
+  }
 
-    .btn{
-      border:1px solid rgba(255,255,255,.18);
-      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-      color:var(--text);
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      transition:transform .06s ease, border-color .2s ease, background .2s ease;
-      display:inline-flex;align-items:center;gap:8px;
-      font-size:13px;
-      user-select:none;
-    }
-    .btn:hover{border-color:rgba(110,168,255,.45)}
-    .btn:active{transform:translateY(1px)}
-    .btn.primary{
-      border-color:rgba(110,168,255,.55);
-      background:linear-gradient(180deg, rgba(110,168,255,.32), rgba(110,168,255,.12));
-    }
-    .btn.ghost{background:transparent}
+  /* Top bar */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding: 12px 14px;
+    border-radius: var(--radius2);
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    border: 1px solid var(--stroke2);
+    box-shadow: 0 18px 40px rgba(0,0,0,.35);
+  }
+  .brand{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    min-width: 320px;
+  }
+  .orb{
+    width:36px;height:36px;border-radius:12px;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 55%),
+      radial-gradient(circle at 70% 20%, rgba(0,255,190,.35), transparent 55%),
+      radial-gradient(circle at 40% 80%, rgba(110,168,255,.35), transparent 58%),
+      rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.10);
+  }
+  .brand h1{
+    font-size: 18px;
+    margin:0;
+    line-height:1.1;
+    letter-spacing:.2px;
+  }
+  .brand p{
+    margin:4px 0 0;
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height:1.25;
+  }
 
-    .icon{
-      width:18px;height:18px;display:inline-block;
-      background:rgba(255,255,255,.10);
-      border:1px solid rgba(255,255,255,.16);
-      border-radius:7px;
-      position:relative;
-    }
-    .icon:after{content:"";position:absolute;inset:5px;border-radius:4px;background:rgba(255,255,255,.22)}
+  .top-actions{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    flex-wrap:wrap;
+    justify-content:flex-end;
+  }
+  .toggle{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.10);
+    font-size: 12px;
+    color: var(--muted);
+    user-select:none;
+  }
+  .toggle input{accent-color: var(--accent);}
 
-    /* Layout */
-    .grid{display:grid;grid-template-columns: 420px 1fr;gap:18px;margin-top:18px;align-items:start}
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
-      .top{position:relative;top:auto}
-    }
+  .btn{
+    padding: 9px 12px;
+    border-radius: 12px;
+    border:1px solid rgba(255,255,255,.12);
+    background: var(--btn);
+    color: var(--text);
+    font-size: 12.5px;
+    cursor:pointer;
+  }
+  .btn:hover{ background: var(--btnHover); }
 
-    .panel{
-      border:1px solid var(--line2);
-      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
+  .btn.primary{
+    border-color: rgba(110,168,255,.35);
+    background: linear-gradient(180deg, rgba(110,168,255,.22), rgba(110,168,255,.10));
+  }
 
-    .panel .hd{
-      padding:16px 16px 12px;
-      border-bottom:1px solid var(--line2);
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-    }
-    .panel .hd h2{margin:0;font-size:14px;letter-spacing:.2px}
-    .panel .hd .sub{color:var(--muted);font-size:12px}
+  /* Main grid */
+  .grid{
+    margin-top: 14px;
+    display:grid;
+    grid-template-columns: 360px 1fr;
+    gap: 14px;
+  }
 
-    .panel .bd{padding:16px}
+  .panel{
+    border-radius: var(--radius2);
+    border:1px solid var(--stroke2);
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    box-shadow: 0 18px 45px rgba(0,0,0,.32);
+    overflow:hidden;
+  }
 
-    /* Form */
-    .form{display:grid;gap:12px}
-    .row{display:grid;gap:8px}
-    .row label{font-size:12px;color:var(--muted)}
+  .panel .inner{ padding: 16px; }
 
-    select, input[type="text"]{
-      width:100%;
-      padding:11px 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.22);
-      color:var(--text);
-      outline:none;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
-    }
-    select:focus, input[type="text"]:focus{border-color:rgba(110,168,255,.6)}
+  /* Left builder */
+  .builder h2{
+    margin: 0;
+    font-size: 15px;
+    letter-spacing:.2px;
+  }
+  .builder .sub{
+    margin:4px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .steps{
+    margin-top: 10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .step{
+    width: 26px; height: 26px;
+    border-radius: 999px;
+    display:grid;
+    place-items:center;
+    font-size: 12px;
+    color: var(--muted);
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.03);
+  }
+  .step.on{
+    color: var(--text);
+    border-color: rgba(110,168,255,.45);
+    background: rgba(110,168,255,.12);
+  }
 
-    .toggles{display:flex;gap:10px;flex-wrap:wrap}
-    .toggle{
-      display:flex;align-items:center;gap:10px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.16);
-      padding:10px 12px;
-      border-radius:14px;
-      cursor:pointer;
-      transition:border-color .2s ease, transform .06s ease;
-      user-select:none;
-      flex:1;
-      min-width:190px;
-    }
-    .toggle:hover{border-color:rgba(110,168,255,.45)}
-    .toggle:active{transform:translateY(1px)}
-    .dot{
-      width:14px;height:14px;border-radius:50%;
-      border:2px solid rgba(255,255,255,.28);
-      box-shadow:0 0 0 3px rgba(110,168,255,.00);
-      transition: box-shadow .2s ease, border-color .2s ease, background .2s ease;
-      background:transparent;
-    }
-    .toggle[data-on="1"]{border-color:rgba(110,168,255,.55);background:rgba(110,168,255,.10)}
-    .toggle[data-on="1"] .dot{background:rgba(110,168,255,.95);border-color:rgba(110,168,255,.95);box-shadow:0 0 0 3px rgba(110,168,255,.18)}
+  .section{
+    margin-top: 14px;
+  }
+  .label{
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
 
-    .hint{color:var(--muted);font-size:12px;line-height:1.35}
+  .choice{
+    display:flex;
+    gap:10px;
+    padding: 12px;
+    border-radius: 16px;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.18);
+    margin-bottom: 10px;
+    align-items:flex-start;
+    cursor:pointer;
+  }
+  .choice:hover{ border-color: rgba(255,255,255,.16); }
+  .choice input{ margin-top: 2px; accent-color: var(--accent); }
+  .choice .title{ font-size: 13px; font-weight: 600; margin:0; }
+  .choice .desc{ margin:2px 0 0; font-size: 12px; color: var(--muted); }
 
-    .steps{
-      display:flex;gap:8px;flex-wrap:wrap;align-items:center;
-      margin:6px 0 2px;
-    }
-    .step{
-      font-size:12px;color:var(--muted);
-      border:1px solid var(--line);
-      background:rgba(0,0,0,.16);
-      padding:6px 10px;border-radius:999px;
-    }
-    .step.on{color:var(--text);border-color:rgba(100,241,200,.35);background:rgba(100,241,200,.10)}
+  .field{
+    margin-top: 10px;
+  }
+  select, input[type="text"]{
+    width:100%;
+    padding: 11px 12px;
+    border-radius: 14px;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.22);
+    color: var(--text);
+    outline:none;
+  }
+  select:focus, input[type="text"]:focus{ border-color: rgba(110,168,255,.45); }
 
-    /* Results */
-    .results{
-      display:grid;gap:14px;
-    }
+  .note{
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--muted);
+    line-height:1.35;
+  }
 
-    .empty{
-      border:1px dashed rgba(255,255,255,.20);
-      background:rgba(0,0,0,.12);
-      border-radius:var(--radius);
-      padding:18px;
-      color:var(--muted);
-      line-height:1.45;
-    }
+  /* Right side */
+  .right{
+    display:grid;
+    grid-template-columns: 420px 1fr;
+    gap: 14px;
+    align-items:stretch;
+  }
 
-    .cards{display:grid;grid-template-columns: repeat(2, minmax(0, 1fr));gap:14px}
-    @media (max-width: 980px){
-      .cards{grid-template-columns:1fr}
-    }
+  .resultsHead{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom: 10px;
+  }
+  .resultsHead h2{ margin:0; font-size: 15px; }
+  .resultsHead .crumbs{ margin-top:2px; font-size: 12px; color: var(--muted); }
+  .pill{
+    padding: 6px 10px;
+    border-radius: 999px;
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.05);
+    font-size: 12px;
+    color: var(--muted);
+    white-space:nowrap;
+  }
 
-    .card{
-      border:1px solid rgba(255,255,255,.14);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.12));
-      border-radius:var(--radius);
-      overflow:hidden;
-    }
+  .card{
+    border-radius: 20px;
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(0,0,0,.20);
+    padding: 14px;
+  }
+  .cardTitle{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .cardTitle h3{
+    margin:0;
+    font-size: 13.5px;
+    letter-spacing:.1px;
+  }
+  .chip{
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--chip);
+    border: 1px solid var(--chipStroke);
+    font-size: 12px;
+    color: var(--text);
+    white-space:nowrap;
+  }
+  .card p{
+    margin:8px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+    line-height:1.35;
+  }
 
-    .card .topline{
-      padding:14px 14px 10px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
-    }
+  .kvHead{
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .kv{
+    margin-top: 8px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+  }
+  .row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    border:1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.03);
+    font-size: 12.5px;
+  }
+  .row .left{ font-weight: 600; }
+  .row .right{
+    opacity:.95;
+    color: rgba(234,240,255,.85);
+    font-size: 12px;
+    justify-content:flex-end;
+  }
 
-    .badge{
-      font-family:var(--mono);
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.16);
-      background:rgba(0,0,0,.18);
-      color:var(--text);
-      white-space:nowrap;
-    }
+  .cardActions{
+    margin-top: 12px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .mini{
+    padding: 8px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
+    color: var(--text);
+    font-size: 12px;
+    cursor:pointer;
+  }
+  .mini:hover{ background: rgba(255,255,255,.08); }
 
-    .card h3{margin:0 0 4px;font-size:14px}
-    .card .meta{color:var(--muted);font-size:12px;line-height:1.35}
+  /* Preview area (big empty right panel like screenshot) */
+  .preview{
+    border-radius: var(--radius2);
+    border:1px solid var(--stroke2);
+    background: rgba(0,0,0,.18);
+    position:relative;
+    overflow:hidden;
+  }
+  .preview::before{
+    content:"";
+    position:absolute; inset:-40px;
+    background:
+      radial-gradient(700px 440px at 15% 25%, rgba(255,255,255,.06), transparent 60%),
+      radial-gradient(800px 520px at 70% 70%, rgba(110,168,255,.08), transparent 58%);
+    pointer-events:none;
+  }
+  .preview .ghost{
+    position:absolute;
+    left: 20px; bottom: 20px;
+    font-size: 12px;
+    color: rgba(234,240,255,.50);
+  }
 
-    .card .body{padding:14px}
+  /* --- Details overlay: orange tint behind panel, panel itself stays black --- */
+  .overlay{
+    position:fixed;
+    inset:0;
+    z-index:999;
+    background: rgba(176, 84, 0, 0.55); /* orange tint */
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display:none;
+  }
+  .overlay.on{ display:block; }
 
-    .layers{
-      display:grid;gap:8px;margin:10px 0 12px;
-    }
-    .layer{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      padding:10px 12px;
-      background:rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-    }
-    .layer .name{font-size:13px}
-    .layer .tag{font-size:12px;color:var(--muted)}
+  .drawer{
+    position:fixed;
+    top:0; right:0;
+    height:100vh;
+    width:min(560px, 92vw);
+    z-index:1000;
+    background:#0b0d10; /* black details panel */
+    color:#fff;
+    border-left:1px solid rgba(255,255,255,.10);
+    box-shadow: -18px 0 60px rgba(0,0,0,.55);
+    overflow:auto;
+    transform: translateX(110%);
+    transition: transform .22s ease;
+  }
+  .drawer.on{ transform: translateX(0); }
 
-    .actions{display:flex;gap:10px;flex-wrap:wrap}
+  .drawerInner{ padding: 18px 18px 26px; }
+  .drawerTop{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .drawerTop h2{
+    margin:0;
+    font-size: 15px;
+    line-height:1.25;
+  }
+  .close{
+    padding: 8px 10px;
+    border-radius: 999px;
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
+    color:#fff;
+    cursor:pointer;
+    white-space:nowrap;
+  }
 
-    .mini{
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.16);
-      padding:9px 10px;
-      border-radius:12px;
-      font-size:12px;
-      cursor:pointer;
-    }
-    .mini:hover{border-color:rgba(100,241,200,.4)}
+  .meta{
+    margin-top: 10px;
+    display:grid;
+    grid-template-columns: 120px 1fr;
+    gap: 8px 14px;
+    font-size: 12.5px;
+    color: rgba(255,255,255,.85);
+  }
+  .meta .k{ color: rgba(255,255,255,.60); }
 
-    /* Drawer (details) */
-    .drawer{
-      position:fixed;inset:0;display:none;
-      background:rgba(0,0,0,.55);
-      z-index:99;
-    }
-    .drawer[data-open="1"]{display:block}
-    .sheet{
-      position:absolute;right:0;top:0;height:100%;width:min(560px, 100%);
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.20)), var(--panel);
-      border-left:1px solid rgba(255,255,255,.12);
-      box-shadow: -18px 0 60px rgba(0,0,0,.5);
-      padding:18px;
-      overflow:auto;
-    }
-    .sheet .x{
-      float:right;
-      border:1px solid rgba(255,255,255,.18);
-      background:rgba(0,0,0,.18);
-      border-radius:12px;
-      padding:8px 10px;
-      cursor:pointer;
-    }
-    .sheet h4{margin:2px 0 4px;font-size:16px}
-    .sheet .small{color:var(--muted);font-size:12px;margin:0 0 14px;line-height:1.35}
+  .divider{
+    margin: 14px 0;
+    border-top:1px solid rgba(255,255,255,.10);
+  }
 
-    .kv{display:grid;grid-template-columns: 140px 1fr;gap:8px 12px;margin:12px 0}
-    .kv .k{color:var(--muted);font-size:12px}
-    .kv .v{font-size:13px}
+  .drawerSection h3{
+    margin:0 0 10px;
+    font-size: 13px;
+  }
+  .prodBox{
+    border:1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.03);
+    border-radius: 16px;
+    padding: 12px;
+    margin-bottom: 10px;
+    font-size: 12.5px;
+  }
+  .prodBox .small{ color: rgba(255,255,255,.65); font-size: 12px; }
 
-    .hr{height:1px;background:rgba(255,255,255,.10);margin:14px 0}
-
-    .note{
-      font-size:12px;color:var(--muted);line-height:1.45;
-      border:1px dashed rgba(255,255,255,.18);
-      border-radius:14px;
-      padding:12px;
-      background:rgba(0,0,0,.10);
-    }
-
-    .pillbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-    .pill{font-size:12px;color:var(--muted);border:1px solid rgba(255,255,255,.14);padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.14)}
-
-    .footer{
-      margin-top:18px;
-      color:rgba(255,255,255,.55);
-      font-size:12px;
-    }
-  </style>
+  @media (max-width: 1040px){
+    .grid{ grid-template-columns: 1fr; }
+    .right{ grid-template-columns: 1fr; }
+  }
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="top">
+  <div class="shell">
+
+    <header class="topbar">
       <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div class="title">
-          <h1>System Selector v2 <span style="opacity:.55;font-weight:600">(Prototype)</span></h1>
+        <div class="orb" aria-hidden="true"></div>
+        <div>
+          <h1>System Selector v2 <span style="opacity:.65;font-weight:600">(Prototype)</span></h1>
           <p>Modern, spec-friendly flow: pick the install context → get the method, layers, products, and downloads.</p>
         </div>
       </div>
+
       <div class="top-actions">
-        <span class="chip"><span class="icon" aria-hidden="true"></span> TCNA + TTMac-ready structure</span>
-        <button class="btn ghost" id="btnDemo">Load demo picks</button>
-        <button class="btn" id="btnReset">Reset</button>
-        <button class="btn primary" id="btnExport">Export as JSON</button>
+        <label class="toggle">
+          <input type="checkbox" checked />
+          TCNA + TTMac-ready structure
+        </label>
+        <button class="btn">Load demo picks</button>
+        <button class="btn">Reset</button>
+        <button class="btn primary">Export as JSON</button>
       </div>
-    </div>
+    </header>
 
-    <div class="grid">
-      <!-- Left: selector -->
-      <section class="panel" aria-label="Selector">
-        <div class="hd">
-          <div>
-            <h2>Build your assembly</h2>
-            <div class="sub">4 quick picks. Results update instantly.</div>
-          </div>
-          <div class="steps" aria-label="Steps">
-            <span class="step" id="s1">1</span>
-            <span class="step" id="s2">2</span>
-            <span class="step" id="s3">3</span>
-            <span class="step" id="s4">4</span>
-          </div>
-        </div>
-        <div class="bd">
-          <div class="form">
-            <div class="row">
-              <label>Category</label>
-              <div class="toggles">
-                <div class="toggle" data-key="category" data-value="Tile"><span class="dot"></span><div><div style="font-size:13px">Tile</div><div class="hint">Thin-set tile systems & methods</div></div></div>
-                <div class="toggle" data-key="category" data-value="Surface Preparation"><span class="dot"></span><div><div style="font-size:13px">Surface Prep</div><div class="hint">Patching, leveling, priming</div></div></div>
-              </div>
-            </div>
-
-            <div class="row">
-              <label>Application</label>
-              <select id="application"></select>
-            </div>
-
-            <div class="row">
-              <label>Substrate</label>
-              <select id="substrate"></select>
-            </div>
-
-            <div class="row">
-              <label>Special conditions (optional)</label>
-              <select id="condition"></select>
-              <div class="hint">Examples: Waterproof, Crack Isolation, Exterior, Steam shower.</div>
-            </div>
-
-            <div class="row">
-              <label>Search / filter (optional)</label>
-              <input type="text" id="q" placeholder="Type: C312, gypsum, shower, uncoupling…" />
-            </div>
-
-            <div class="row">
-              <div class="hint">
-                <b style="color:var(--text)">Prototype note:</b> this uses sample data, but the structure matches what you’d export from the current tool.
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Right: results -->
-      <section class="panel" aria-label="Results">
-        <div class="hd">
-          <div>
-            <h2>Results</h2>
-            <div class="sub" id="resultSummary">Choose options to see matching assemblies.</div>
-          </div>
-          <div style="display:flex;gap:10px;align-items:center">
-            <span class="chip" id="matchCount">0 matches</span>
-          </div>
-        </div>
-        <div class="bd">
-          <div class="results">
-            <div id="empty" class="empty">
-              <div style="font-size:14px;color:var(--text);margin-bottom:6px">Start with the basics.</div>
-              <div>Pick <b>Category</b> → <b>Application</b> → <b>Substrate</b>. Then add a condition if needed.</div>
-              <div class="pillbar" aria-hidden="true">
-                <span class="pill">Layer diagram</span>
-                <span class="pill">Products</span>
-                <span class="pill">CAD / PDF links</span>
-                <span class="pill">TCNA / TTMac codes</span>
-              </div>
-            </div>
-
-            <div class="cards" id="cards" style="display:none"></div>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <div class="footer">
-      Built as a front-end-only mock. Drop this into any site and wire the data source later.
-    </div>
-  </div>
-
-  <!-- Details drawer -->
-  <div class="drawer" id="drawer" aria-hidden="true">
-    <div class="sheet" role="dialog" aria-label="Assembly details">
-      <button class="x" id="drawerClose">Close ✕</button>
-      <div id="drawerContent"></div>
-    </div>
-  </div>
-
-  <script>
-    // --------------------
-    // Sample data (shape is what you'd export from the legacy tool)
-    // --------------------
-    const assemblies = [
-      {
-        id: "T-C312-INT-SHWR-GB",
-        category: "Tile",
-        application: "Shower Wall",
-        substrate: "Gypsum Board",
-        condition: "Waterproof",
-        tcna: "C312",
-        ttmac: "",
-        title: "Shower Wall – Tile over Gypsum Board (Waterproof)",
-        summary: "A typical tile shower wall assembly using a liquid waterproofing membrane.",
-        layers: [
-          { name: "Ceramic / Porcelain Tile", tag: "ANSI A137.1" },
-          { name: "Polymer-Modified Thin-Set Mortar", tag: "ANSI A118.4 / A118.15" },
-          { name: "Liquid Waterproofing Membrane", tag: "ANSI A118.10" },
-          { name: "Gypsum Board", tag: "Interior only" }
-        ],
-        products: [
-          { role: "Mortar", items: ["ProLite®", "FlexBond®"] },
-          { role: "Waterproof", items: ["RedGard® Waterproofing and Crack Prevention Membrane"] },
-          { role: "Grout", items: ["Prism® Ultimate Performance Grout"] }
-        ],
-        downloads: {
-          method_pdf: "#",
-          cad: "#",
-          spec_short: "#"
-        },
-        notes: [
-          "Confirm gypsum board suitability per local code and project requirements.",
-          "Follow membrane dry film thickness requirements and cure times." 
-        ]
-      },
-      {
-        id: "T-B422-INT-SHWR-GB",
-        category: "Tile",
-        application: "Shower Wall",
-        substrate: "Gypsum Board",
-        condition: "None",
-        tcna: "B422",
-        ttmac: "",
-        title: "Shower Wall – Tile over Gypsum Board (Direct Bond)",
-        summary: "Direct-bond tile shower wall without a surface-applied membrane (project dependent).",
-        layers: [
-          { name: "Ceramic / Porcelain Tile", tag: "ANSI A137.1" },
-          { name: "Polymer-Modified Thin-Set Mortar", tag: "ANSI A118.4" },
-          { name: "Gypsum Board", tag: "Interior only" }
-        ],
-        products: [
-          { role: "Mortar", items: ["VersaBond®", "FlexBond®"] },
-          { role: "Grout", items: ["Prism®", "Polyblend® Plus"] }
-        ],
-        downloads: { method_pdf: "#", cad: "#", spec_short: "#" },
-        notes: [
-          "Many specs require waterproofing in wet areas—verify the project spec.",
-          "Use appropriate thin-set and coverage in wet locations." 
-        ]
-      },
-      {
-        id: "T-F144-INT-FLR-CONC",
-        category: "Tile",
-        application: "Interior Floor",
-        substrate: "Concrete",
-        condition: "None",
-        tcna: "F144",
-        ttmac: "",
-        title: "Interior Floor – Tile over Concrete (Direct Bond)",
-        summary: "Standard floor assembly for tile over cured concrete.",
-        layers: [
-          { name: "Ceramic / Porcelain Tile", tag: "ANSI A137.1" },
-          { name: "Thin-Set Mortar", tag: "ANSI A118.1 / A118.4" },
-          { name: "Concrete Slab", tag: "Cured, clean, sound" }
-        ],
-        products: [
-          { role: "Mortar", items: ["CustomBlend®", "VersaBond®", "FlexBond®"] },
-          { role: "Grout", items: ["Prism®", "Polyblend® Plus"] }
-        ],
-        downloads: { method_pdf: "#", cad: "#", spec_short: "#" },
-        notes: [
-          "Check slab flatness and correct with patch/SLU if needed.",
-          "Address cracks and movement joints per TCNA EJ171." 
-        ]
-      },
-      {
-        id: "T-F125-INT-FLR-CONC-CI",
-        category: "Tile",
-        application: "Interior Floor",
-        substrate: "Concrete",
-        condition: "Crack Isolation",
-        tcna: "F125",
-        ttmac: "",
-        title: "Interior Floor – Tile over Concrete (Crack Isolation)",
-        summary: "Adds crack isolation membrane over concrete prior to tile.",
-        layers: [
-          { name: "Ceramic / Porcelain Tile", tag: "ANSI A137.1" },
-          { name: "Polymer-Modified Thin-Set Mortar", tag: "ANSI A118.4 / A118.15" },
-          { name: "Crack Isolation Membrane", tag: "ANSI A118.12" },
-          { name: "Concrete Slab", tag: "Cured, clean, sound" }
-        ],
-        products: [
-          { role: "Mortar", items: ["ProLite®", "FlexBond®"] },
-          { role: "Membrane", items: ["RedGard® (crack prevention)"] },
-          { role: "Grout", items: ["Prism®"] }
-        ],
-        downloads: { method_pdf: "#", cad: "#", spec_short: "#" },
-        notes: [
-          "Use movement joints per TCNA EJ171.",
-          "Membranes reduce in-plane cracking transfer; they don’t fix structural movement." 
-        ]
-      },
-      {
-        id: "SP-LEVEL-INT-FLR",
-        category: "Surface Preparation",
-        application: "Interior Floor",
-        substrate: "Concrete",
-        condition: "Leveling",
-        tcna: "",
-        ttmac: "",
-        title: "Surface Prep – Interior Floor Leveling over Concrete",
-        summary: "Primer + SLU workflow before tile/finish flooring.",
-        layers: [
-          { name: "Finish Flooring (varies)", tag: "Tile / LVT / etc." },
-          { name: "Self-Leveling Underlayment", tag: "Per product data" },
-          { name: "Primer", tag: "Required" },
-          { name: "Concrete Substrate", tag: "Sound, clean" }
-        ],
-        products: [
-          { role: "Primer", items: ["LevelQuik® Primer"] },
-          { role: "SLU", items: ["LevelQuik® RS", "LevelQuik® ES"] },
-          { role: "Patch", items: ["SpeedFinish™"] }
-        ],
-        downloads: { method_pdf: "#", cad: "#", spec_short: "#" },
-        notes: [
-          "Confirm moisture/vapor requirements and floor covering compatibility.",
-          "Honor existing joints; do not bridge movement joints." 
-        ]
-      }
-    ];
-
-    const state = {
-      category: null,
-      application: null,
-      substrate: null,
-      condition: null,
-      q: ""
-    };
-
-    // Options (could be derived dynamically; kept explicit for clarity)
-    const options = {
-      Tile: {
-        application: ["Shower Wall", "Interior Floor", "Exterior Floor", "Backsplash"],
-        substrate: ["Gypsum Board", "Cement Board", "Concrete", "Mortar Bed"],
-        condition: ["None", "Waterproof", "Crack Isolation", "Uncoupling", "Steam"]
-      },
-      "Surface Preparation": {
-        application: ["Interior Floor", "Interior Wall"],
-        substrate: ["Concrete", "Plywood"],
-        condition: ["None", "Priming", "Patching", "Leveling"]
-      }
-    };
-
-    // --------------------
-    // UI helpers
-    // --------------------
-    const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
-
-    function setStepPills(){
-      // progress based on filled picks
-      const filled = [state.category, state.application, state.substrate, state.condition].map(Boolean);
-      ["#s1", "#s2", "#s3", "#s4"].forEach((id, i) => {
-        const el = $(id);
-        el.classList.toggle("on", filled[i] || (i === 0 && !!state.category));
-      });
-    }
-
-    function fillSelect(sel, list, placeholder="Select..."){
-      const el = $(sel);
-      el.innerHTML = "";
-      const opt0 = document.createElement("option");
-      opt0.value = "";
-      opt0.textContent = placeholder;
-      el.appendChild(opt0);
-      list.forEach(v => {
-        const o = document.createElement("option");
-        o.value = v;
-        o.textContent = v;
-        el.appendChild(o);
-      });
-    }
-
-    function syncForm(){
-      // toggles
-      $$(".toggle").forEach(t => {
-        const on = (t.dataset.key === "category" && t.dataset.value === state.category) ? "1" : "0";
-        t.dataset.on = on;
-      });
-
-      // selects depend on category
-      const cat = state.category || "Tile";
-      fillSelect("#application", options[cat].application, "Choose application...");
-      fillSelect("#substrate", options[cat].substrate, "Choose substrate...");
-      fillSelect("#condition", options[cat].condition, "Choose condition (optional)...");
-
-      // restore values
-      $("#application").value = state.application || "";
-      $("#substrate").value = state.substrate || "";
-      $("#condition").value = state.condition || "";
-      $("#q").value = state.q || "";
-
-      setStepPills();
-      render();
-    }
-
-    function normalize(s){
-      return (s || "").toLowerCase().trim();
-    }
-
-    function matches(a){
-      if (state.category && a.category !== state.category) return false;
-      if (state.application && a.application !== state.application) return false;
-      if (state.substrate && a.substrate !== state.substrate) return false;
-      if (state.condition && state.condition !== "None" && a.condition !== state.condition) return false;
-      // if condition is None selected, allow assemblies where condition is None
-      if (state.condition === "None" && a.condition !== "None") return false;
-
-      const q = normalize(state.q);
-      if (!q) return true;
-      const hay = normalize([
-        a.id, a.title, a.summary, a.tcna, a.ttmac, a.application, a.substrate, a.condition,
-        ...(a.layers||[]).map(x => x.name + " " + x.tag),
-        ...(a.products||[]).flatMap(p => [p.role, ...(p.items||[])])
-      ].join(" | "));
-      return hay.includes(q);
-    }
-
-    function render(){
-      const allChosen = !!state.category && !!state.application && !!state.substrate;
-
-      const list = assemblies.filter(matches);
-
-      $("#matchCount").textContent = `${list.length} match${list.length===1?"":"es"}`;
-
-      if (!allChosen){
-        $("#empty").style.display = "block";
-        $("#cards").style.display = "none";
-        $("#resultSummary").textContent = "Choose options to see matching assemblies.";
-        return;
-      }
-
-      $("#empty").style.display = list.length ? "none" : "block";
-      $("#cards").style.display = list.length ? "grid" : "none";
-
-      const parts = [
-        state.category,
-        state.application,
-        state.substrate,
-        state.condition && state.condition !== "None" ? state.condition : null
-      ].filter(Boolean);
-      $("#resultSummary").textContent = parts.join(" · ");
-
-      const cards = $("#cards");
-      cards.innerHTML = "";
-
-      list.forEach(a => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <div class="topline">
+    <main class="grid">
+      <!-- LEFT -->
+      <section class="panel builder">
+        <div class="inner">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
             <div>
-              <h3>${escapeHtml(a.title)}</h3>
-              <div class="meta">${escapeHtml(a.summary)}</div>
+              <h2>Build your assembly</h2>
+              <div class="sub">4 quick picks. Results update instantly.</div>
             </div>
-            <div class="badge">${a.tcna ? `TCNA ${escapeHtml(a.tcna)}` : (a.ttmac ? `TTMac ${escapeHtml(a.ttmac)}` : "Assembly")}</div>
+            <div class="steps" aria-label="steps">
+              <div class="step on">1</div>
+              <div class="step">2</div>
+              <div class="step">3</div>
+              <div class="step">4</div>
+            </div>
           </div>
-          <div class="body">
-            <div class="meta"><b style="color:var(--text)">Key layers</b></div>
-            <div class="layers">
-              ${(a.layers||[]).slice(0,4).map(l => `
-                <div class="layer">
-                  <div class="name">${escapeHtml(l.name)}</div>
-                  <div class="tag">${escapeHtml(l.tag||"")}</div>
+
+          <div class="section">
+            <div class="label">Category</div>
+
+            <label class="choice">
+              <input type="radio" name="cat" checked />
+              <div>
+                <div class="title">Tile</div>
+                <div class="desc">Thin-set tile systems &amp; methods</div>
+              </div>
+            </label>
+
+            <label class="choice" style="opacity:.78">
+              <input type="radio" name="cat" />
+              <div>
+                <div class="title">Surface Prep</div>
+                <div class="desc">Patching, leveling, priming</div>
+              </div>
+            </label>
+          </div>
+
+          <div class="section">
+            <div class="label">Application</div>
+            <div class="field">
+              <select>
+                <option>Shower Wall</option>
+                <option>Shower Pan</option>
+                <option>Floor</option>
+                <option>Countertop</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="label">Substrate</div>
+            <div class="field">
+              <select>
+                <option>Gypsum Board</option>
+                <option>Cement Board</option>
+                <option>Concrete</option>
+                <option>Plywood</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="label">Special conditions (optional)</div>
+            <div class="field">
+              <select>
+                <option>Waterproof</option>
+                <option>Crack Isolation</option>
+                <option>Exterior</option>
+                <option>Steam shower</option>
+              </select>
+            </div>
+            <div class="note">Examples: Waterproof, Crack Isolation, Exterior, Steam shower.</div>
+          </div>
+
+          <div class="section">
+            <div class="label">Search / filter (optional)</div>
+            <div class="field">
+              <input type="text" value="C312" />
+            </div>
+          </div>
+
+          <div class="note" style="margin-top:14px;">
+            <b style="color:rgba(234,240,255,.9)">Prototype note:</b>
+            this uses sample data, but the structure matches what you’d export from the current tool.
+          </div>
+
+          <div class="note">
+            Built as a front-end-only mock. Drop this into any site and wire the data source later.
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT -->
+      <section class="right">
+        <section class="panel">
+          <div class="inner">
+            <div class="resultsHead">
+              <div>
+                <h2>Results</h2>
+                <div class="crumbs">Tile · Shower Wall · Gypsum Board · Waterproof</div>
+              </div>
+              <div class="pill">1 match</div>
+            </div>
+
+            <div class="card">
+              <div class="cardTitle">
+                <h3>Shower Wall – Tile over Gypsum Board (Waterproof)</h3>
+                <div class="chip">TCNA C312</div>
+              </div>
+              <p>A typical tile shower wall assembly using a liquid waterproofing membrane.</p>
+
+              <div class="kvHead">Key layers</div>
+              <div class="kv">
+                <div class="row">
+                  <div class="left">Ceramic / Porcelain Tile</div>
+                  <div class="right">ANSI A137.1</div>
                 </div>
-              `).join("")}
-            </div>
-            <div class="actions">
-              <button class="mini" data-open="${a.id}">View details</button>
-              <button class="mini" data-dl="pdf" data-id="${a.id}">Method PDF</button>
-              <button class="mini" data-dl="cad" data-id="${a.id}">CAD</button>
-              <button class="mini" data-dl="spec" data-id="${a.id}">Short spec</button>
+                <div class="row">
+                  <div class="left">Polymer-Modified Thin-Set Mortar</div>
+                  <div class="right">ANSI A118.4 / A118.15</div>
+                </div>
+                <div class="row">
+                  <div class="left">Liquid Waterproofing Membrane</div>
+                  <div class="right">ANSI A118.10</div>
+                </div>
+                <div class="row">
+                  <div class="left">Gypsum Board</div>
+                  <div class="right">Interior only</div>
+                </div>
+              </div>
+
+              <div class="cardActions">
+                <button class="mini" id="viewDetailsBtn">View details</button>
+                <button class="mini">Method PDF</button>
+                <button class="mini">CAD</button>
+                <button class="mini">Short spec</button>
+              </div>
             </div>
           </div>
-        `;
-        cards.appendChild(card);
-      });
+        </section>
 
-      // wire card actions
-      $$("[data-open]").forEach(btn => {
-        btn.onclick = () => openDrawer(btn.dataset.open);
-      });
-      $$("[data-dl]").forEach(btn => {
-        btn.onclick = () => fakeDownload(btn.dataset.id, btn.dataset.dl);
-      });
-    }
+        <section class="preview">
+          <div class="ghost">Preview area (diagram / product stack / CAD preview)</div>
+        </section>
+      </section>
+    </main>
+  </div>
 
-    function fakeDownload(id, kind){
-      const a = assemblies.find(x => x.id === id);
-      const label = kind === "pdf" ? "Method PDF" : (kind === "cad" ? "CAD" : "Short spec");
-      // In a real app, you'd route to a download URL.
-      alert(`${label} (placeholder)\n\nAssembly: ${a.title}\nID: ${a.id}`);
-    }
+  <!-- ORANGE TINT OVERLAY + BLACK DRAWER (only the drawer is black, page stays visible) -->
+  <div class="overlay" id="overlay"></div>
 
-    function openDrawer(id){
-      const a = assemblies.find(x => x.id === id);
-      const wrap = $("#drawerContent");
-      wrap.innerHTML = `
-        <h4>${escapeHtml(a.title)}</h4>
-        <p class="small">${escapeHtml(a.summary)}</p>
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawerInner">
+      <div class="drawerTop">
+        <div>
+          <h2>Shower Wall – Tile over Gypsum Board (Waterproof)</h2>
+          <div style="margin-top:6px;color:rgba(255,255,255,.65);font-size:12px;">
+            A typical tile shower wall assembly using a liquid waterproofing membrane.
+          </div>
+        </div>
+        <button class="close" id="closeDrawer">Close ✕</button>
+      </div>
 
-        <div class="kv">
-          <div class="k">Category</div><div class="v">${escapeHtml(a.category)}</div>
-          <div class="k">Application</div><div class="v">${escapeHtml(a.application)}</div>
-          <div class="k">Substrate</div><div class="v">${escapeHtml(a.substrate)}</div>
-          <div class="k">Condition</div><div class="v">${escapeHtml(a.condition)}</div>
-          <div class="k">TCNA</div><div class="v">${a.tcna ? escapeHtml(a.tcna) : "—"}</div>
-          <div class="k">TTMac</div><div class="v">${a.ttmac ? escapeHtml(a.ttmac) : "—"}</div>
-          <div class="k">Assembly ID</div><div class="v"><span style="font-family:var(--mono)">${escapeHtml(a.id)}</span></div>
+      <div class="meta">
+        <div class="k">Category</div><div>Tile</div>
+        <div class="k">Application</div><div>Shower Wall</div>
+        <div class="k">Substrate</div><div>Gypsum Board</div>
+        <div class="k">Condition</div><div>Waterproof</div>
+        <div class="k">TCNA</div><div>C312</div>
+        <div class="k">TTMac</div><div>—</div>
+        <div class="k">Assembly ID</div><div>T-C312-INT-SHWR-GB</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="drawerSection">
+        <h3>Full layer stack</h3>
+
+        <div class="row">
+          <div class="left">Ceramic / Porcelain Tile</div>
+          <div class="right">ANSI A137.1</div>
+        </div>
+        <div class="row" style="margin-top:8px;">
+          <div class="left">Polymer-Modified Thin-Set Mortar</div>
+          <div class="right">ANSI A118.4 / A118.15</div>
+        </div>
+        <div class="row" style="margin-top:8px;">
+          <div class="left">Liquid Waterproofing Membrane</div>
+          <div class="right">ANSI A118.10</div>
+        </div>
+        <div class="row" style="margin-top:8px;">
+          <div class="left">Gypsum Board</div>
+          <div class="right">Interior only</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="drawerSection">
+        <h3>Recommended products</h3>
+
+        <div class="prodBox">
+          <div class="small">Mortar</div>
+          <div><b>ProLite®</b>, <b>FlexBond®</b></div>
+          <div class="small" style="margin-top:6px;">CBP</div>
         </div>
 
-        <div class="hr"></div>
-
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-          <div><b>Full layer stack</b></div>
-          <div class="badge">Top → Bottom</div>
-        </div>
-        <div class="layers" style="margin-top:10px">
-          ${(a.layers||[]).map(l => `
-            <div class="layer">
-              <div class="name">${escapeHtml(l.name)}</div>
-              <div class="tag">${escapeHtml(l.tag||"")}</div>
-            </div>
-          `).join("")}
+        <div class="prodBox">
+          <div class="small">Waterproof</div>
+          <div><b>RedGard®</b> Waterproofing and Crack Prevention Membrane</div>
+          <div class="small" style="margin-top:6px;">CBP</div>
         </div>
 
-        <div class="hr"></div>
-
-        <div><b>Recommended products</b></div>
-        <div style="margin-top:10px;display:grid;gap:10px">
-          ${(a.products||[]).map(p => `
-            <div class="layer" style="align-items:flex-start">
-              <div class="name"><span style="opacity:.75">${escapeHtml(p.role)}:</span><br><span style="font-size:13px">${escapeHtml((p.items||[]).join(", "))}</span></div>
-              <div class="tag">CBP</div>
-            </div>
-          `).join("")}
+        <div class="prodBox">
+          <div class="small">Grout</div>
+          <div><b>Prism®</b> Ultimate Performance Grout</div>
+          <div class="small" style="margin-top:6px;">CBP</div>
         </div>
+      </div>
 
-        <div class="hr"></div>
+      <div class="divider"></div>
 
-        <div class="actions">
-          <button class="btn primary" id="dlPdf"><span class="icon"></span> Method PDF</button>
-          <button class="btn" id="dlCad"><span class="icon"></span> CAD</button>
-          <button class="btn" id="dlSpec"><span class="icon"></span> Short spec</button>
+      <div class="drawerSection">
+        <h3>Downloads</h3>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn primary">Method PDF</button>
+          <button class="btn">CAD</button>
+          <button class="btn">Short spec</button>
         </div>
+      </div>
 
-        <div style="height:12px"></div>
+      <div class="divider"></div>
 
-        <div class="note">
-          <b style="color:var(--text)">Notes</b>
-          <ul style="margin:8px 0 0; padding-left:18px">
-            ${(a.notes||[]).map(n => `<li>${escapeHtml(n)}</li>`).join("")}
-          </ul>
+      <div class="drawerSection">
+        <h3>Notes</h3>
+        <div style="color:rgba(255,255,255,.70);font-size:12.5px;line-height:1.35;">
+          Keep it simple for prototype. This drawer is where your detailed method steps, requirements,
+          and product callouts would live.
         </div>
-      `;
+      </div>
 
-      $("#drawer").dataset.open = "1";
-      $("#drawer").setAttribute("aria-hidden", "false");
+    </div>
+  </aside>
 
-      $("#dlPdf").onclick = () => fakeDownload(a.id, "pdf");
-      $("#dlCad").onclick = () => fakeDownload(a.id, "cad");
-      $("#dlSpec").onclick = () => fakeDownload(a.id, "spec");
-    }
+<script>
+  const overlay = document.getElementById('overlay');
+  const drawer  = document.getElementById('drawer');
+  const openBtn = document.getElementById('viewDetailsBtn');
+  const closeBtn= document.getElementById('closeDrawer');
 
-    function closeDrawer(){
-      $("#drawer").dataset.open = "0";
-      $("#drawer").setAttribute("aria-hidden", "true");
-    }
+  function openDrawer(){
+    overlay.classList.add('on');
+    drawer.classList.add('on');
+    drawer.setAttribute('aria-hidden','false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer(){
+    overlay.classList.remove('on');
+    drawer.classList.remove('on');
+    drawer.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+  }
 
-    function escapeHtml(str){
-      return String(str ?? "").replace(/[&<>"]+/g, (m) => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        "\"":"&quot;"
-      }[m] || m));
-    }
+  openBtn.addEventListener('click', openDrawer);
+  closeBtn.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
 
-    // --------------------
-    // Events
-    // --------------------
-    $$(".toggle").forEach(t => {
-      t.addEventListener("click", () => {
-        state.category = t.dataset.value;
-        // reset dependent fields
-        state.application = null;
-        state.substrate = null;
-        state.condition = null;
-        syncForm();
-      });
-    });
-
-    $("#application").addEventListener("change", (e) => {
-      state.application = e.target.value || null;
-      syncForm();
-    });
-
-    $("#substrate").addEventListener("change", (e) => {
-      state.substrate = e.target.value || null;
-      syncForm();
-    });
-
-    $("#condition").addEventListener("change", (e) => {
-      state.condition = e.target.value || null;
-      syncForm();
-    });
-
-    $("#q").addEventListener("input", (e) => {
-      state.q = e.target.value;
-      render();
-    });
-
-    $("#btnReset").onclick = () => {
-      state.category = null;
-      state.application = null;
-      state.substrate = null;
-      state.condition = null;
-      state.q = "";
-      syncForm();
-    };
-
-    $("#btnDemo").onclick = () => {
-      state.category = "Tile";
-      state.application = "Shower Wall";
-      state.substrate = "Gypsum Board";
-      state.condition = "Waterproof";
-      state.q = "C312";
-      syncForm();
-    };
-
-    $("#btnExport").onclick = async () => {
-      const payload = {
-        exported_at: new Date().toISOString(),
-        filters: { ...state },
-        assemblies
-      };
-      const text = JSON.stringify(payload, null, 2);
-      try{
-        await navigator.clipboard.writeText(text);
-        alert("Exported JSON copied to clipboard.\n\nIn a real build, this would POST to your backend or download as a file.");
-      }catch{
-        // fallback
-        const w = window.open();
-        w.document.write(`<pre style="white-space:pre-wrap">${escapeHtml(text)}</pre>`);
-      }
-    };
-
-    $("#drawerClose").onclick = closeDrawer;
-    $("#drawer").addEventListener("click", (e) => {
-      if (e.target === $("#drawer")) closeDrawer();
-    });
-
-    // initial default
-    state.category = "Tile";
-    syncForm();
-  </script>
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') closeDrawer();
+  });
+</script>
 </body>
 </html>
