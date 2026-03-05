@@ -1,913 +1,916 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>QUIKRETE Project Selector</title>
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+  <title>CBP System Selector v2 (Prototype)</title>
   <style>
-    /* Global box sizing */
-    *, *::before, *::after { box-sizing: border-box; }
+    :root{
+      --bg:#0b1220;
+      --panel:#0f1a2e;
+      --card:#111f38;
+      --card2:#0d1730;
+      --text:#eaf0ff;
+      --muted:#a9b7d6;
+      --line:rgba(255,255,255,.10);
+      --line2:rgba(255,255,255,.06);
+      --accent:#6ea8ff;
+      --accent2:#64f1c8;
+      --warn:#ffcc66;
+      --bad:#ff6b7a;
+      --good:#50fa7b;
+      --shadow:0 18px 50px rgba(0,0,0,.35);
+      --radius:18px;
+      --radius2:14px;
+      --pad:18px;
+      --pad2:14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
 
-    :root {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-
-      /* Brand-ish tokens (kept simple) */
-      --q-yellow: #facc15;
-      --q-yellow-dark: #eab308;
-      --q-black: #0b0b0b;
-
-      /* Fullscreen yellow/black background */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
       background:
-        radial-gradient(1200px 700px at 20% 0%, rgba(250,204,21,0.18), transparent 55%),
-        radial-gradient(900px 600px at 80% 20%, rgba(250,204,21,0.10), transparent 50%),
-        var(--q-black);
-
-      color: #f9fafb;
+        radial-gradient(1200px 700px at 10% 10%, rgba(110,168,255,.22), transparent 55%),
+        radial-gradient(900px 600px at 80% 0%, rgba(100,241,200,.16), transparent 55%),
+        radial-gradient(900px 700px at 50% 100%, rgba(255,204,102,.08), transparent 55%),
+        var(--bg);
+      color:var(--text);
     }
 
-    html, body {
-      background: transparent; /* let :root show through */
-      color: #f9fafb;
+    a{color:inherit}
+
+    .wrap{max-width:1200px;margin:0 auto;padding:28px 18px 80px}
+
+    /* Header */
+    .top{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+      padding:18px 18px 10px;border:1px solid var(--line2);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      position:sticky;top:16px;backdrop-filter: blur(10px);
+      z-index:10;
     }
 
-    body {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      display: block;
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background:
+        radial-gradient(16px 16px at 30% 30%, rgba(110,168,255,.95), rgba(110,168,255,.15)),
+        radial-gradient(18px 18px at 70% 70%, rgba(100,241,200,.90), rgba(100,241,200,.08)),
+        linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.16);
+      position:relative;
+      overflow:hidden;
+    }
+    .logo:before{content:"";position:absolute;inset:-40px;transform:rotate(25deg);
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
+      animation:shine 6s linear infinite;
+    }
+    @keyframes shine{0%{left:-120%}100%{left:120%}}
+
+    .title h1{margin:0;font-size:18px;letter-spacing:.2px}
+    .title p{margin:3px 0 0;color:var(--muted);font-size:13px;line-height:1.25}
+
+    .top-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.18);
+      padding:8px 10px;border-radius:999px;
+      color:var(--muted);font-size:12px;
     }
 
-    .app {
-      width: 100%;
-      min-height: 100vh;
-      max-width: 100%;
-      border-radius: 0;
-      border: 0;
-      box-shadow: none;
-      padding: 2.25rem 1.25rem 3rem;
-      background: linear-gradient(180deg, rgba(17,24,39,0.96), rgba(15,23,42,0.96));
+    .btn{
+      border:1px solid rgba(255,255,255,.18);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      transition:transform .06s ease, border-color .2s ease, background .2s ease;
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:13px;
+      user-select:none;
+    }
+    .btn:hover{border-color:rgba(110,168,255,.45)}
+    .btn:active{transform:translateY(1px)}
+    .btn.primary{
+      border-color:rgba(110,168,255,.55);
+      background:linear-gradient(180deg, rgba(110,168,255,.32), rgba(110,168,255,.12));
+    }
+    .btn.ghost{background:transparent}
+
+    .icon{
+      width:18px;height:18px;display:inline-block;
+      background:rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:7px;
+      position:relative;
+    }
+    .icon:after{content:"";position:absolute;inset:5px;border-radius:4px;background:rgba(255,255,255,.22)}
+
+    /* Layout */
+    .grid{display:grid;grid-template-columns: 420px 1fr;gap:18px;margin-top:18px;align-items:start}
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+      .top{position:relative;top:auto}
     }
 
-    @media (min-width: 768px) {
-      .card--best { transform: scale(1.03); }
+    .panel{
+      border:1px solid var(--line2);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
     }
 
-    h1 {
-      margin: 0 0 0.35rem;
-      font-size: 1.55rem;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      color: #f9fafb;
+    .panel .hd{
+      padding:16px 16px 12px;
+      border-bottom:1px solid var(--line2);
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+    }
+    .panel .hd h2{margin:0;font-size:14px;letter-spacing:.2px}
+    .panel .hd .sub{color:var(--muted);font-size:12px}
+
+    .panel .bd{padding:16px}
+
+    /* Form */
+    .form{display:grid;gap:12px}
+    .row{display:grid;gap:8px}
+    .row label{font-size:12px;color:var(--muted)}
+
+    select, input[type="text"]{
+      width:100%;
+      padding:11px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.22);
+      color:var(--text);
+      outline:none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.06);
+    }
+    select:focus, input[type="text"]:focus{border-color:rgba(110,168,255,.6)}
+
+    .toggles{display:flex;gap:10px;flex-wrap:wrap}
+    .toggle{
+      display:flex;align-items:center;gap:10px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.16);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      transition:border-color .2s ease, transform .06s ease;
+      user-select:none;
+      flex:1;
+      min-width:190px;
+    }
+    .toggle:hover{border-color:rgba(110,168,255,.45)}
+    .toggle:active{transform:translateY(1px)}
+    .dot{
+      width:14px;height:14px;border-radius:50%;
+      border:2px solid rgba(255,255,255,.28);
+      box-shadow:0 0 0 3px rgba(110,168,255,.00);
+      transition: box-shadow .2s ease, border-color .2s ease, background .2s ease;
+      background:transparent;
+    }
+    .toggle[data-on="1"]{border-color:rgba(110,168,255,.55);background:rgba(110,168,255,.10)}
+    .toggle[data-on="1"] .dot{background:rgba(110,168,255,.95);border-color:rgba(110,168,255,.95);box-shadow:0 0 0 3px rgba(110,168,255,.18)}
+
+    .hint{color:var(--muted);font-size:12px;line-height:1.35}
+
+    .steps{
+      display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+      margin:6px 0 2px;
+    }
+    .step{
+      font-size:12px;color:var(--muted);
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.16);
+      padding:6px 10px;border-radius:999px;
+    }
+    .step.on{color:var(--text);border-color:rgba(100,241,200,.35);background:rgba(100,241,200,.10)}
+
+    /* Results */
+    .results{
+      display:grid;gap:14px;
     }
 
-    .subtitle {
-      margin: 0 0 1.9rem;
-      font-size: 0.95rem;
-      color: rgba(249, 250, 251, 0.72);
-      max-width: 40rem;
-    }
-    .subtitle strong { color: var(--q-yellow); }
-
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.25rem;
-      margin-bottom: 2rem;
+    .empty{
+      border:1px dashed rgba(255,255,255,.20);
+      background:rgba(0,0,0,.12);
+      border-radius:var(--radius);
+      padding:18px;
+      color:var(--muted);
+      line-height:1.45;
     }
 
-    @media (min-width: 640px) {
-      .form-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .cards{display:grid;grid-template-columns: repeat(2, minmax(0, 1fr));gap:14px}
+    @media (max-width: 980px){
+      .cards{grid-template-columns:1fr}
     }
 
-    label {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: rgba(250, 204, 21, 0.92);
-      margin-bottom: 0.4rem;
+    .card{
+      border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.12));
+      border-radius:var(--radius);
+      overflow:hidden;
     }
 
-    select {
-      width: 100%;
-      padding: 0.6rem 0.7rem;
-      border-radius: 0.5rem;
-      border: 1px solid rgba(250,204,21,0.22);
-      background: rgba(0,0,0,0.35);
-      font-size: 0.95rem;
-      color: #f9fafb;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    .card .topline{
+      padding:14px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
     }
 
-    select:focus {
-      outline: none;
-      border-color: var(--q-yellow-dark);
-      box-shadow: 0 0 0 2px rgba(250,204,21,0.25);
-      background: rgba(0,0,0,0.25);
+    .badge{
+      font-family:var(--mono);
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(0,0,0,.18);
+      color:var(--text);
+      white-space:nowrap;
     }
 
-    .hint {
-      font-size: 0.78rem;
-      color: rgba(249,250,251,0.55);
-      margin-top: 0.25rem;
+    .card h3{margin:0 0 4px;font-size:14px}
+    .card .meta{color:var(--muted);font-size:12px;line-height:1.35}
+
+    .card .body{padding:14px}
+
+    .layers{
+      display:grid;gap:8px;margin:10px 0 12px;
+    }
+    .layer{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:10px 12px;
+      background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+    }
+    .layer .name{font-size:13px}
+    .layer .tag{font-size:12px;color:var(--muted)}
+
+    .actions{display:flex;gap:10px;flex-wrap:wrap}
+
+    .mini{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.16);
+      padding:9px 10px;
+      border-radius:12px;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .mini:hover{border-color:rgba(100,241,200,.4)}
+
+    /* Drawer (details) */
+    .drawer{
+      position:fixed;inset:0;display:none;
+      background:rgba(0,0,0,.55);
+      z-index:99;
+    }
+    .drawer[data-open="1"]{display:block}
+    .sheet{
+      position:absolute;right:0;top:0;height:100%;width:min(560px, 100%);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.20)), var(--panel);
+      border-left:1px solid rgba(255,255,255,.12);
+      box-shadow: -18px 0 60px rgba(0,0,0,.5);
+      padding:18px;
+      overflow:auto;
+    }
+    .sheet .x{
+      float:right;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.18);
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+    }
+    .sheet h4{margin:2px 0 4px;font-size:16px}
+    .sheet .small{color:var(--muted);font-size:12px;margin:0 0 14px;line-height:1.35}
+
+    .kv{display:grid;grid-template-columns: 140px 1fr;gap:8px 12px;margin:12px 0}
+    .kv .k{color:var(--muted);font-size:12px}
+    .kv .v{font-size:13px}
+
+    .hr{height:1px;background:rgba(255,255,255,.10);margin:14px 0}
+
+    .note{
+      font-size:12px;color:var(--muted);line-height:1.45;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:14px;
+      padding:12px;
+      background:rgba(0,0,0,.10);
     }
 
-    .results-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 0.9rem;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
+    .pillbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .pill{font-size:12px;color:var(--muted);border:1px solid rgba(255,255,255,.14);padding:6px 10px;border-radius:999px;background:rgba(0,0,0,.14)}
 
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .logo {
-      height: 120px;
-      width: auto;
-      display: block;
-    }
-
-    .results-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      color: #f9fafb;
-    }
-
-    .results-selection {
-      font-size: 0.85rem;
-      color: rgba(249,250,251,0.62);
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-      margin-top: 0.6rem;
-    }
-
-    @media (min-width: 768px) {
-      .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    }
-
-    .card {
-      border-radius: 0.7rem;
-      padding: 1rem;
-      border: 1px solid rgba(255,255,255,0.10);
-      background: rgba(0,0,0,0.22);
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      position: relative;
-      overflow: hidden;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-    }
-
-    .datasheet-links {
-      position: absolute;
-      top: 12px;
-      right: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-      z-index: 2;
-      text-align: right;
-    }
-
-    .datasheet-links a {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--q-yellow);
-      text-decoration: none;
-      opacity: 0.9;
-      white-space: nowrap;
-    }
-
-    .datasheet-links a:hover {
-      text-decoration: underline;
-      opacity: 1;
-    }
-
-    .card--best .datasheet-links a { color: #166534; }
-
-    .card--good { border: 2px solid #ea580c; }
-    .card--better { border: 2px solid #2563eb; }
-
-    .card--best {
-      border: 2px solid #16a34a;
-      background: #f0fdf4;
-      box-shadow: 0 18px 45px rgba(22, 163, 74, 0.22);
-    }
-
-    @media (min-width: 768px) {
-      .card--best {
-        box-shadow: none;
-        transform: scale(1.03);
-        transform-origin: center;
-        z-index: 5;
-      }
-    }
-
-    .card-pill {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.18rem 0.6rem;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      background: #111827;
-      color: var(--q-yellow);
-      align-self: flex-start;
-      border: 1px solid rgba(250,204,21,0.25);
-    }
-
-    .card--best .card-pill { background: #166534; color: #f9fafb; border: 0; }
-
-    .card-title {
-      font-size: 0.98rem;
-      font-weight: 600;
-      color: #f9fafb;
-    }
-
-    .card--best .card-title {
-      font-family: ui-serif, Georgia, "Times New Roman", serif;
-      font-size: 1.08rem;
-      letter-spacing: 0.01em;
-      color: #111827;
-    }
-
-    .card-code {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: rgba(249,250,251,0.62);
-    }
-
-    .card--best .card-code { color: #6b7280; }
-
-    .card-notes {
-      font-size: 0.8rem;
-      color: rgba(249,250,251,0.74);
-      margin-top: 0.25rem;
-      line-height: 1.4;
-    }
-
-    .card--best .card-notes { color: #4b5563; }
-
-    .empty-state {
-      border-radius: 0.7rem;
-      padding: 1rem;
-      border: 1px dashed rgba(250,204,21,0.35);
-      background: rgba(0,0,0,0.22);
-      font-size: 0.86rem;
-      color: rgba(249,250,251,0.70);
-      margin-top: 0.9rem;
-      line-height: 1.45;
-    }
-
-    .empty-state strong { color: var(--q-yellow); font-weight: 600; }
-
-    .empty-state.callout {
-      border: 2px solid #16a34a;
-      background: #f0fdf4;
-      color: #166534;
-      box-shadow: 0 18px 45px rgba(22, 163, 74, 0.22);
-    }
-
-    .empty-state.callout strong { color: #166534; }
-
-    @media (max-width: 767px) {
-      .card {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-      }
-      .card--best { box-shadow: none !important; }
+    .footer{
+      margin-top:18px;
+      color:rgba(255,255,255,.55);
+      font-size:12px;
     }
   </style>
 </head>
-
 <body>
-  <main class="app">
-    <div class="header">
-      <img src="QK.png" alt="QUIKRETE" class="logo" />
-      <div class="header-text">
-        <h1>Quikrete® Product Selector</h1>
-        <p class="subtitle">
-          Choose a project type and repair size for a
-          <strong>Good / Better / Best</strong> recommendation.
-        </p>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="title">
+          <h1>System Selector v2 <span style="opacity:.55;font-weight:600">(Prototype)</span></h1>
+          <p>Modern, spec-friendly flow: pick the install context → get the method, layers, products, and downloads.</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span class="chip"><span class="icon" aria-hidden="true"></span> TCNA + TTMac-ready structure</span>
+        <button class="btn ghost" id="btnDemo">Load demo picks</button>
+        <button class="btn" id="btnReset">Reset</button>
+        <button class="btn primary" id="btnExport">Export as JSON</button>
       </div>
     </div>
 
-    <section aria-label="Project selection">
-      <div class="form-row">
-        <div>
-          <label for="projectType">Project type</label>
-          <select id="projectType">
-            <option value="">— Select project type —</option>
-            <option value="concrete">Concrete Installation</option>
-            <option value="brick">Brick Installation</option>
-            <option value="CMU">Concrete Block Installation</option>
-            <option value="mortar-joint">Mortar Joint Repair</option>
-            <option value="crack">Concrete Crack Repair</option>
-            <option value="surface">Concrete Repair (spalls / surface)</option>
-            <option value="leveler">Floor Leveling</option>
-          </select>
-          <p class="hint">Example: tuckpointing, hairline cracks, shallow spalls, etc.</p>
+    <div class="grid">
+      <!-- Left: selector -->
+      <section class="panel" aria-label="Selector">
+        <div class="hd">
+          <div>
+            <h2>Build your assembly</h2>
+            <div class="sub">4 quick picks. Results update instantly.</div>
+          </div>
+          <div class="steps" aria-label="Steps">
+            <span class="step" id="s1">1</span>
+            <span class="step" id="s2">2</span>
+            <span class="step" id="s3">3</span>
+            <span class="step" id="s4">4</span>
+          </div>
         </div>
+        <div class="bd">
+          <div class="form">
+            <div class="row">
+              <label>Category</label>
+              <div class="toggles">
+                <div class="toggle" data-key="category" data-value="Tile"><span class="dot"></span><div><div style="font-size:13px">Tile</div><div class="hint">Thin-set tile systems & methods</div></div></div>
+                <div class="toggle" data-key="category" data-value="Surface Preparation"><span class="dot"></span><div><div style="font-size:13px">Surface Prep</div><div class="hint">Patching, leveling, priming</div></div></div>
+              </div>
+            </div>
 
-        <div>
-          <label for="repairSize">Repair size / depth</label>
-          <select id="repairSize">
-            <option value="">— Select size / depth —</option>
-            <option value="0.25">Up to 1/4"</option>
-            <option value="0.375">Up to 3/8"</option>
-            <option value="0.5">Up to 1/2"</option>
-            <option value="1">Up to 1"</option>
-            <option value="2">Up to 2"</option>
-            <option value="over2">Over 2"</option>
-          </select>
-          <p class="hint">Match the deepest part of the repair.</p>
+            <div class="row">
+              <label>Application</label>
+              <select id="application"></select>
+            </div>
+
+            <div class="row">
+              <label>Substrate</label>
+              <select id="substrate"></select>
+            </div>
+
+            <div class="row">
+              <label>Special conditions (optional)</label>
+              <select id="condition"></select>
+              <div class="hint">Examples: Waterproof, Crack Isolation, Exterior, Steam shower.</div>
+            </div>
+
+            <div class="row">
+              <label>Search / filter (optional)</label>
+              <input type="text" id="q" placeholder="Type: C312, gypsum, shower, uncoupling…" />
+            </div>
+
+            <div class="row">
+              <div class="hint">
+                <b style="color:var(--text)">Prototype note:</b> this uses sample data, but the structure matches what you’d export from the current tool.
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section aria-label="Recommendations">
-      <div class="results-header">
-        <div class="results-title">Recommended materials</div>
-        <div class="results-selection" id="currentSelection">
-          Select a project and size to see options.
+      <!-- Right: results -->
+      <section class="panel" aria-label="Results">
+        <div class="hd">
+          <div>
+            <h2>Results</h2>
+            <div class="sub" id="resultSummary">Choose options to see matching assemblies.</div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <span class="chip" id="matchCount">0 matches</span>
+          </div>
         </div>
-      </div>
+        <div class="bd">
+          <div class="results">
+            <div id="empty" class="empty">
+              <div style="font-size:14px;color:var(--text);margin-bottom:6px">Start with the basics.</div>
+              <div>Pick <b>Category</b> → <b>Application</b> → <b>Substrate</b>. Then add a condition if needed.</div>
+              <div class="pillbar" aria-hidden="true">
+                <span class="pill">Layer diagram</span>
+                <span class="pill">Products</span>
+                <span class="pill">CAD / PDF links</span>
+                <span class="pill">TCNA / TTMac codes</span>
+              </div>
+            </div>
 
-      <div id="cardsContainer" class="cards" aria-live="polite"></div>
-      <div id="emptyState" class="empty-state">
-        <strong>No selection yet.</strong> Pick a project type and repair size to see
-        the Good / Better / Best materials.
-      </div>
-    </section>
-  </main>
+            <div class="cards" id="cards" style="display:none"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">
+      Built as a front-end-only mock. Drop this into any site and wire the data source later.
+    </div>
+  </div>
+
+  <!-- Details drawer -->
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="sheet" role="dialog" aria-label="Assembly details">
+      <button class="x" id="drawerClose">Close ✕</button>
+      <div id="drawerContent"></div>
+    </div>
+  </div>
 
   <script>
-    /*
-      Quikrete selector prototype.
-
-      Notes:
-      - Data is currently embedded in this file for easy iteration.
-      - TODO: move recommendations into a JSON file so non-devs can update products/links.
-      - TODO: centralize product definitions further (some items are still duplicated below).
-    */
-
-    // Small helper so we can reuse templates without accidentally sharing references.
-    function clone(obj) {
-      return JSON.parse(JSON.stringify(obj));
-    }
-
-    // Common products used in multiple size combos
-    const PRODUCTS = {
-      crackSeal_8640: {
-        label: "Good",
-        name: "QUIKRETE® Concrete Crack Seal",
-        code: "#8640",
-        notes: "Flowable crack sealer for hairline to small cracks in concrete slabs.",
-        datasheet: "https://www.quikrete.com/pdfs/data_sheet-concrete%20crack%20seal%208640-10%20-15.pdf",
-        sds: "https://www.quikrete.com/pdfs/sds-a11-acrylic-crack-seals.pdf"
+    // --------------------
+    // Sample data (shape is what you'd export from the legacy tool)
+    // --------------------
+    const assemblies = [
+      {
+        id: "T-C312-INT-SHWR-GB",
+        category: "Tile",
+        application: "Shower Wall",
+        substrate: "Gypsum Board",
+        condition: "Waterproof",
+        tcna: "C312",
+        ttmac: "",
+        title: "Shower Wall – Tile over Gypsum Board (Waterproof)",
+        summary: "A typical tile shower wall assembly using a liquid waterproofing membrane.",
+        layers: [
+          { name: "Ceramic / Porcelain Tile", tag: "ANSI A137.1" },
+          { name: "Polymer-Modified Thin-Set Mortar", tag: "ANSI A118.4 / A118.15" },
+          { name: "Liquid Waterproofing Membrane", tag: "ANSI A118.10" },
+          { name: "Gypsum Board", tag: "Interior only" }
+        ],
+        products: [
+          { role: "Mortar", items: ["ProLite®", "FlexBond®"] },
+          { role: "Waterproof", items: ["RedGard® Waterproofing and Crack Prevention Membrane"] },
+          { role: "Grout", items: ["Prism® Ultimate Performance Grout"] }
+        ],
+        downloads: {
+          method_pdf: "#",
+          cad: "#",
+          spec_short: "#"
+        },
+        notes: [
+          "Confirm gypsum board suitability per local code and project requirements.",
+          "Follow membrane dry film thickness requirements and cure times." 
+        ]
       },
-      advPolyCrackSeal_8660: {
-        label: "Better",
-        name: "QUIKRETE® Advanced Polymer Concrete Crack Sealant",
-        code: "#8660",
-        notes: "Flexible, long-lasting sealant for active or moving cracks up to 1/2\".",
-        datasheet: "https://www.quikrete.com/pdfs/data_sheet-advanced%20polymer%20concrete%20crack%20sealant%20862017.pdf",
-        sds: "https://www.quikrete.com/pdfs/sds-j7-advanced-polymer-concrete-crack-&-mortar-joint.pdf"
+      {
+        id: "T-B422-INT-SHWR-GB",
+        category: "Tile",
+        application: "Shower Wall",
+        substrate: "Gypsum Board",
+        condition: "None",
+        tcna: "B422",
+        ttmac: "",
+        title: "Shower Wall – Tile over Gypsum Board (Direct Bond)",
+        summary: "Direct-bond tile shower wall without a surface-applied membrane (project dependent).",
+        layers: [
+          { name: "Ceramic / Porcelain Tile", tag: "ANSI A137.1" },
+          { name: "Polymer-Modified Thin-Set Mortar", tag: "ANSI A118.4" },
+          { name: "Gypsum Board", tag: "Interior only" }
+        ],
+        products: [
+          { role: "Mortar", items: ["VersaBond®", "FlexBond®"] },
+          { role: "Grout", items: ["Prism®", "Polyblend® Plus"] }
+        ],
+        downloads: { method_pdf: "#", cad: "#", spec_short: "#" },
+        notes: [
+          "Many specs require waterproofing in wet areas—verify the project spec.",
+          "Use appropriate thin-set and coverage in wet locations." 
+        ]
       },
-      epoxyRepair: {
-        label: "Best",
-        name: "QUIKRETE® Epoxy Concrete Repair",
-        code: "Epoxy",
-        notes: "Two-component epoxy for maximum bond and chemical resistance in narrow cracks.",
-        datasheet: "https://www.quikrete.com/pdfs/data-sheet-epoxy-concrete-%20repair-8640-29.pdf",
-        sds: "https://www.quikrete.com/pdfs/sds-f5-epoxy-concrete-repair-parts-a-b.pdf"
+      {
+        id: "T-F144-INT-FLR-CONC",
+        category: "Tile",
+        application: "Interior Floor",
+        substrate: "Concrete",
+        condition: "None",
+        tcna: "F144",
+        ttmac: "",
+        title: "Interior Floor – Tile over Concrete (Direct Bond)",
+        summary: "Standard floor assembly for tile over cured concrete.",
+        layers: [
+          { name: "Ceramic / Porcelain Tile", tag: "ANSI A137.1" },
+          { name: "Thin-Set Mortar", tag: "ANSI A118.1 / A118.4" },
+          { name: "Concrete Slab", tag: "Cured, clean, sound" }
+        ],
+        products: [
+          { role: "Mortar", items: ["CustomBlend®", "VersaBond®", "FlexBond®"] },
+          { role: "Grout", items: ["Prism®", "Polyblend® Plus"] }
+        ],
+        downloads: { method_pdf: "#", cad: "#", spec_short: "#" },
+        notes: [
+          "Check slab flatness and correct with patch/SLU if needed.",
+          "Address cracks and movement joints per TCNA EJ171." 
+        ]
+      },
+      {
+        id: "T-F125-INT-FLR-CONC-CI",
+        category: "Tile",
+        application: "Interior Floor",
+        substrate: "Concrete",
+        condition: "Crack Isolation",
+        tcna: "F125",
+        ttmac: "",
+        title: "Interior Floor – Tile over Concrete (Crack Isolation)",
+        summary: "Adds crack isolation membrane over concrete prior to tile.",
+        layers: [
+          { name: "Ceramic / Porcelain Tile", tag: "ANSI A137.1" },
+          { name: "Polymer-Modified Thin-Set Mortar", tag: "ANSI A118.4 / A118.15" },
+          { name: "Crack Isolation Membrane", tag: "ANSI A118.12" },
+          { name: "Concrete Slab", tag: "Cured, clean, sound" }
+        ],
+        products: [
+          { role: "Mortar", items: ["ProLite®", "FlexBond®"] },
+          { role: "Membrane", items: ["RedGard® (crack prevention)"] },
+          { role: "Grout", items: ["Prism®"] }
+        ],
+        downloads: { method_pdf: "#", cad: "#", spec_short: "#" },
+        notes: [
+          "Use movement joints per TCNA EJ171.",
+          "Membranes reduce in-plane cracking transfer; they don’t fix structural movement." 
+        ]
+      },
+      {
+        id: "SP-LEVEL-INT-FLR",
+        category: "Surface Preparation",
+        application: "Interior Floor",
+        substrate: "Concrete",
+        condition: "Leveling",
+        tcna: "",
+        ttmac: "",
+        title: "Surface Prep – Interior Floor Leveling over Concrete",
+        summary: "Primer + SLU workflow before tile/finish flooring.",
+        layers: [
+          { name: "Finish Flooring (varies)", tag: "Tile / LVT / etc." },
+          { name: "Self-Leveling Underlayment", tag: "Per product data" },
+          { name: "Primer", tag: "Required" },
+          { name: "Concrete Substrate", tag: "Sound, clean" }
+        ],
+        products: [
+          { role: "Primer", items: ["LevelQuik® Primer"] },
+          { role: "SLU", items: ["LevelQuik® RS", "LevelQuik® ES"] },
+          { role: "Patch", items: ["SpeedFinish™"] }
+        ],
+        downloads: { method_pdf: "#", cad: "#", spec_short: "#" },
+        notes: [
+          "Confirm moisture/vapor requirements and floor covering compatibility.",
+          "Honor existing joints; do not bridge movement joints." 
+        ]
+      }
+    ];
+
+    const state = {
+      category: null,
+      application: null,
+      substrate: null,
+      condition: null,
+      q: ""
+    };
+
+    // Options (could be derived dynamically; kept explicit for clarity)
+    const options = {
+      Tile: {
+        application: ["Shower Wall", "Interior Floor", "Exterior Floor", "Backsplash"],
+        substrate: ["Gypsum Board", "Cement Board", "Concrete", "Mortar Bed"],
+        condition: ["None", "Waterproof", "Crack Isolation", "Uncoupling", "Steam"]
+      },
+      "Surface Preparation": {
+        application: ["Interior Floor", "Interior Wall"],
+        substrate: ["Concrete", "Plywood"],
+        condition: ["None", "Priming", "Patching", "Leveling"]
       }
     };
 
-    // Recommendations lookup by "project|size"
-    const recommendations = {
-      // Mortar joint repair
-      "mortar-joint|0.25": {
-        good: { label: "Good", name: "QUIKRETE® Mason Mix Type S", code: "#1136",
-          notes: "Higher strength mix for structural or load-bearing masonry joints.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-mason%20mix%201136.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c4-masonry-mortars.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Advanced Polymer Mortar Joint Sealant", code: "#8620-18",
-          notes: "High performance caulk-style material that seals and waterproofs joints.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-advanced%20polymer%20mortar%20joint%20sealant%20862018.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-j7b-advanced-polymer-concrete-crack-&-mortar-joint.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Mortar Repair", code: "#8620-09",
-          notes: "Caulk-style repair for small mortar joint cracks and minor tuckpointing.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-mortar%20repair%208620.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-a12-repair-tubes.pdf"
-        }
-      },
+    // --------------------
+    // UI helpers
+    // --------------------
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
 
-      // Same as 0.25 (kept explicit for readability—easy to tweak later)
-      "mortar-joint|0.375": {
-        good: { label: "Good", name: "QUIKRETE® Mason Mix Type S", code: "#1136",
-          notes: "Higher strength mix for structural or load-bearing masonry joints.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-mason%20mix%201136.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c4-masonry-mortars.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Advanced Polymer Mortar Joint Sealant", code: "#8620-18",
-          notes: "High performance caulk-style material that seals and waterproofs joints.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-advanced%20polymer%20mortar%20joint%20sealant%20862018.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-j7b-advanced-polymer-concrete-crack-&-mortar-joint.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Mortar Repair", code: "#8620-09",
-          notes: "Caulk-style repair for small mortar joint cracks and minor tuckpointing.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-mortar%20repair%208620.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-a12-repair-tubes.pdf"
-        }
-      },
-
-      "mortar-joint|0.5": {
-        good: { label: "Good", name: "QUIKRETE® Mortar Repair", code: "#8620",
-          notes: "Caulk-style repair for small mortar joint cracks and minor tuckpointing. Maximum 3/8\" application at a time. Another layer can be applied after 4 hours.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-mortar%20repair%208620.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-a12-repair-tubes.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Mortar Mix", code: "#1102",
-          notes: "Cement and sand mix for joints for more durable repairs; shape and tool to match existing joints.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-mortar%20mix%201102.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c4-masonry-mortars.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Mason Mix Type S", code: "#1136",
-          notes: "Higher strength mix for structural or load-bearing masonry joints.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-mason%20mix%201136.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c4-masonry-mortars.pdf"
-        }
-      },
-
-      "mortar-joint|1": { message: "<strong>Mortar joint repair • Up to 1\"</strong><br/>For further assistance please call 1-800-282-5828." },
-      "mortar-joint|2": { message: "<strong>Mortar joint repair • Up to 2\"</strong><br/>For further assistance please call 1-800-282-5828." },
-      "mortar-joint|over2": { message: "<strong>Mortar joint repair • Over 2\"</strong><br/>For further assistance please call 1-800-282-5828." },
-
-      // Crack repair (refactored to reuse shared product defs)
-      "crack|0.25": {
-        good: clone(PRODUCTS.crackSeal_8640),
-        better: clone(PRODUCTS.advPolyCrackSeal_8660),
-        best: clone(PRODUCTS.epoxyRepair)
-      },
-      "crack|0.375": {
-        good: clone(PRODUCTS.crackSeal_8640),
-        better: clone(PRODUCTS.advPolyCrackSeal_8660),
-        best: clone(PRODUCTS.epoxyRepair)
-      },
-      "crack|0.5": {
-        good: clone(PRODUCTS.crackSeal_8640),
-        better: clone(PRODUCTS.advPolyCrackSeal_8660),
-        best: clone(PRODUCTS.epoxyRepair)
-      },
-
-      "crack|1": {
-        good: { label: "Good", name: "QUIKRETE® Sand Topping Mix", code: "#1103",
-          notes: "Use for concrete repair of steps, slabs and any concrete horizontal surface between 3/8\" to 2\" thick.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-sand-topping%20mix%201103.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c9-general-repair-products.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Quick Setting Cement", code: "#1240",
-          notes: "Quick setting patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-quick-setting%20cement%201240.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c20%20fast-setting-products.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Polymer Modified Structural Repair", code: "#1241",
-          notes: "Quick setting polymer modified patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/polymer-modified-structural-repair-1241-25.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c17-pm-structural-repair.pdf"
-        }
-      },
-
-      "crack|2": {
-        good: { label: "Good", name: "QUIKRETE® Sand Topping Mix", code: "#1103",
-          notes: "Use for concrete repair of steps, slabs and any concrete horizontal surface between 3/8\" to 2\" thick.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-sand-topping%20mix%201103.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c9-general-repair-products.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Quick Setting Cement", code: "#1240",
-          notes: "Quick setting patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-quick-setting%20cement%201240.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c20%20fast-setting-products.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Polymer Modified Structural Repair", code: "#1241",
-          notes: "Quick setting polymer modified patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/polymer-modified-structural-repair-1241-25.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c17-pm-structural-repair.pdf"
-        }
-      },
-
-      // Surface repair (kept mostly as-is to avoid changing behavior)
-      "surface|0.25": {
-        good: { label: "Good", name: "QUIKRETE® Vinyl Concrete Patcher", code: "#1133",
-          notes: "General-purpose patch for spalls and shallow repairs up to 1/4\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-vinyl%20concrete%20patcher%201133.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c13-polymer-modified-repair-products.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Quick Setting Cement", code: "#1240",
-          notes: "Quick setting patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-quick-setting%20cement%201240.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c20%20fast-setting-products.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Polymer Modified Structural Repair", code: "#1241",
-          notes: "Quick setting polymer modified patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/polymer-modified-structural-repair-1241-25.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c17-pm-structural-repair.pdf"
-        }
-      },
-
-      "surface|0.375": {
-        good: { label: "Good", name: "QUIKRETE® Fast Set Repair Mortar", code: "#1241",
-          notes: "General-purpose fast setting patch for spalls and shallow repairs up to 2\" deep."
-        },
-        better: { label: "Better", name: "QUIKRETE® Quick Setting Cement", code: "#1240",
-          notes: "Quick setting patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-quick-setting%20cement%201240.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c20%20fast-setting-products.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Polymer Modified Structural Repair", code: "#1241",
-          notes: "Quick setting polymer modified patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/polymer-modified-structural-repair-1241-25.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c17-pm-structural-repair.pdf"
-        }
-      },
-
-      "surface|0.5": {
-        good: { label: "Good", name: "QUIKRETE® Sand Topping Mix", code: "#1103",
-          notes: "Use for concrete repair of steps, slabs and any concrete horizontal surface between 3/8\" to 2\" thick.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-sand-topping%20mix%201103.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c9-general-repair-products.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Quick Setting Cement", code: "#1240",
-          notes: "Quick setting patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-quick-setting%20cement%201240.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c20%20fast-setting-products.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Polymer Modified Structural Repair", code: "#1241",
-          notes: "Quick setting polymer modified patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/polymer-modified-structural-repair-1241-25.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c17-pm-structural-repair.pdf"
-        }
-      },
-
-      "surface|1": {
-        good: { label: "Good", name: "QUIKRETE® Sand Topping Mix", code: "#1103",
-          notes: "Use for concrete repair of steps, slabs and any concrete horizontal surface between 3/8\" to 2\" thick.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-sand-topping%20mix%201103.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c9-general-repair-products.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Quick Setting Cement", code: "#1240",
-          notes: "Quick setting patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-quick-setting%20cement%201240.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c20%20fast-setting-products.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Polymer Modified Structural Repair", code: "#1241",
-          notes: "Quick setting polymer modified patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/polymer-modified-structural-repair-1241-25.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c17-pm-structural-repair.pdf"
-        }
-      },
-
-      "surface|2": {
-        good: { label: "Good", name: "QUIKRETE® Sand Topping Mix", code: "#1103",
-          notes: "Use for concrete repair of steps, slabs and any concrete horizontal surface between 3/8\" to 2\" thick.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-sand-topping%20mix%201103.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c9-general-repair-products.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Quick Setting Cement", code: "#1240",
-          notes: "Quick setting patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-quick-setting%20cement%201240.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c20%20fast-setting-products.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Polymer Modified Structural Repair", code: "#1241",
-          notes: "Quick setting polymer modified patch for spalls and shallow repairs from feather edge to 2\" deep.",
-          datasheet: "https://www.quikrete.com/pdfs/polymer-modified-structural-repair-1241-25.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c17-pm-structural-repair.pdf"
-        }
-      },
-
-      "surface|over2": {
-        good: { label: "Good", name: "QUIKRETE® Polymer Modified Structural Repair", code: "#1241",
-          notes: "Repairs over 2\" deep should be done in 2\" lifts with ~4 hours between lifts.",
-          datasheet: "https://www.quikrete.com/pdfs/polymer-modified-structural-repair-1241-25.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c17-pm-structural-repair.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® FastSet™ Concrete Mix", code: "#1004",
-          notes: "Fast-setting, high-strength concrete where downtime must be minimized.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-fast%20setting%20concrete%20mix%201004-50.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c6-fast-setting-products.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® High Strength™ Concrete Mix", code: "#1101",
-          notes: "Standard 4,000 psi mix for full-depth slab and structural repairs.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-concrete%20mix%201101.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c1-concretes.pdf"
-        }
-      },
-
-      // Leveling
-      "leveler|0.25": {
-        good: { label: "Good", name: "QUIKRETE® Self Leveling Floor Resurfacer", code: "#1249-50",
-          notes: "Feather edge to 5/8\" thick. Not a finished flooring surface.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-self-leveling%20floor%20resurfacer%201249-50%20-51.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c8-self-leveling-underlayments.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Fast Setting Self Leveling Floor Resurfacer", code: "#1249-51",
-          notes: "Feather edge to 1.5\" thick. Can be used as a finished flooring surface.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-self-leveling%20floor%20resurfacer%201249-50%20-51.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c8-self-leveling-underlayments.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Re-Cap", code: "#1131",
-          notes: "Resurfacer designed to provide a new, durable wear surface over worn/scaled concrete.",
-          datasheet: "https://www.quikrete.com/pdfs/datasheet-concrete-resurfacer_1131-47.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c6-fast-setting-products.pdf"
-        }
-      },
-
-      "leveler|0.375": {
-        good: { label: "Good", name: "QUIKRETE® Self Leveling Floor Resurfacer", code: "#1249-50",
-          notes: "Feather edge to 5/8\" thick. Not a finished flooring surface.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-self-leveling%20floor%20resurfacer%201249-50%20-51.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c8-self-leveling-underlayments.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Fast Setting Self Leveling Floor Resurfacer", code: "#1249-51",
-          notes: "Feather edge to 1.5\" thick. Can be used as a finished flooring surface.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-self-leveling%20floor%20resurfacer%201249-50%20-51.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c8-self-leveling-underlayments.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Re-Cap", code: "#1131",
-          notes: "Resurfacer designed to provide a new, durable wear surface over worn/scaled concrete.",
-          datasheet: "https://www.quikrete.com/pdfs/datasheet-concrete-resurfacer_1131-47.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c6-fast-setting-products.pdf"
-        }
-      },
-
-      "leveler|0.5": {
-        good: { label: "Good", name: "QUIKRETE® Self Leveling Floor Resurfacer", code: "#1249-50",
-          notes: "Feather edge to 5/8\" thick. Not a finished flooring surface.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-self-leveling%20floor%20resurfacer%201249-50%20-51.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c8-self-leveling-underlayments.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Fast Setting Self Leveling Floor Resurfacer", code: "#1249-51",
-          notes: "Feather edge to 1.5\" thick. Can be used as a finished flooring surface.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-self-leveling%20floor%20resurfacer%201249-50%20-51.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c8-self-leveling-underlayments.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Re-Cap", code: "#1131",
-          notes: "Resurfacer designed to provide a new, durable wear surface over worn/scaled concrete.",
-          datasheet: "https://www.quikrete.com/pdfs/datasheet-concrete-resurfacer_1131-47.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c6-fast-setting-products.pdf"
-        }
-      },
-
-      "leveler|1": {
-        good: { label: "Good", name: "QUIKRETE® Sand Topping Mix", code: "#1103",
-          notes: "Used for topping/repairing horizontal surfaces up to 2\" thick.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-sand-topping%20mix%201103.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c9-general-repair-products.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Re-Cap", code: "#1131-47",
-          notes: "For ~1\" total thickness, apply as two ~1/2\" lifts.",
-          datasheet: "https://www.quikrete.com/pdfs/datasheet-concrete-resurfacer_1131-47.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c6-fast-setting-products.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Fast Setting Self Leveling Floor Resurfacer", code: "#1249-51",
-          notes: "Feather edge to 1.5\" thick. Can be used as a finished flooring surface.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-self-leveling%20floor%20resurfacer%201249-50%20-51.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c8-self-leveling-underlayments.pdf"
-        }
-      },
-
-      "leveler|2": {
-        good: { label: "Good", name: "QUIKRETE® Sand Topping Mix", code: "#1103",
-          notes: "Used for topping/repairing horizontal surfaces up to 2\" thick.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-sand-topping%20mix%201103.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c9-general-repair-products.pdf"
-        },
-        better: { label: "Better", name: "QUIKRETE® Sand Topping Mix", code: "#1103",
-          notes: "Used for topping/repairing horizontal surfaces up to 2\" thick.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-sand-topping%20mix%201103.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c9-general-repair-products.pdf"
-        },
-        best: { label: "Best", name: "QUIKRETE® Fast Setting Self Leveling Floor Resurfacer", code: "#1249-51",
-          notes: "Feather edge to 1.5\" thick. Can be used as a finished flooring surface.",
-          datasheet: "https://www.quikrete.com/pdfs/data_sheet-self-leveling%20floor%20resurfacer%201249-50%20-51.pdf",
-          sds: "https://www.quikrete.com/pdfs/sds-c8-self-leveling-underlayments.pdf"
-        }
-      }
-    };
-
-    function applyCallForAssistance(projects, sizes) {
-      projects.forEach(project => {
-        sizes.forEach(size => {
-          recommendations[`${project}|${size}`] = {
-            message:
-              "<strong>Further assistance required.</strong><br/>Please call Technical Services at: <strong>1-800-282-5828</strong>"
-          };
-        });
+    function setStepPills(){
+      // progress based on filled picks
+      const filled = [state.category, state.application, state.substrate, state.condition].map(Boolean);
+      ["#s1", "#s2", "#s3", "#s4"].forEach((id, i) => {
+        const el = $(id);
+        el.classList.toggle("on", filled[i] || (i === 0 && !!state.category));
       });
     }
 
-    applyCallForAssistance(["concrete"], ["0.25", "0.375", "0.5", "1"]);
-    applyCallForAssistance(["brick"], ["2", "over2"]);
-    applyCallForAssistance(["CMU"], ["2", "over2"]);
-    applyCallForAssistance(["mortar-joint"], ["1", "2", "over2"]);
-    applyCallForAssistance(["crack"], ["over2"]);
-    applyCallForAssistance(["leveler"], ["over2"]);
-
-    function applyCombo(projectTypes, sizes, combo) {
-      projectTypes.forEach(p => sizes.forEach(s => {
-        recommendations[`${p}|${s}`] = combo;
-      }));
+    function fillSelect(sel, list, placeholder="Select..."){
+      const el = $(sel);
+      el.innerHTML = "";
+      const opt0 = document.createElement("option");
+      opt0.value = "";
+      opt0.textContent = placeholder;
+      el.appendChild(opt0);
+      list.forEach(v => {
+        const o = document.createElement("option");
+        o.value = v;
+        o.textContent = v;
+        el.appendChild(o);
+      });
     }
 
-    const COMBO_CONCRETE_1101_5000_QMAX = {
-      good: {
-        label: "Good",
-        name: "QUIKRETE® High Strength Concrete Mix",
-        code: "#1101",
-        notes: "4000 PSI concrete mix suitable for interior and exterior applications that is a pre-blended mixture of sand, cement and gravel.",
-        datasheet: "https://www.quikrete.com/pdfs/data_sheet-concrete%20mix%201101.pdf",
-        sds: "https://www.quikrete.com/pdfs/sds-c1-concretes.pdf"
-      },
-      better: {
-        label: "Better",
-        name: "QUIKRETE® 5000",
-        code: "#1007",
-        notes: "5000 PSI high early strength gain concrete mix that is a pre-blended mixture of sand, cement and gravel.",
-        datasheet: "https://www.quikrete.com/pdfs/data_sheet-quikrete%205000%201007.pdf",
-        sds: "https://www.quikrete.com/pdfs/sds-c1-concretes.pdf"
-      },
-      best: {
-        label: "Best",
-        name: "QUIKRETE® Q Max Pro",
-        code: "#1004",
-        notes: "6500 PSI concrete that is air entrained and also contains a corrosion inhibitor and is a pre-blended mixture of sand, cement and gravel.",
-        datasheet: "https://www.quikrete.com/pdfs/data_sheet-qmax-pro-1004-81.pdf",
-        sds: "https://www.quikrete.com/pdfs/sds-c6-fast-setting-products.pdf"
-      }
-    };
-
-    applyCombo(["concrete"], ["2", "over2"], COMBO_CONCRETE_1101_5000_QMAX);
-
-    const COMBO_CMU_MORTAR_1102_MASON_1136 = {
-      better: { label: "Better", name: "QUIKRETE® Mortar Mix", code: "#1102",
-        notes: "Cement and sand mix only to be used above grade and in non-structural applications",
-        datasheet: "https://www.quikrete.com/pdfs/data_sheet-mortar%20mix%201102.pdf",
-        sds: "https://www.quikrete.com/pdfs/sds-c4-masonry-mortars.pdf"
-      },
-      best: { label: "Best", name: "QUIKRETE® Mason Mix Type S", code: "#1136",
-        notes: "Higher strength mix with the addition of lime for structural or load-bearing masonry joints and can also be used below grade.",
-        datasheet: "https://www.quikrete.com/pdfs/data_sheet-mason%20mix%201136.pdf",
-        sds: "https://www.quikrete.com/pdfs/sds-c4-masonry-mortars.pdf"
-      }
-    };
-
-    applyCombo(["CMU", "brick"], ["0.25", "0.375", "0.5", "1"], COMBO_CMU_MORTAR_1102_MASON_1136);
-
-    const projectSelect = document.getElementById("projectType");
-    const sizeSelect = document.getElementById("repairSize");
-    const cardsContainer = document.getElementById("cardsContainer");
-    const emptyState = document.getElementById("emptyState");
-    const currentSelection = document.getElementById("currentSelection");
-
-    function updateSelectionLabel() {
-      const projectText = projectSelect.options[projectSelect.selectedIndex]?.text || "";
-      const sizeText = sizeSelect.options[sizeSelect.selectedIndex]?.text || "";
-
-      if (!projectSelect.value && !sizeSelect.value) {
-        currentSelection.textContent = "Select a project and size to see options.";
-        return;
-      }
-
-      const parts = [];
-      if (projectSelect.value) parts.push(projectText);
-      if (sizeSelect.value) parts.push(sizeText);
-      currentSelection.textContent = parts.join(" • ");
-    }
-
-    function renderRecommendations() {
-      const key = `${projectSelect.value}|${sizeSelect.value}`;
-      const combo = recommendations[key];
-
-      emptyState.classList.remove("callout");
-
-      if (!projectSelect.value || !sizeSelect.value) {
-        cardsContainer.innerHTML = "";
-        emptyState.style.display = "block";
-        emptyState.innerHTML =
-          "<strong>No selection yet.</strong> Pick a project type and repair size to see the Good / Better / Best materials.";
-        updateSelectionLabel();
-        return;
-      }
-
-      if (!combo) {
-        cardsContainer.innerHTML = "";
-        emptyState.style.display = "block";
-        emptyState.innerHTML =
-          "<strong>No recommendations configured yet for this combo.</strong><br />You can add it to the <code>recommendations</code> object in the script.";
-        updateSelectionLabel();
-        return;
-      }
-
-      if (!combo.good && !combo.better && !combo.best && combo.message) {
-        cardsContainer.innerHTML = "";
-        emptyState.style.display = "block";
-        emptyState.classList.add("callout");
-        emptyState.innerHTML = combo.message;
-        updateSelectionLabel();
-        return;
-      }
-
-      emptyState.style.display = "none";
-      cardsContainer.innerHTML = "";
-
-      const tiers = [
-        { key: "good", css: "card--good" },
-        { key: "better", css: "card--better" },
-        { key: "best", css: "card--best" }
-      ];
-
-      tiers.forEach(tier => {
-        const data = combo[tier.key];
-        if (!data) return;
-
-        const card = document.createElement("article");
-        card.className = `card ${tier.css}`;
-
-        const pill = document.createElement("div");
-        pill.className = "card-pill";
-        pill.textContent = data.label;
-
-        if (data.datasheet || data.sds) {
-          const linksWrap = document.createElement("div");
-          linksWrap.className = "datasheet-links";
-
-          if (data.datasheet) {
-            const tech = document.createElement("a");
-            tech.href = data.datasheet;
-            tech.target = "_blank";
-            tech.rel = "noopener noreferrer";
-            tech.textContent = "Technical Data Sheet";
-            linksWrap.appendChild(tech);
-          }
-
-          if (data.sds) {
-            const sds = document.createElement("a");
-            sds.href = data.sds;
-            sds.target = "_blank";
-            sds.rel = "noopener noreferrer";
-            sds.textContent = "Safety Data Sheet";
-            linksWrap.appendChild(sds);
-          }
-
-          card.appendChild(linksWrap);
-        }
-
-        const title = document.createElement("div");
-        title.className = "card-title";
-        title.textContent = data.name;
-
-        const code = document.createElement("div");
-        code.className = "card-code";
-        code.textContent = data.code ? `Product code: ${data.code}` : "Product code: —";
-
-        const notes = document.createElement("div");
-        notes.className = "card-notes";
-        notes.textContent = data.notes || "";
-
-        card.appendChild(pill);
-        card.appendChild(title);
-        card.appendChild(code);
-        card.appendChild(notes);
-
-        cardsContainer.appendChild(card);
+    function syncForm(){
+      // toggles
+      $$(".toggle").forEach(t => {
+        const on = (t.dataset.key === "category" && t.dataset.value === state.category) ? "1" : "0";
+        t.dataset.on = on;
       });
 
-      updateSelectionLabel();
+      // selects depend on category
+      const cat = state.category || "Tile";
+      fillSelect("#application", options[cat].application, "Choose application...");
+      fillSelect("#substrate", options[cat].substrate, "Choose substrate...");
+      fillSelect("#condition", options[cat].condition, "Choose condition (optional)...");
+
+      // restore values
+      $("#application").value = state.application || "";
+      $("#substrate").value = state.substrate || "";
+      $("#condition").value = state.condition || "";
+      $("#q").value = state.q || "";
+
+      setStepPills();
+      render();
     }
 
-    projectSelect.addEventListener("change", renderRecommendations);
-    sizeSelect.addEventListener("change", renderRecommendations);
-    renderRecommendations();
+    function normalize(s){
+      return (s || "").toLowerCase().trim();
+    }
+
+    function matches(a){
+      if (state.category && a.category !== state.category) return false;
+      if (state.application && a.application !== state.application) return false;
+      if (state.substrate && a.substrate !== state.substrate) return false;
+      if (state.condition && state.condition !== "None" && a.condition !== state.condition) return false;
+      // if condition is None selected, allow assemblies where condition is None
+      if (state.condition === "None" && a.condition !== "None") return false;
+
+      const q = normalize(state.q);
+      if (!q) return true;
+      const hay = normalize([
+        a.id, a.title, a.summary, a.tcna, a.ttmac, a.application, a.substrate, a.condition,
+        ...(a.layers||[]).map(x => x.name + " " + x.tag),
+        ...(a.products||[]).flatMap(p => [p.role, ...(p.items||[])])
+      ].join(" | "));
+      return hay.includes(q);
+    }
+
+    function render(){
+      const allChosen = !!state.category && !!state.application && !!state.substrate;
+
+      const list = assemblies.filter(matches);
+
+      $("#matchCount").textContent = `${list.length} match${list.length===1?"":"es"}`;
+
+      if (!allChosen){
+        $("#empty").style.display = "block";
+        $("#cards").style.display = "none";
+        $("#resultSummary").textContent = "Choose options to see matching assemblies.";
+        return;
+      }
+
+      $("#empty").style.display = list.length ? "none" : "block";
+      $("#cards").style.display = list.length ? "grid" : "none";
+
+      const parts = [
+        state.category,
+        state.application,
+        state.substrate,
+        state.condition && state.condition !== "None" ? state.condition : null
+      ].filter(Boolean);
+      $("#resultSummary").textContent = parts.join(" · ");
+
+      const cards = $("#cards");
+      cards.innerHTML = "";
+
+      list.forEach(a => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="topline">
+            <div>
+              <h3>${escapeHtml(a.title)}</h3>
+              <div class="meta">${escapeHtml(a.summary)}</div>
+            </div>
+            <div class="badge">${a.tcna ? `TCNA ${escapeHtml(a.tcna)}` : (a.ttmac ? `TTMac ${escapeHtml(a.ttmac)}` : "Assembly")}</div>
+          </div>
+          <div class="body">
+            <div class="meta"><b style="color:var(--text)">Key layers</b></div>
+            <div class="layers">
+              ${(a.layers||[]).slice(0,4).map(l => `
+                <div class="layer">
+                  <div class="name">${escapeHtml(l.name)}</div>
+                  <div class="tag">${escapeHtml(l.tag||"")}</div>
+                </div>
+              `).join("")}
+            </div>
+            <div class="actions">
+              <button class="mini" data-open="${a.id}">View details</button>
+              <button class="mini" data-dl="pdf" data-id="${a.id}">Method PDF</button>
+              <button class="mini" data-dl="cad" data-id="${a.id}">CAD</button>
+              <button class="mini" data-dl="spec" data-id="${a.id}">Short spec</button>
+            </div>
+          </div>
+        `;
+        cards.appendChild(card);
+      });
+
+      // wire card actions
+      $$("[data-open]").forEach(btn => {
+        btn.onclick = () => openDrawer(btn.dataset.open);
+      });
+      $$("[data-dl]").forEach(btn => {
+        btn.onclick = () => fakeDownload(btn.dataset.id, btn.dataset.dl);
+      });
+    }
+
+    function fakeDownload(id, kind){
+      const a = assemblies.find(x => x.id === id);
+      const label = kind === "pdf" ? "Method PDF" : (kind === "cad" ? "CAD" : "Short spec");
+      // In a real app, you'd route to a download URL.
+      alert(`${label} (placeholder)\n\nAssembly: ${a.title}\nID: ${a.id}`);
+    }
+
+    function openDrawer(id){
+      const a = assemblies.find(x => x.id === id);
+      const wrap = $("#drawerContent");
+      wrap.innerHTML = `
+        <h4>${escapeHtml(a.title)}</h4>
+        <p class="small">${escapeHtml(a.summary)}</p>
+
+        <div class="kv">
+          <div class="k">Category</div><div class="v">${escapeHtml(a.category)}</div>
+          <div class="k">Application</div><div class="v">${escapeHtml(a.application)}</div>
+          <div class="k">Substrate</div><div class="v">${escapeHtml(a.substrate)}</div>
+          <div class="k">Condition</div><div class="v">${escapeHtml(a.condition)}</div>
+          <div class="k">TCNA</div><div class="v">${a.tcna ? escapeHtml(a.tcna) : "—"}</div>
+          <div class="k">TTMac</div><div class="v">${a.ttmac ? escapeHtml(a.ttmac) : "—"}</div>
+          <div class="k">Assembly ID</div><div class="v"><span style="font-family:var(--mono)">${escapeHtml(a.id)}</span></div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+          <div><b>Full layer stack</b></div>
+          <div class="badge">Top → Bottom</div>
+        </div>
+        <div class="layers" style="margin-top:10px">
+          ${(a.layers||[]).map(l => `
+            <div class="layer">
+              <div class="name">${escapeHtml(l.name)}</div>
+              <div class="tag">${escapeHtml(l.tag||"")}</div>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="hr"></div>
+
+        <div><b>Recommended products</b></div>
+        <div style="margin-top:10px;display:grid;gap:10px">
+          ${(a.products||[]).map(p => `
+            <div class="layer" style="align-items:flex-start">
+              <div class="name"><span style="opacity:.75">${escapeHtml(p.role)}:</span><br><span style="font-size:13px">${escapeHtml((p.items||[]).join(", "))}</span></div>
+              <div class="tag">CBP</div>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="actions">
+          <button class="btn primary" id="dlPdf"><span class="icon"></span> Method PDF</button>
+          <button class="btn" id="dlCad"><span class="icon"></span> CAD</button>
+          <button class="btn" id="dlSpec"><span class="icon"></span> Short spec</button>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <div class="note">
+          <b style="color:var(--text)">Notes</b>
+          <ul style="margin:8px 0 0; padding-left:18px">
+            ${(a.notes||[]).map(n => `<li>${escapeHtml(n)}</li>`).join("")}
+          </ul>
+        </div>
+      `;
+
+      $("#drawer").dataset.open = "1";
+      $("#drawer").setAttribute("aria-hidden", "false");
+
+      $("#dlPdf").onclick = () => fakeDownload(a.id, "pdf");
+      $("#dlCad").onclick = () => fakeDownload(a.id, "cad");
+      $("#dlSpec").onclick = () => fakeDownload(a.id, "spec");
+    }
+
+    function closeDrawer(){
+      $("#drawer").dataset.open = "0";
+      $("#drawer").setAttribute("aria-hidden", "true");
+    }
+
+    function escapeHtml(str){
+      return String(str ?? "").replace(/[&<>"]+/g, (m) => ({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        "\"":"&quot;"
+      }[m] || m));
+    }
+
+    // --------------------
+    // Events
+    // --------------------
+    $$(".toggle").forEach(t => {
+      t.addEventListener("click", () => {
+        state.category = t.dataset.value;
+        // reset dependent fields
+        state.application = null;
+        state.substrate = null;
+        state.condition = null;
+        syncForm();
+      });
+    });
+
+    $("#application").addEventListener("change", (e) => {
+      state.application = e.target.value || null;
+      syncForm();
+    });
+
+    $("#substrate").addEventListener("change", (e) => {
+      state.substrate = e.target.value || null;
+      syncForm();
+    });
+
+    $("#condition").addEventListener("change", (e) => {
+      state.condition = e.target.value || null;
+      syncForm();
+    });
+
+    $("#q").addEventListener("input", (e) => {
+      state.q = e.target.value;
+      render();
+    });
+
+    $("#btnReset").onclick = () => {
+      state.category = null;
+      state.application = null;
+      state.substrate = null;
+      state.condition = null;
+      state.q = "";
+      syncForm();
+    };
+
+    $("#btnDemo").onclick = () => {
+      state.category = "Tile";
+      state.application = "Shower Wall";
+      state.substrate = "Gypsum Board";
+      state.condition = "Waterproof";
+      state.q = "C312";
+      syncForm();
+    };
+
+    $("#btnExport").onclick = async () => {
+      const payload = {
+        exported_at: new Date().toISOString(),
+        filters: { ...state },
+        assemblies
+      };
+      const text = JSON.stringify(payload, null, 2);
+      try{
+        await navigator.clipboard.writeText(text);
+        alert("Exported JSON copied to clipboard.\n\nIn a real build, this would POST to your backend or download as a file.");
+      }catch{
+        // fallback
+        const w = window.open();
+        w.document.write(`<pre style="white-space:pre-wrap">${escapeHtml(text)}</pre>`);
+      }
+    };
+
+    $("#drawerClose").onclick = closeDrawer;
+    $("#drawer").addEventListener("click", (e) => {
+      if (e.target === $("#drawer")) closeDrawer();
+    });
+
+    // initial default
+    state.category = "Tile";
+    syncForm();
   </script>
 </body>
 </html>
