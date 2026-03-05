@@ -4,26 +4,34 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>System Selector v2 (Prototype)</title>
+
+<!-- Modern font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+
 <style>
   :root{
-    --bg0:#070a12;
-    --bg1:#0b1020;
-    --bg2:#0a0f1a;
+    /* ORANGE SITE BACKGROUND (your swatch vibe) */
+    --orange0:#a84b00;
+    --orange1:#b55200;
+    --orange2:#c25a00;
 
-    --panel: rgba(255,255,255,.04);
-    --panel2: rgba(255,255,255,.06);
-    --stroke: rgba(255,255,255,.10);
-    --stroke2: rgba(255,255,255,.08);
+    /* BLACK UI AREAS */
+    --panel: rgba(0,0,0,.78);
+    --panel2: rgba(0,0,0,.86);
+    --stroke: rgba(255,255,255,.12);
+    --stroke2: rgba(255,255,255,.10);
 
-    --text:#eaf0ff;
-    --muted:rgba(234,240,255,.68);
+    --text:#ffffff;
+    --muted:rgba(255,255,255,.70);
 
-    --accent:#6ea8ff;         /* subtle blue */
+    /* Accent: subtle warm highlight (not blue) */
+    --accent:#ffb46a;
+
     --chip: rgba(255,255,255,.06);
-    --chipStroke: rgba(255,255,255,.12);
+    --chipStroke: rgba(255,255,255,.14);
 
-    --btn: rgba(255,255,255,.06);
-    --btnHover: rgba(255,255,255,.10);
+    --btn: rgba(255,255,255,.07);
+    --btnHover: rgba(255,255,255,.12);
 
     --radius:18px;
     --radius2:22px;
@@ -32,15 +40,20 @@
   *{box-sizing:border-box}
   body{
     margin:0;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     color:var(--text);
 
+    /* Light orange background with modern depth */
     background:
-      radial-gradient(900px 520px at 20% 22%, rgba(46, 85, 200, .22), transparent 60%),
-      radial-gradient(700px 480px at 78% 18%, rgba(0, 255, 190, .10), transparent 60%),
-      radial-gradient(900px 600px at 70% 75%, rgba(120, 80, 255, .10), transparent 55%),
-      linear-gradient(180deg, var(--bg1), var(--bg0));
+      radial-gradient(1200px 700px at 18% 20%, rgba(0,0,0,.22), transparent 62%),
+      radial-gradient(1000px 700px at 78% 30%, rgba(0,0,0,.18), transparent 64%),
+      linear-gradient(180deg, var(--orange2), var(--orange1) 55%, var(--orange0));
     min-height:100vh;
+  }
+
+  h1,h2,h3{
+    font-family: "Space Grotesk", Inter, sans-serif;
+    letter-spacing:.2px;
   }
 
   .shell{
@@ -57,7 +70,7 @@
     gap:14px;
     padding: 12px 14px;
     border-radius: var(--radius2);
-    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    background: var(--panel);
     border: 1px solid var(--stroke2);
     box-shadow: 0 18px 40px rgba(0,0,0,.35);
   }
@@ -70,17 +83,16 @@
   .orb{
     width:36px;height:36px;border-radius:12px;
     background:
-      radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 55%),
-      radial-gradient(circle at 70% 20%, rgba(0,255,190,.35), transparent 55%),
-      radial-gradient(circle at 40% 80%, rgba(110,168,255,.35), transparent 58%),
-      rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.10);
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,.30), transparent 55%),
+      radial-gradient(circle at 70% 20%, rgba(255,180,106,.35), transparent 55%),
+      radial-gradient(circle at 40% 80%, rgba(0,0,0,.25), transparent 58%),
+      rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.12);
   }
   .brand h1{
     font-size: 18px;
     margin:0;
     line-height:1.1;
-    letter-spacing:.2px;
   }
   .brand p{
     margin:4px 0 0;
@@ -102,8 +114,8 @@
     gap:8px;
     padding: 8px 10px;
     border-radius: 999px;
-    background: rgba(255,255,255,.04);
-    border:1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);
     font-size: 12px;
     color: var(--muted);
     user-select:none;
@@ -113,7 +125,7 @@
   .btn{
     padding: 9px 12px;
     border-radius: 12px;
-    border:1px solid rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.14);
     background: var(--btn);
     color: var(--text);
     font-size: 12.5px;
@@ -122,8 +134,8 @@
   .btn:hover{ background: var(--btnHover); }
 
   .btn.primary{
-    border-color: rgba(110,168,255,.35);
-    background: linear-gradient(180deg, rgba(110,168,255,.22), rgba(110,168,255,.10));
+    border-color: rgba(255,180,106,.55);
+    background: linear-gradient(180deg, rgba(255,180,106,.22), rgba(255,180,106,.10));
   }
 
   /* Main grid */
@@ -137,7 +149,7 @@
   .panel{
     border-radius: var(--radius2);
     border:1px solid var(--stroke2);
-    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    background: var(--panel);
     box-shadow: 0 18px 45px rgba(0,0,0,.32);
     overflow:hidden;
   }
@@ -148,7 +160,6 @@
   .builder h2{
     margin: 0;
     font-size: 15px;
-    letter-spacing:.2px;
   }
   .builder .sub{
     margin:4px 0 0;
@@ -168,18 +179,16 @@
     place-items:center;
     font-size: 12px;
     color: var(--muted);
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.06);
   }
   .step.on{
     color: var(--text);
-    border-color: rgba(110,168,255,.45);
-    background: rgba(110,168,255,.12);
+    border-color: rgba(255,180,106,.60);
+    background: rgba(255,180,106,.14);
   }
 
-  .section{
-    margin-top: 14px;
-  }
+  .section{ margin-top: 14px; }
   .label{
     font-size: 12px;
     color: var(--muted);
@@ -191,30 +200,28 @@
     gap:10px;
     padding: 12px;
     border-radius: 16px;
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.18);
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.70);
     margin-bottom: 10px;
     align-items:flex-start;
     cursor:pointer;
   }
-  .choice:hover{ border-color: rgba(255,255,255,.16); }
+  .choice:hover{ border-color: rgba(255,180,106,.50); }
   .choice input{ margin-top: 2px; accent-color: var(--accent); }
   .choice .title{ font-size: 13px; font-weight: 600; margin:0; }
   .choice .desc{ margin:2px 0 0; font-size: 12px; color: var(--muted); }
 
-  .field{
-    margin-top: 10px;
-  }
+  .field{ margin-top: 10px; }
   select, input[type="text"]{
     width:100%;
     padding: 11px 12px;
     border-radius: 14px;
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.22);
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.78);
     color: var(--text);
     outline:none;
   }
-  select:focus, input[type="text"]:focus{ border-color: rgba(110,168,255,.45); }
+  select:focus, input[type="text"]:focus{ border-color: rgba(255,180,106,.60); }
 
   .note{
     margin-top: 12px;
@@ -243,8 +250,8 @@
   .pill{
     padding: 6px 10px;
     border-radius: 999px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(255,255,255,.06);
     font-size: 12px;
     color: var(--muted);
     white-space:nowrap;
@@ -252,8 +259,8 @@
 
   .card{
     border-radius: 20px;
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.20);
+    border:1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.74);
     padding: 14px;
   }
   .cardTitle{
@@ -265,7 +272,6 @@
   .cardTitle h3{
     margin:0;
     font-size: 13.5px;
-    letter-spacing:.1px;
   }
   .chip{
     padding: 6px 10px;
@@ -301,14 +307,14 @@
     gap:10px;
     padding: 10px 12px;
     border-radius: 14px;
-    border:1px solid rgba(255,255,255,.08);
-    background: rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.05);
     font-size: 12.5px;
   }
   .row .left{ font-weight: 600; }
   .row .right{
     opacity:.95;
-    color: rgba(234,240,255,.85);
+    color: rgba(255,255,255,.82);
     font-size: 12px;
     justify-content:flex-end;
   }
@@ -322,19 +328,19 @@
   .mini{
     padding: 8px 10px;
     border-radius: 999px;
-    border: 1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.16);
+    background: rgba(255,255,255,.06);
     color: var(--text);
     font-size: 12px;
     cursor:pointer;
   }
-  .mini:hover{ background: rgba(255,255,255,.08); }
+  .mini:hover{ background: rgba(255,255,255,.10); }
 
-  /* Preview area (big empty right panel like screenshot) */
+  /* Preview area */
   .preview{
     border-radius: var(--radius2);
     border:1px solid var(--stroke2);
-    background: rgba(0,0,0,.18);
+    background: rgba(0,0,0,.70);
     position:relative;
     overflow:hidden;
   }
@@ -342,23 +348,23 @@
     content:"";
     position:absolute; inset:-40px;
     background:
-      radial-gradient(700px 440px at 15% 25%, rgba(255,255,255,.06), transparent 60%),
-      radial-gradient(800px 520px at 70% 70%, rgba(110,168,255,.08), transparent 58%);
+      radial-gradient(700px 440px at 20% 25%, rgba(255,255,255,.05), transparent 62%),
+      radial-gradient(900px 520px at 65% 65%, rgba(0,0,0,.18), transparent 60%);
     pointer-events:none;
   }
   .preview .ghost{
     position:absolute;
     left: 20px; bottom: 20px;
     font-size: 12px;
-    color: rgba(234,240,255,.50);
+    color: rgba(255,255,255,.55);
   }
 
-  /* --- Details overlay: orange tint behind panel, panel itself stays black --- */
+  /* Details overlay: ORANGE tint behind drawer, drawer stays black */
   .overlay{
     position:fixed;
     inset:0;
     z-index:999;
-    background: rgba(176, 84, 0, 0.55); /* orange tint */
+    background: rgba(181, 82, 0, 0.55);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
     display:none;
@@ -371,9 +377,9 @@
     height:100vh;
     width:min(560px, 92vw);
     z-index:1000;
-    background:#0b0d10; /* black details panel */
+    background:#0b0d10;
     color:#fff;
-    border-left:1px solid rgba(255,255,255,.10);
+    border-left:1px solid rgba(255,255,255,.12);
     box-shadow: -18px 0 60px rgba(0,0,0,.55);
     overflow:auto;
     transform: translateX(110%);
@@ -396,12 +402,13 @@
   .close{
     padding: 8px 10px;
     border-radius: 999px;
-    border:1px solid rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.16);
     background: rgba(255,255,255,.06);
     color:#fff;
     cursor:pointer;
     white-space:nowrap;
   }
+  .close:hover{ background: rgba(255,255,255,.10); }
 
   .meta{
     margin-top: 10px;
@@ -423,8 +430,8 @@
     font-size: 13px;
   }
   .prodBox{
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.04);
     border-radius: 16px;
     padding: 12px;
     margin-bottom: 10px;
@@ -544,7 +551,7 @@
           </div>
 
           <div class="note" style="margin-top:14px;">
-            <b style="color:rgba(234,240,255,.9)">Prototype note:</b>
+            <b style="color:rgba(255,255,255,.92)">Prototype note:</b>
             this uses sample data, but the structure matches what you’d export from the current tool.
           </div>
 
@@ -610,7 +617,7 @@
     </main>
   </div>
 
-  <!-- ORANGE TINT OVERLAY + BLACK DRAWER (only the drawer is black, page stays visible) -->
+  <!-- ORANGE TINT OVERLAY + BLACK DRAWER (page stays visible) -->
   <div class="overlay" id="overlay"></div>
 
   <aside class="drawer" id="drawer" aria-hidden="true">
