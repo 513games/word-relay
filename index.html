@@ -3,387 +3,674 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>System Selector v2 (Prototype)</title>
+<title>Custom Building Products System Selector (Prototype)</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
   :root{
-    --orange0:#a84b00;
-    --orange1:#b55200;
-    --orange2:#c25a00;
+    --orange0:#934100;
+    --orange1:#aa4d00;
+    --orange2:#bc5a0d;
 
-    --panel: rgba(0,0,0,.78);
-    --panel2: rgba(0,0,0,.86);
-    --stroke: rgba(255,255,255,.12);
-    --stroke2: rgba(255,255,255,.10);
+    --bg:#2f2f2f;
+    --panel:#111111;
+    --panel2:#171717;
+    --panel3:#1d1d1d;
+
+    --stroke:#2e2e2e;
+    --stroke2:#3a3a3a;
 
     --text:#ffffff;
-    --muted:rgba(255,255,255,.70);
-    --accent:#ffb46a;
+    --muted:#c2c2c2;
+    --muted2:#8d8d8d;
 
-    --chip: rgba(255,255,255,.06);
-    --chipStroke: rgba(255,255,255,.14);
+    --accent:#d78a43;
+    --accentSoft:rgba(215,138,67,.12);
 
-    --btn: rgba(255,255,255,.07);
-    --btnHover: rgba(255,255,255,.12);
+    --btn:#1a1a1a;
+    --btnHover:#242424;
+    --btnPrimary:#b75b12;
+    --btnPrimaryHover:#c8681d;
 
-    --radius:18px;
-    --radius2:22px;
+    --radius:10px;
+    --radiusLg:14px;
+
+    --shadow:0 10px 26px rgba(0,0,0,.28);
   }
 
   *{box-sizing:border-box}
+
+  html,body{
+    min-height:100%;
+  }
+
   body{
     margin:0;
-    font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    font-family:Inter, Arial, sans-serif;
     color:var(--text);
     background:
-      radial-gradient(1400px 820px at 18% 20%, rgba(0,0,0,.22), transparent 62%),
-      radial-gradient(1200px 820px at 78% 30%, rgba(0,0,0,.18), transparent 64%),
-      linear-gradient(180deg, var(--orange2), var(--orange1) 55%, var(--orange0));
-    min-height:100vh;
+      linear-gradient(180deg, var(--orange2), var(--orange1) 54%, var(--orange0));
   }
 
-  h1,h2,h3{
-    font-family: "Space Grotesk", Inter, sans-serif;
-    letter-spacing:.2px;
+  h1,h2,h3,h4{
+    font-family:Inter, Arial, sans-serif;
+    letter-spacing:0;
   }
 
-  /* ✅ Bigger overall canvas */
   .shell{
-    max-width: 1560px;              /* was 1260 */
-    margin: 0 auto;
-    padding: 22px 22px 34px;        /* a bit roomier */
+    width:min(1700px, calc(100vw - 28px));
+    margin:0 auto;
+    padding:16px 0 26px;
   }
 
-  /* Top bar */
   .topbar{
     display:flex;
     align-items:center;
     justify-content:space-between;
     gap:16px;
-    padding: 14px 16px;             /* was 12/14 */
-    border-radius: var(--radius2);
-    background: var(--panel);
-    border: 1px solid var(--stroke2);
-    box-shadow: 0 18px 40px rgba(0,0,0,.35);
+    padding:16px 18px;
+    border-radius:var(--radiusLg);
+    background:var(--panel);
+    border:1px solid var(--stroke2);
+    box-shadow:var(--shadow);
   }
+
   .brand{
     display:flex;
     align-items:flex-start;
-    gap:12px;
-    min-width: 360px;
+    gap:14px;
+    min-width:390px;
   }
+
   .orb{
-    width:40px;height:40px;         /* was 36 */
-    border-radius:14px;
-    background:
-      radial-gradient(circle at 30% 30%, rgba(255,255,255,.30), transparent 55%),
-      radial-gradient(circle at 70% 20%, rgba(255,180,106,.35), transparent 55%),
-      radial-gradient(circle at 40% 80%, rgba(0,0,0,.25), transparent 58%),
-      rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.12);
+    width:40px;
+    height:40px;
+    border-radius:8px;
+    flex:0 0 auto;
+    background:linear-gradient(180deg, #2d2d2d, #191919);
+    border:1px solid #3d3d3d;
   }
+
   .brand h1{
-    font-size: 20px;                /* was 18 */
     margin:0;
-    line-height:1.1;
+    font-size:26px;
+    line-height:1.05;
+    font-weight:800;
   }
+
+  .brand .light{
+    opacity:.58;
+    font-weight:700;
+  }
+
   .brand p{
-    margin:4px 0 0;
-    font-size: 13px;                /* was 12.5 */
-    color: var(--muted);
-    line-height:1.25;
+    margin:6px 0 0;
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.35;
   }
 
   .top-actions{
     display:flex;
-    gap:10px;
     align-items:center;
-    flex-wrap:wrap;
     justify-content:flex-end;
+    gap:10px;
+    flex-wrap:wrap;
   }
+
   .toggle{
     display:flex;
     align-items:center;
     gap:8px;
-    padding: 9px 12px;              /* was 8/10 */
-    border-radius: 999px;
-    background: rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.14);
-    font-size: 12.5px;              /* was 12 */
-    color: var(--muted);
-    user-select:none;
+    padding:10px 14px;
+    border-radius:999px;
+    background:var(--panel2);
+    border:1px solid var(--stroke2);
+    color:var(--muted);
+    font-size:12.5px;
+    white-space:nowrap;
   }
-  .toggle input{accent-color: var(--accent);}
+
+  .toggle input{
+    accent-color:var(--accent);
+  }
 
   .btn{
-    padding: 10px 14px;             /* was 9/12 */
-    border-radius: 12px;
-    border:1px solid rgba(255,255,255,.14);
-    background: var(--btn);
-    color: var(--text);
-    font-size: 13px;                /* was 12.5 */
+    padding:10px 14px;
+    border-radius:8px;
+    border:1px solid var(--stroke2);
+    background:var(--btn);
+    color:var(--text);
+    font-size:12.5px;
+    font-weight:600;
     cursor:pointer;
-  }
-  .btn:hover{ background: var(--btnHover); }
-  .btn.primary{
-    border-color: rgba(255,180,106,.55);
-    background: linear-gradient(180deg, rgba(255,180,106,.22), rgba(255,180,106,.10));
+    transition:background .15s ease, border-color .15s ease;
   }
 
-  /* ✅ Layout: 3 columns (builder / results / details) */
-  .grid{
-    margin-top: 16px;
+  .btn:hover{
+    background:var(--btnHover);
+  }
+
+  .btn.primary{
+    background:var(--btnPrimary);
+    border-color:#8f470e;
+  }
+
+  .btn.primary:hover{
+    background:var(--btnPrimaryHover);
+  }
+
+  .benefits{
+    margin-top:14px;
     display:grid;
-    grid-template-columns: 420px minmax(440px, 1fr) 520px; /* bigger, more pro */
-    gap: 16px;
-    align-items: start;
+    grid-template-columns:repeat(6, minmax(0,1fr));
+    gap:12px;
+  }
+
+  .benefit{
+    border-radius:var(--radiusLg);
+    border:1px solid var(--stroke2);
+    background:var(--panel);
+    box-shadow:var(--shadow);
+    padding:16px 14px;
+    min-height:96px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:8px;
+    text-align:center;
+  }
+
+  .benefit .icon{
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    margin:0 auto;
+    display:grid;
+    place-items:center;
+    font-size:16px;
+    background:var(--accentSoft);
+    border:1px solid rgba(215,138,67,.25);
+    color:#f0bf8d;
+  }
+
+  .benefit .title{
+    font-size:13px;
+    font-weight:700;
+    line-height:1.2;
+  }
+
+  .benefit .sub{
+    font-size:11.5px;
+    color:var(--muted2);
+    line-height:1.3;
+  }
+
+  .grid{
+    margin-top:16px;
+    display:grid;
+    grid-template-columns:430px minmax(520px, 1fr) 620px;
+    gap:14px;
+    align-items:start;
   }
 
   .panel{
-    border-radius: var(--radius2);
+    border-radius:var(--radiusLg);
     border:1px solid var(--stroke2);
-    background: var(--panel);
-    box-shadow: 0 18px 45px rgba(0,0,0,.32);
+    background:var(--panel);
+    box-shadow:var(--shadow);
     overflow:hidden;
   }
-  .panel .inner{ padding: 18px; }   /* was 16 */
 
-  /* Left builder */
-  .builder h2{ margin: 0; font-size: 16px; } /* was 15 */
-  .builder .sub{ margin:4px 0 0; font-size: 12.5px; color: var(--muted); }
+  .panel .inner{
+    padding:18px;
+  }
 
-  .steps{ margin-top: 10px; display:flex; align-items:center; gap:8px; }
+  .builderHead{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+  }
+
+  .builder h2{
+    margin:0;
+    font-size:22px;
+    line-height:1.1;
+    font-weight:700;
+  }
+
+  .builder .sub{
+    margin:6px 0 0;
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.35;
+  }
+
+  .steps{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding-top:2px;
+  }
+
   .step{
-    width: 28px; height: 28px;      /* slightly bigger */
-    border-radius: 999px;
+    width:32px;
+    height:32px;
+    border-radius:999px;
     display:grid;
     place-items:center;
-    font-size: 12.5px;
-    color: var(--muted);
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(255,255,255,.06);
-  }
-  .step.on{
-    color: var(--text);
-    border-color: rgba(255,180,106,.60);
-    background: rgba(255,180,106,.14);
+    font-size:12px;
+    border:1px solid var(--stroke2);
+    background:var(--panel2);
+    color:var(--muted);
   }
 
-  .section{ margin-top: 14px; }
-  .label{ font-size: 12.5px; color: var(--muted); margin-bottom: 8px; }
+  .step.on{
+    color:#fff;
+    border-color:#b7773f;
+    background:#3a2413;
+  }
+
+  .section{
+    margin-top:18px;
+  }
+
+  .label{
+    font-size:12.5px;
+    color:var(--muted);
+    margin-bottom:8px;
+    font-weight:600;
+  }
 
   .choice{
     display:flex;
-    gap:10px;
-    padding: 13px;                  /* was 12 */
-    border-radius: 16px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.70);
-    margin-bottom: 10px;
     align-items:flex-start;
+    gap:10px;
+    padding:13px 14px;
+    margin-bottom:10px;
+    border-radius:10px;
+    background:var(--panel2);
+    border:1px solid var(--stroke);
     cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
   }
-  .choice:hover{ border-color: rgba(255,180,106,.50); }
-  .choice input{ margin-top: 2px; accent-color: var(--accent); }
-  .choice .title{ font-size: 13.5px; font-weight: 600; margin:0; }
-  .choice .desc{ margin:2px 0 0; font-size: 12.5px; color: var(--muted); }
 
-  .field{ margin-top: 10px; }
+  .choice:hover{
+    border-color:#575757;
+    background:#1b1b1b;
+  }
+
+  .choice input{
+    margin-top:2px;
+    accent-color:var(--accent);
+  }
+
+  .choice .title{
+    margin:0;
+    font-size:14px;
+    font-weight:700;
+    line-height:1.15;
+  }
+
+  .choice .desc{
+    margin:4px 0 0;
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.3;
+  }
+
+  .field{
+    margin-top:8px;
+  }
+
   select, input[type="text"]{
     width:100%;
-    padding: 12px 12px;             /* was 11/12 */
-    border-radius: 14px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.78);
-    color: var(--text);
+    padding:12px 13px;
+    border-radius:8px;
+    border:1px solid var(--stroke2);
+    background:var(--panel2);
+    color:#fff;
     outline:none;
-    font-size: 13px;
+    font-size:13px;
+    font-weight:600;
   }
-  select:focus, input[type="text"]:focus{ border-color: rgba(255,180,106,.60); }
+
+  select:focus, input[type="text"]:focus{
+    border-color:#a96a36;
+    box-shadow:none;
+  }
 
   .note{
-    margin-top: 12px;
-    font-size: 12.5px;
-    color: var(--muted);
-    line-height:1.35;
+    margin-top:14px;
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.45;
   }
 
-  /* Results panel */
   .resultsHead{
     display:flex;
-    align-items:flex-start;
     justify-content:space-between;
-    gap:10px;
-    margin-bottom: 10px;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:14px;
   }
-  .resultsHead h2{ margin:0; font-size: 16px; }
-  .resultsHead .crumbs{ margin-top:2px; font-size: 12.5px; color: var(--muted); }
+
+  .resultsHead h2{
+    margin:0;
+    font-size:22px;
+    line-height:1.1;
+    font-weight:700;
+  }
+
+  .resultsHead .crumbs{
+    margin-top:6px;
+    font-size:13px;
+    color:var(--muted);
+  }
+
   .pill{
-    padding: 6px 10px;
-    border-radius: 999px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.06);
-    font-size: 12px;
-    color: var(--muted);
+    padding:7px 11px;
+    border-radius:999px;
+    border:1px solid var(--stroke2);
+    background:var(--panel2);
+    font-size:12px;
+    color:var(--muted);
     white-space:nowrap;
+    font-weight:700;
   }
 
   .card{
-    border-radius: 20px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.74);
-    padding: 16px;                  /* was 14 */
-  }
-  .cardTitle{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:10px;
-  }
-  .cardTitle h3{ margin:0; font-size: 14px; } /* was 13.5 */
-  .chip{
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: var(--chip);
-    border: 1px solid var(--chipStroke);
-    font-size: 12px;
-    color: var(--text);
-    white-space:nowrap;
-  }
-  .card p{
-    margin:10px 0 0;
-    font-size: 12.5px;
-    color: var(--muted);
-    line-height:1.35;
+    border-radius:12px;
+    border:1px solid var(--stroke2);
+    background:var(--panel2);
+    padding:16px;
   }
 
-  .kvHead{ margin-top: 12px; font-size: 12.5px; color: var(--muted); }
-  .kv{ margin-top: 8px; display:flex; flex-direction:column; gap:10px; }
+  .cardTitle{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:14px;
+  }
+
+  .cardTitle h3{
+    margin:0;
+    font-size:21px;
+    line-height:1.15;
+    max-width:72%;
+    font-weight:700;
+  }
+
+  .chip{
+    padding:7px 10px;
+    border-radius:999px;
+    border:1px solid var(--stroke2);
+    background:var(--panel3);
+    font-size:12px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+
+  .card p{
+    margin:11px 0 0;
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.45;
+    max-width:96%;
+  }
+
+  .kvHead{
+    margin-top:18px;
+    font-size:12.5px;
+    color:var(--muted);
+    font-weight:700;
+  }
+
+  .kv{
+    margin-top:10px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
 
   .row{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    gap:10px;
-    padding: 11px 12px;             /* was 10/12 */
-    border-radius: 14px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.05);
-    font-size: 13px;
+    gap:14px;
+    padding:14px 14px;
+    border-radius:10px;
+    border:1px solid var(--stroke);
+    background:var(--panel3);
   }
-  .row .left{ font-weight: 600; }
+
+  .row .left{
+    font-weight:700;
+    font-size:13px;
+    line-height:1.3;
+  }
+
   .row .right{
-    opacity:.95;
-    color: rgba(255,255,255,.82);
-    font-size: 12.5px;
+    font-size:12.5px;
+    color:var(--muted);
+    text-align:right;
+    line-height:1.3;
   }
 
-  .cardActions{ margin-top: 12px; display:flex; gap:10px; flex-wrap:wrap; }
+  .cardActions{
+    margin-top:16px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
   .mini{
-    padding: 9px 12px;              /* bigger chips */
-    border-radius: 999px;
-    border: 1px solid rgba(255,255,255,.16);
-    background: rgba(255,255,255,.06);
-    color: var(--text);
-    font-size: 12.5px;
-    cursor:pointer;
-  }
-  .mini:hover{ background: rgba(255,255,255,.10); }
-
-  /* ✅ Right details area (always there, scrolls) */
-  .detailsWrap{
-    border-radius: var(--radius2);
+    padding:9px 13px;
+    border-radius:8px;
     border:1px solid var(--stroke2);
-    background: rgba(0,0,0,.70);
-    box-shadow: 0 18px 45px rgba(0,0,0,.25);
+    background:var(--btn);
+    color:#fff;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+
+  .mini:hover{
+    background:var(--btnHover);
+  }
+
+  .detailsWrap{
+    border-radius:var(--radiusLg);
+    border:1px solid var(--stroke2);
+    background:var(--panel);
+    box-shadow:var(--shadow);
     overflow:hidden;
     position:sticky;
-    top: 18px;                      /* stays visible while scrolling page */
+    top:16px;
   }
 
   .detailsScroll{
-    max-height: calc(100vh - 120px);
+    max-height:calc(100vh - 70px);
     overflow:auto;
   }
 
   .detailsTop{
-    padding: 14px 16px;
+    padding:16px 18px;
     display:flex;
-    align-items:flex-start;
     justify-content:space-between;
-    gap:12px;
-    background: rgba(0,0,0,.88);
-    border-bottom: 1px solid rgba(255,255,255,.10);
-    position: sticky;
-    top: 0;
-    z-index: 2;
+    align-items:flex-start;
+    gap:14px;
+    background:var(--panel2);
+    border-bottom:1px solid var(--stroke);
+    position:sticky;
+    top:0;
+    z-index:2;
   }
+
   .detailsTop h2{
     margin:0;
-    font-size: 15px;
-    line-height:1.25;
+    font-size:22px;
+    line-height:1.15;
+    font-weight:700;
   }
+
   .detailsTop .sub{
-    margin-top:6px;
-    color: rgba(255,255,255,.65);
-    font-size:12.5px;
-    line-height:1.35;
+    margin-top:7px;
+    font-size:13px;
+    color:var(--muted);
+    line-height:1.4;
   }
+
   .close{
-    padding: 9px 12px;
-    border-radius: 999px;
-    border:1px solid rgba(255,255,255,.16);
-    background: rgba(255,255,255,.06);
+    padding:9px 13px;
+    border-radius:8px;
+    border:1px solid var(--stroke2);
+    background:var(--btn);
     color:#fff;
+    font-size:12.5px;
+    font-weight:700;
     cursor:pointer;
     white-space:nowrap;
   }
-  .close:hover{ background: rgba(255,255,255,.10); }
 
-  .detailsBody{ padding: 16px; }
+  .close:hover{
+    background:var(--btnHover);
+  }
+
+  .detailsBody{
+    padding:18px;
+  }
 
   .meta{
-    margin-top: 10px;
     display:grid;
-    grid-template-columns: 130px 1fr;
-    gap: 8px 14px;
-    font-size: 13px;
-    color: rgba(255,255,255,.85);
+    grid-template-columns:145px 1fr;
+    gap:10px 16px;
+    font-size:13px;
   }
-  .meta .k{ color: rgba(255,255,255,.60); }
 
-  .divider{ margin: 14px 0; border-top:1px solid rgba(255,255,255,.10); }
-  .sectionTitle{ margin:0 0 10px; font-size: 13.5px; }
+  .meta .k{
+    color:var(--muted2);
+    font-weight:600;
+  }
+
+  .divider{
+    margin:18px 0;
+    border-top:1px solid var(--stroke);
+  }
+
+  .sectionTitle{
+    margin:0 0 12px;
+    font-size:17px;
+    line-height:1.15;
+    font-weight:700;
+  }
 
   .prodBox{
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.04);
-    border-radius: 16px;
-    padding: 12px;
-    margin-bottom: 10px;
-    font-size: 13px;
+    border:1px solid var(--stroke);
+    background:var(--panel3);
+    border-radius:10px;
+    padding:13px;
+    margin-bottom:10px;
+    font-size:13px;
+    line-height:1.4;
   }
-  .prodBox .small{ color: rgba(255,255,255,.65); font-size: 12px; }
+
+  .prodBox .small{
+    color:var(--muted2);
+    font-size:11.5px;
+    margin-bottom:4px;
+    font-weight:600;
+  }
 
   .emptyState{
-    padding: 22px;
-    color: rgba(255,255,255,.55);
-    font-size: 13px;
-    line-height: 1.35;
+    padding:24px;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.55;
   }
 
-  /* Responsive */
-  @media (max-width: 1200px){
+  .detailsScroll::-webkit-scrollbar{
+    width:10px;
+  }
+
+  .detailsScroll::-webkit-scrollbar-track{
+    background:#101010;
+  }
+
+  .detailsScroll::-webkit-scrollbar-thumb{
+    background:#4a4a4a;
+    border-radius:999px;
+  }
+
+  @media (max-width: 1420px){
     .grid{
-      grid-template-columns: 1fr;
+      grid-template-columns:390px minmax(440px, 1fr) 520px;
+    }
+    .cardTitle h3,
+    .detailsTop h2{
+      font-size:19px;
+    }
+    .resultsHead h2,
+    .builder h2{
+      font-size:20px;
+    }
+  }
+
+  @media (max-width: 1220px){
+    .benefits{
+      grid-template-columns:repeat(3, 1fr);
+    }
+    .grid{
+      grid-template-columns:1fr;
     }
     .detailsWrap{
       position:relative;
       top:auto;
     }
-    .detailsScroll{ max-height: none; }
+    .detailsScroll{
+      max-height:none;
+    }
+  }
+
+  @media (max-width: 760px){
+    .shell{
+      width:min(100vw - 16px, 100%);
+      padding:10px 0 20px;
+    }
+    .topbar{
+      padding:14px;
+    }
+    .brand h1{
+      font-size:22px;
+    }
+    .benefits{
+      grid-template-columns:1fr 1fr;
+    }
+    .builderHead{
+      flex-direction:column;
+    }
+    .cardTitle{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .cardTitle h3{
+      max-width:100%;
+      font-size:18px;
+    }
+    .detailsTop{
+      flex-direction:column;
+      align-items:flex-start;
+    }
+    .detailsTop h2{
+      font-size:18px;
+    }
+    .meta{
+      grid-template-columns:1fr;
+      gap:6px;
+    }
   }
 </style>
 </head>
@@ -395,8 +682,8 @@
       <div class="brand">
         <div class="orb" aria-hidden="true"></div>
         <div>
-          <h1>Custom Building Products <span style="opacity:.65;font-weight:600">(Prototype)</span></h1>
-          <p>TCNA Spec, CAD and Install Method</p>
+          <h1>Custom Building Products <span class="light">(Prototype)</span></h1>
+          <p>TCNA spec selector, CAD access, install method guidance, and product recommendations.</p>
         </div>
       </div>
 
@@ -411,14 +698,47 @@
       </div>
     </header>
 
+    <section class="benefits">
+      <div class="benefit">
+        <div class="icon">📐</div>
+        <div class="title">Specifications</div>
+        <div class="sub">Method and assembly guidance tied to install conditions.</div>
+      </div>
+      <div class="benefit">
+        <div class="icon">📄</div>
+        <div class="title">Data Sheets</div>
+        <div class="sub">Quick path to product and technical documentation.</div>
+      </div>
+      <div class="benefit">
+        <div class="icon">🧱</div>
+        <div class="title">Layer Stack</div>
+        <div class="sub">Clear order of materials from tile through substrate.</div>
+      </div>
+      <div class="benefit">
+        <div class="icon">🗂</div>
+        <div class="title">Submittals</div>
+        <div class="sub">Gather the documents needed for one install path.</div>
+      </div>
+      <div class="benefit">
+        <div class="icon">📏</div>
+        <div class="title">CAD / Details</div>
+        <div class="sub">Bridge method selection with drawing-level support.</div>
+      </div>
+      <div class="benefit">
+        <div class="icon">✅</div>
+        <div class="title">CBP Products</div>
+        <div class="sub">Recommended mortars, membranes, and grout callouts.</div>
+      </div>
+    </section>
+
     <main class="grid">
       <!-- LEFT -->
       <section class="panel builder">
         <div class="inner">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+          <div class="builderHead">
             <div>
               <h2>Build your assembly</h2>
-              <div class="sub">4 quick picks. Results update instantly.</div>
+              <div class="sub">Choose the install path and narrow to the correct TCNA method.</div>
             </div>
             <div class="steps" aria-label="steps">
               <div class="step on">1</div>
@@ -439,7 +759,7 @@
               </div>
             </label>
 
-            <label class="choice" style="opacity:.78">
+            <label class="choice" style="opacity:.82">
               <input type="radio" name="cat" />
               <div>
                 <div class="title">Surface Prep</div>
@@ -480,10 +800,10 @@
                 <option selected>Waterproofing</option>
                 <option>Crack Isolation</option>
                 <option>Exterior</option>
-                <option>Steam shower</option>
+                <option>Steam Shower</option>
               </select>
             </div>
-            <div class="note">Examples: Waterproofing, Crack Isolation, Exterior, Steam shower.</div>
+            <div class="note">Examples: Waterproofing, crack isolation, exterior exposure, steam shower.</div>
           </div>
 
           <div class="section">
@@ -493,18 +813,18 @@
             </div>
           </div>
 
-          <div class="note" style="margin-top:14px;">
-            <b style="color:rgba(255,255,255,.92)">Prototype note:</b>
+          <div class="note" style="margin-top:18px;">
+            <b style="color:#fff;">Prototype note:</b>
             this uses sample data, but the structure matches what you’d export from the current tool.
           </div>
 
           <div class="note">
-            Built as a front-end-only mock. Drop this into any site and wire the data source later.
+            Built as a front-end-only mock. Drop this into any site and wire the real data source later.
           </div>
         </div>
       </section>
 
-      <!-- MIDDLE: RESULTS -->
+      <!-- MIDDLE -->
       <section class="panel">
         <div class="inner">
           <div class="resultsHead">
@@ -520,6 +840,7 @@
               <h3>Shower Wall – Tile over Cement Board (Waterproofing)</h3>
               <div class="chip">TCNA W244C</div>
             </div>
+
             <p>A typical tile shower wall assembly using a waterproofing membrane over cement board.</p>
 
             <div class="kvHead">Key layers</div>
@@ -552,8 +873,8 @@
         </div>
       </section>
 
-      <!-- RIGHT: DETAILS (bigger, in-page) -->
-      <aside class="detailsWrap" aria-label="details">
+      <!-- RIGHT -->
+      <aside class="detailsWrap" aria-label="details panel">
         <div class="detailsScroll" id="detailsScroll">
           <div class="detailsTop">
             <div>
@@ -565,10 +886,15 @@
 
           <div class="detailsBody" id="detailsBody">
             <div class="emptyState">
-              This area is intentionally larger and scrollable so it feels like a real “spec panel”.
+              This side panel is intentionally larger so it feels more like a professional spec workspace
+              instead of a small popup.
               <br><br>
-              Once loaded, it can show: requirements, substrate notes, fastener schedules, membrane type,
-              movement joints, download links, etc.
+              Once loaded, it can hold:
+              <br>• TCNA / TTMac references
+              <br>• full layer stack
+              <br>• substrate limitations
+              <br>• recommended CBP products
+              <br>• CAD, PDF, and short spec links
             </div>
           </div>
         </div>
@@ -579,10 +905,10 @@
 <script>
   const viewBtn = document.getElementById('viewDetailsBtn');
   const closeBtn = document.getElementById('closeDetailsBtn');
-
   const dTitle = document.getElementById('dTitle');
-  const dSub   = document.getElementById('dSub');
-  const dBody  = document.getElementById('detailsBody');
+  const dSub = document.getElementById('dSub');
+  const dBody = document.getElementById('detailsBody');
+  const detailsScroll = document.getElementById('detailsScroll');
 
   const detailsData = {
     title: "Shower Wall – Tile over Cement Board (Waterproofing)",
@@ -615,18 +941,18 @@
     ).join("");
 
     const layerRows = d.layers.map(([l,r], idx) =>
-      `<div class="row" style="${idx ? "margin-top:10px;" : ""}">
-         <div class="left">${l}</div>
-         <div class="right">${r}</div>
-       </div>`
+      `<div class="row" style="${idx ? 'margin-top:10px;' : ''}">
+        <div class="left">${l}</div>
+        <div class="right">${r}</div>
+      </div>`
     ).join("");
 
     const productBoxes = d.products.map(p =>
       `<div class="prodBox">
-         <div class="small">${p.label}</div>
-         <div><b>${p.value}</b></div>
-         <div class="small" style="margin-top:6px;">${p.brand}</div>
-       </div>`
+        <div class="small">${p.label}</div>
+        <div><b>${p.value}</b></div>
+        <div class="small" style="margin-top:6px;">${p.brand}</div>
+      </div>`
     ).join("");
 
     return `
@@ -654,20 +980,20 @@
       <div class="divider"></div>
 
       <h3 class="sectionTitle">Notes</h3>
-      <div style="color:rgba(255,255,255,.70);font-size:12.75px;line-height:1.4;">
-        Keep it simple for prototype. This is where your detailed method steps, requirements,
-        and product callouts would live.
+      <div style="color:rgba(255,255,255,.72);font-size:14px;line-height:1.48;">
+        This is where you can eventually place install notes, substrate restrictions, membrane requirements,
+        movement joint guidance, approved fastener schedules, waterproofing limitations, and direct links to
+        supporting CBP documentation.
       </div>
     `;
   }
 
   function openDetails(){
     dTitle.textContent = detailsData.title;
-    dSub.textContent   = detailsData.desc;
-    dBody.innerHTML    = renderDetails(detailsData);
+    dSub.textContent = detailsData.desc;
+    dBody.innerHTML = renderDetails(detailsData);
     closeBtn.style.display = "inline-flex";
-    // jump to top of scroll area
-    document.getElementById('detailsScroll').scrollTop = 0;
+    detailsScroll.scrollTop = 0;
   }
 
   function closeDetails(){
@@ -675,13 +1001,19 @@
     dSub.innerHTML = 'Click <b>View details</b> to load the full method stack here.';
     dBody.innerHTML = `
       <div class="emptyState">
-        This area is intentionally larger and scrollable so it feels like a real “spec panel”.
+        This side panel is intentionally larger so it feels more like a professional spec workspace
+        instead of a small popup.
         <br><br>
-        Once loaded, it can show: requirements, substrate notes, fastener schedules, membrane type,
-        movement joints, download links, etc.
+        Once loaded, it can hold:
+        <br>• TCNA / TTMac references
+        <br>• full layer stack
+        <br>• substrate limitations
+        <br>• recommended CBP products
+        <br>• CAD, PDF, and short spec links
       </div>
     `;
     closeBtn.style.display = "none";
+    detailsScroll.scrollTop = 0;
   }
 
   viewBtn.addEventListener('click', openDetails);
