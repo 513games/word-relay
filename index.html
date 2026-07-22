@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>S-EG Translator</title>
 
@@ -27,6 +31,7 @@
       min-height: 100vh;
       margin: 0;
       padding: 40px 16px;
+
       background:
         radial-gradient(
           circle at top left,
@@ -34,7 +39,9 @@
           transparent 500px
         ),
         var(--background);
+
       color: var(--text);
+
       font-family:
         Arial,
         Helvetica,
@@ -115,11 +122,14 @@
       min-height: 270px;
       padding: 16px;
       resize: vertical;
+
       border: 1px solid var(--border);
       border-radius: 10px;
       outline: none;
+
       background: var(--input);
       color: var(--text);
+
       font: inherit;
       font-size: 1rem;
       line-height: 1.6;
@@ -127,7 +137,9 @@
 
     textarea:focus {
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.18);
+
+      box-shadow:
+        0 0 0 3px rgba(88, 166, 255, 0.18);
     }
 
     .arrow {
@@ -146,15 +158,26 @@
     button {
       min-height: 42px;
       padding: 0 16px;
+
       border: 1px solid transparent;
       border-radius: 9px;
+
       cursor: pointer;
+
       font: inherit;
       font-weight: bold;
+
+      transition:
+        transform 0.15s ease,
+        background-color 0.15s ease;
     }
 
     button:hover {
       transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(0);
     }
 
     .primary-button {
@@ -214,8 +237,10 @@
       width: fit-content;
       margin-top: 8px;
       padding: 6px 9px;
+
       border-radius: 6px;
       background: var(--input);
+
       font-family: monospace;
     }
 
@@ -239,22 +264,33 @@
 <body>
   <main class="container">
     <header>
-      <div class="eyebrow">CUSTOM WORD CODE</div>
+      <div class="eyebrow">
+        CUSTOM WORD CODE
+      </div>
 
       <h1>S-EG Translator</h1>
 
       <p class="description">
-        Words beginning with a vowel receive an S at the beginning and EG at
-        the end. Words beginning with consonants move their opening consonant
-        cluster to the end and add EG.
+        Words beginning with a vowel receive an S at the beginning
+        and EG at the end. Words beginning with consonants move their
+        opening consonant cluster to the end and add EG. Y acts as a
+        vowel only when a word contains no A, E, I, O, or U.
       </p>
     </header>
 
     <section class="translator">
       <div class="panel">
         <div class="panel-header">
-          <label for="englishInput">English</label>
-          <span id="characterCount" class="counter">0 characters</span>
+          <label for="englishInput">
+            English
+          </label>
+
+          <span
+            id="characterCount"
+            class="counter"
+          >
+            0 characters
+          </span>
         </div>
 
         <textarea
@@ -264,22 +300,40 @@
         ></textarea>
 
         <div class="buttons">
-          <button id="exampleButton" class="secondary-button">
+          <button
+            id="exampleButton"
+            class="secondary-button"
+            type="button"
+          >
             Load example
           </button>
 
-          <button id="clearButton" class="clear-button">
+          <button
+            id="clearButton"
+            class="clear-button"
+            type="button"
+          >
             Clear
           </button>
         </div>
       </div>
 
-      <div class="arrow">→</div>
+      <div class="arrow" aria-hidden="true">
+        →
+      </div>
 
       <div class="panel">
         <div class="panel-header">
-          <label for="translatedOutput">S-EG</label>
-          <span id="statusMessage" class="status"></span>
+          <label for="translatedOutput">
+            S-EG
+          </label>
+
+          <span
+            id="statusMessage"
+            class="status"
+            role="status"
+            aria-live="polite"
+          ></span>
         </div>
 
         <textarea
@@ -289,7 +343,11 @@
         ></textarea>
 
         <div class="buttons">
-          <button id="copyButton" class="primary-button">
+          <button
+            id="copyButton"
+            class="primary-button"
+            type="button"
+          >
             Copy translation
           </button>
         </div>
@@ -307,33 +365,64 @@
             Add S to the beginning and EG to the end.
           </p>
 
-          <span class="example">I → Sieg</span>
-          <span class="example">am → sameg</span>
-          <span class="example">office → sofficeeg</span>
+          <span class="example">
+            I → Sieg
+          </span>
+
+          <span class="example">
+            am → sameg
+          </span>
+
+          <span class="example">
+            office → sofficeeg
+          </span>
         </article>
 
         <article class="rule">
           <h3>Consonant-starting words</h3>
 
           <p>
-            Move every consonant before the first vowel to the end, then add EG.
+            Move every consonant before the first vowel to the end,
+            then add EG. Y becomes a vowel only when no A, E, I, O,
+            or U exists.
           </p>
 
-          <span class="example">happy → appyheg</span>
-          <span class="example">with → ithweg</span>
-          <span class="example">street → eetstreg</span>
+          <span class="example">
+            happy → appyheg
+          </span>
+
+          <span class="example">
+            with → ithweg
+          </span>
+
+          <span class="example">
+            street → eetstreg
+          </span>
+
+          <span class="example">
+            thy → ytheg
+          </span>
+
+          <span class="example">
+            yes → esyeg
+          </span>
         </article>
 
         <article class="rule">
           <h3>Contractions</h3>
 
           <p>
-            Keep the apostrophe in place while moving the opening consonant
-            cluster.
+            Keep the apostrophe inside the word while moving the
+            opening consonant cluster.
           </p>
 
-          <span class="example">can't → an'tceg</span>
-          <span class="example">let's → et'sleg</span>
+          <span class="example">
+            can't → an'tceg
+          </span>
+
+          <span class="example">
+            let's → et'sleg
+          </span>
         </article>
       </div>
     </section>
@@ -342,16 +431,29 @@
   <script>
     "use strict";
 
-    const englishInput = document.getElementById("englishInput");
-    const translatedOutput = document.getElementById("translatedOutput");
-    const characterCount = document.getElementById("characterCount");
-    const statusMessage = document.getElementById("statusMessage");
-    const exampleButton = document.getElementById("exampleButton");
-    const clearButton = document.getElementById("clearButton");
-    const copyButton = document.getElementById("copyButton");
+    const englishInput =
+      document.getElementById("englishInput");
+
+    const translatedOutput =
+      document.getElementById("translatedOutput");
+
+    const characterCount =
+      document.getElementById("characterCount");
+
+    const statusMessage =
+      document.getElementById("statusMessage");
+
+    const exampleButton =
+      document.getElementById("exampleButton");
+
+    const clearButton =
+      document.getElementById("clearButton");
+
+    const copyButton =
+      document.getElementById("copyButton");
 
     /*
-      Matches ordinary words and contractions.
+      Matches ordinary English words and contractions.
 
       Examples:
       hello
@@ -359,60 +461,120 @@
       let's
       don’t
     */
-    const wordPattern = /[A-Za-z]+(?:['’][A-Za-z]+)*/g;
+    const wordPattern =
+      /[A-Za-z]+(?:['’][A-Za-z]+)*/g;
 
     /*
-      Only A, E, I, O, and U count as vowels.
-      Y is treated as a consonant.
+      A, E, I, O, and U are the normal vowels.
+
+      Y becomes a vowel only when the word contains
+      none of these normal vowels.
+
+      Examples:
+
+      thy:
+      No A, E, I, O, or U exists.
+      Y becomes the vowel.
+      thy → ytheg
+
+      yes:
+      The word contains E.
+      Y remains a consonant.
+      yes → esyeg
     */
-    const vowelPattern = /[aeiou]/i;
+    const normalVowelPattern = /[aeiou]/i;
 
     function capitalizeFirstLetter(text) {
       if (!text) {
         return text;
       }
 
-      return text.charAt(0).toUpperCase() + text.slice(1);
+      return (
+        text.charAt(0).toUpperCase() +
+        text.slice(1)
+      );
     }
 
-    function translateWord(word, sentenceBeginning = false) {
-      const lowerWord = word.toLowerCase();
+    /*
+      Finds the vowel that controls the translation.
+
+      Normal vowels always have priority.
+
+      Y is considered a vowel only when there is no
+      A, E, I, O, or U anywhere in the word.
+    */
+    function findFirstVowelIndex(word) {
+      const normalVowelIndex =
+        word.search(normalVowelPattern);
+
+      if (normalVowelIndex !== -1) {
+        return normalVowelIndex;
+      }
+
+      return word.indexOf("y");
+    }
+
+    function translateWord(
+      word,
+      sentenceBeginning = false
+    ) {
+      const lowerWord =
+        word.toLowerCase();
 
       /*
-        Remove apostrophes only when checking capitalization.
-        The apostrophe remains in the translated word.
+        Apostrophes are removed only while checking
+        capitalization.
+
+        They remain in the translated word itself.
       */
-      const lettersOnly = word.replace(/['’]/g, "");
+      const lettersOnly =
+        word.replace(/['’]/g, "");
 
-      const startsWithVowel = vowelPattern.test(lowerWord.charAt(0));
+      const firstVowelIndex =
+        findFirstVowelIndex(lowerWord);
 
-      const firstVowelIndex = lowerWord.search(vowelPattern);
+      /*
+        If the selected vowel is the first letter,
+        the word counts as vowel-starting.
+      */
+      const startsWithVowel =
+        firstVowelIndex === 0;
 
       let translatedWord;
 
       /*
-        Vowel rule:
+        Vowel-starting rule:
 
         am
         s + am + eg
         sameg
+
+        eye
+        s + eye + eg
+        seyeeg
       */
       if (startsWithVowel) {
-        translatedWord = "s" + lowerWord + "eg";
+        translatedWord =
+          "s" +
+          lowerWord +
+          "eg";
       }
 
       /*
-        Words containing no A, E, I, O, or U:
+        Words containing no A, E, I, O, U, or Y.
 
-        my
-        myeg
+        Examples:
+        hmm → hmmeg
+        shh → shheg
       */
       else if (firstVowelIndex === -1) {
-        translatedWord = lowerWord + "eg";
+        translatedWord =
+          lowerWord +
+          "eg";
       }
 
       /*
-        Consonant rule:
+        Consonant-starting rule:
 
         happy
         appy + h + eg
@@ -421,10 +583,26 @@
         street
         eet + str + eg
         eetstreg
+
+        thy
+        y + th + eg
+        ytheg
+
+        yes
+        es + y + eg
+        esyeg
       */
       else {
-        const openingConsonants = lowerWord.slice(0, firstVowelIndex);
-        const restOfWord = lowerWord.slice(firstVowelIndex);
+        const openingConsonants =
+          lowerWord.slice(
+            0,
+            firstVowelIndex
+          );
+
+        const restOfWord =
+          lowerWord.slice(
+            firstVowelIndex
+          );
 
         translatedWord =
           restOfWord +
@@ -434,10 +612,13 @@
 
       /*
         Preserve words typed in ALL CAPS.
+
+        USA → SUSAEG
       */
       const wasAllCaps =
         lettersOnly.length > 1 &&
-        lettersOnly === lettersOnly.toUpperCase();
+        lettersOnly ===
+          lettersOnly.toUpperCase();
 
       if (wasAllCaps) {
         return translatedWord.toUpperCase();
@@ -445,15 +626,22 @@
 
       /*
         Capitalize:
-        - words that were originally capitalized
-        - the first word of each sentence
+
+        1. Words that were originally capitalized.
+        2. The first translated word of a sentence.
       */
       const wasCapitalized =
         lettersOnly.length > 0 &&
-        lettersOnly.charAt(0) === lettersOnly.charAt(0).toUpperCase();
+        lettersOnly.charAt(0) ===
+          lettersOnly.charAt(0).toUpperCase();
 
-      if (sentenceBeginning || wasCapitalized) {
-        return capitalizeFirstLetter(translatedWord);
+      if (
+        sentenceBeginning ||
+        wasCapitalized
+      ) {
+        return capitalizeFirstLetter(
+          translatedWord
+        );
       }
 
       return translatedWord;
@@ -465,29 +653,37 @@
 
       return text.replace(
         wordPattern,
+
         function (word, wordPosition) {
           /*
-            Check everything between the previous word and this word.
+            Examine everything between the previous
+            word and the current word.
 
-            A period, question mark, exclamation point, or new paragraph
-            means the next translated word begins a new sentence.
+            A period, question mark, exclamation point,
+            or new line makes the next word the start
+            of a new sentence.
           */
-          const textBeforeWord = text.slice(
-            previousWordEnd,
-            wordPosition
-          );
+          const textBeforeWord =
+            text.slice(
+              previousWordEnd,
+              wordPosition
+            );
 
           if (/[.!?\n]/.test(textBeforeWord)) {
             beginningOfSentence = true;
           }
 
-          const translatedWord = translateWord(
-            word,
-            beginningOfSentence
-          );
+          const translatedWord =
+            translateWord(
+              word,
+              beginningOfSentence
+            );
 
           beginningOfSentence = false;
-          previousWordEnd = wordPosition + word.length;
+
+          previousWordEnd =
+            wordPosition +
+            word.length;
 
           return translatedWord;
         }
@@ -495,64 +691,105 @@
     }
 
     function updateTranslator() {
-      const originalText = englishInput.value;
+      const originalText =
+        englishInput.value;
 
-      translatedOutput.value = translateText(originalText);
+      translatedOutput.value =
+        translateText(originalText);
 
-      const numberOfCharacters = originalText.length;
+      const numberOfCharacters =
+        originalText.length;
 
       characterCount.textContent =
         numberOfCharacters +
         " character" +
-        (numberOfCharacters === 1 ? "" : "s");
+        (
+          numberOfCharacters === 1
+            ? ""
+            : "s"
+        );
 
       statusMessage.textContent = "";
     }
 
     async function copyTranslation() {
-      const translation = translatedOutput.value;
+      const translation =
+        translatedOutput.value;
 
       if (!translation) {
-        statusMessage.textContent = "Nothing to copy";
+        statusMessage.textContent =
+          "Nothing to copy";
+
         return;
       }
 
       try {
-        await navigator.clipboard.writeText(translation);
-        statusMessage.textContent = "Copied!";
+        await navigator.clipboard.writeText(
+          translation
+        );
+
+        statusMessage.textContent =
+          "Copied!";
       } catch (error) {
         /*
-          Backup method for browsers that block the Clipboard API.
+          Backup copy method for browsers that
+          block the Clipboard API.
         */
         translatedOutput.select();
+
         document.execCommand("copy");
-        statusMessage.textContent = "Copied!";
+
+        statusMessage.textContent =
+          "Copied!";
       }
 
-      setTimeout(function () {
-        statusMessage.textContent = "";
-      }, 1800);
+      setTimeout(
+        function () {
+          statusMessage.textContent = "";
+        },
+        1800
+      );
     }
 
     function clearTranslator() {
       englishInput.value = "";
       translatedOutput.value = "";
+
       updateTranslator();
+
       englishInput.focus();
     }
 
     function loadExample() {
       englishInput.value =
-        "I am with him. Happy people can't stay sad forever. Let's go!";
+        "I am with him. Thy kingdom come. " +
+        "Yes, happy people can't stay sad forever. " +
+        "Let's go!";
 
       updateTranslator();
+
       englishInput.focus();
     }
 
-    englishInput.addEventListener("input", updateTranslator);
-    copyButton.addEventListener("click", copyTranslation);
-    clearButton.addEventListener("click", clearTranslator);
-    exampleButton.addEventListener("click", loadExample);
+    englishInput.addEventListener(
+      "input",
+      updateTranslator
+    );
+
+    copyButton.addEventListener(
+      "click",
+      copyTranslation
+    );
+
+    clearButton.addEventListener(
+      "click",
+      clearTranslator
+    );
+
+    exampleButton.addEventListener(
+      "click",
+      loadExample
+    );
 
     updateTranslator();
   </script>
