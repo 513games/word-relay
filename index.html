@@ -73,7 +73,7 @@
     }
 
     .description {
-      max-width: 750px;
+      max-width: 780px;
       margin: 0;
       color: var(--muted);
       font-size: 1.05rem;
@@ -275,6 +275,8 @@
         and EG at the end. Words beginning with consonants move their
         opening consonant cluster to the end and add EG. Y acts as a
         vowel only when a word contains no A, E, I, O, or U.
+        In the translated output, A, E, I, and O are always written
+        as Å, Ę, Ï, and Ø.
       </p>
     </header>
 
@@ -363,18 +365,19 @@
 
           <p>
             Add S to the beginning and EG to the end.
+            Then convert A, E, I, and O to their marked forms.
           </p>
 
           <span class="example">
-            I → Sieg
+            I → Sïęg
           </span>
 
           <span class="example">
-            am → sameg
+            am → såmęg
           </span>
 
           <span class="example">
-            office → sofficeeg
+            office → søffïcęęg
           </span>
         </article>
 
@@ -388,23 +391,23 @@
           </p>
 
           <span class="example">
-            happy → appyheg
+            happy → åppyhęg
           </span>
 
           <span class="example">
-            with → ithweg
+            with → ïthwęg
           </span>
 
           <span class="example">
-            street → eetstreg
+            street → ęętstręg
           </span>
 
           <span class="example">
-            thy → ytheg
+            thy → ythęg
           </span>
 
           <span class="example">
-            yes → esyeg
+            yes → ęsyęg
           </span>
         </article>
 
@@ -417,11 +420,15 @@
           </p>
 
           <span class="example">
-            can't → an'tceg
+            can't → ån'tcęg
           </span>
 
           <span class="example">
-            let's → et'sleg
+            let's → ęt'slęg
+          </span>
+
+          <span class="example">
+            I'm → Sï'męg
           </span>
         </article>
       </div>
@@ -484,6 +491,35 @@
     */
     const normalVowelPattern = /[aeiou]/i;
 
+    /*
+      These characters are always used in the final
+      translated output.
+
+      Lowercase:
+      a → å
+      e → ę
+      i → ï
+      o → ø
+
+      Uppercase:
+      A → Å
+      E → Ę
+      I → Ï
+      O → Ø
+
+      U remains unchanged.
+    */
+    const outputVowelMap = {
+      a: "å",
+      A: "Å",
+      e: "ę",
+      E: "Ę",
+      i: "ï",
+      I: "Ï",
+      o: "ø",
+      O: "Ø"
+    };
+
     function capitalizeFirstLetter(text) {
       if (!text) {
         return text;
@@ -496,12 +532,27 @@
     }
 
     /*
-      Finds the vowel that controls the translation.
+      Converts every A, E, I, and O in the finished
+      translated word into its required marked form.
 
-      Normal vowels always have priority.
+      Capitalization is preserved.
+    */
+    function styleOutputVowels(text) {
+      return text.replace(
+        /[aAeEiIoO]/g,
+        function (vowel) {
+          return outputVowelMap[vowel];
+        }
+      );
+    }
 
-      Y is considered a vowel only when there is no
-      A, E, I, O, or U anywhere in the word.
+    /*
+      Finds the vowel that controls the word movement.
+
+      A, E, I, O, and U always have priority.
+
+      Y is considered a vowel only when the word contains
+      no A, E, I, O, or U anywhere.
     */
     function findFirstVowelIndex(word) {
       const normalVowelIndex =
@@ -525,7 +576,7 @@
         Apostrophes are removed only while checking
         capitalization.
 
-        They remain in the translated word itself.
+        They remain inside the translated word.
       */
       const lettersOnly =
         word.replace(/['’]/g, "");
@@ -534,7 +585,7 @@
         findFirstVowelIndex(lowerWord);
 
       /*
-        If the selected vowel is the first letter,
+        If the selected vowel is the first character,
         the word counts as vowel-starting.
       */
       const startsWithVowel =
@@ -548,10 +599,6 @@
         am
         s + am + eg
         sameg
-
-        eye
-        s + eye + eg
-        seyeeg
       */
       if (startsWithVowel) {
         translatedWord =
@@ -613,7 +660,10 @@
       /*
         Preserve words typed in ALL CAPS.
 
-        USA → SUSAEG
+        USA:
+        susaeg
+        SUSAEG
+        SUSÅĘG after vowel styling
       */
       const wasAllCaps =
         lettersOnly.length > 1 &&
@@ -621,30 +671,45 @@
           lettersOnly.toUpperCase();
 
       if (wasAllCaps) {
-        return translatedWord.toUpperCase();
+        translatedWord =
+          translatedWord.toUpperCase();
       }
 
       /*
         Capitalize:
 
         1. Words that were originally capitalized.
-        2. The first translated word of a sentence.
+        2. The first translated word of each sentence.
       */
-      const wasCapitalized =
-        lettersOnly.length > 0 &&
-        lettersOnly.charAt(0) ===
-          lettersOnly.charAt(0).toUpperCase();
+      else {
+        const wasCapitalized =
+          lettersOnly.length > 0 &&
+          lettersOnly.charAt(0) ===
+            lettersOnly.charAt(0).toUpperCase();
 
-      if (
-        sentenceBeginning ||
-        wasCapitalized
-      ) {
-        return capitalizeFirstLetter(
-          translatedWord
-        );
+        if (
+          sentenceBeginning ||
+          wasCapitalized
+        ) {
+          translatedWord =
+            capitalizeFirstLetter(
+              translatedWord
+            );
+        }
       }
 
-      return translatedWord;
+      /*
+        Apply the special vowel characters last.
+
+        This makes sure capitalization is already correct:
+
+        Appyheg → Åppyhęg
+        Sieg → Sïęg
+        SUSAEG → SUSÅĘG
+      */
+      return styleOutputVowels(
+        translatedWord
+      );
     }
 
     function translateText(text) {
@@ -762,7 +827,8 @@
 
     function loadExample() {
       englishInput.value =
-        "I am with him. Thy kingdom come. " +
+        "I am very tired, my friend. " +
+        "Thy kingdom come. " +
         "Yes, happy people can't stay sad forever. " +
         "Let's go!";
 
