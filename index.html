@@ -273,8 +273,9 @@
       <p class="description">
         Words beginning with a vowel receive an S at the beginning
         and EG at the end. Words beginning with consonants move their
-        opening consonant cluster to the end and add EG. Y acts as a
-        vowel only when a word contains no A, E, I, O, or U.
+        opening consonant cluster to the end and add EG. The pair QU
+        is treated as one consonant unit at the beginning of a word.
+        Y acts as a vowel only when a word contains no A, E, I, O, or U.
         In the translated output, A, E, I, and O are always written
         as Å, Ę, Ï, and Ø.
       </p>
@@ -386,8 +387,8 @@
 
           <p>
             Move every consonant before the first vowel to the end,
-            then add EG. Y becomes a vowel only when no A, E, I, O,
-            or U exists.
+            then add EG. QU stays together as one consonant pair.
+            Y becomes a vowel only when no A, E, I, O, or U exists.
           </p>
 
           <span class="example">
@@ -400,6 +401,10 @@
 
           <span class="example">
             street → ęętstręg
+          </span>
+
+          <span class="example">
+            quick → ïckquęg
           </span>
 
           <span class="example">
@@ -549,20 +554,52 @@
     /*
       Finds the vowel that controls the word movement.
 
-      A, E, I, O, and U always have priority.
+      A, E, I, O, and U normally have priority.
+
+      If a word begins with QU, the U is treated as
+      part of the opening consonant cluster rather
+      than as the first vowel.
+
+      Examples:
+
+      quick:
+      QU stays together.
+      The controlling vowel is I.
+      quick → ickqueg
+
+      question:
+      QU stays together.
+      The controlling vowel is E.
+      question → estionqueg
 
       Y is considered a vowel only when the word contains
-      no A, E, I, O, or U anywhere.
+      no usable A, E, I, O, or U.
     */
     function findFirstVowelIndex(word) {
+      const searchStart =
+        word.startsWith("qu")
+          ? 2
+          : 0;
+
+      const searchablePart =
+        word.slice(searchStart);
+
       const normalVowelIndex =
-        word.search(normalVowelPattern);
+        searchablePart.search(
+          normalVowelPattern
+        );
 
       if (normalVowelIndex !== -1) {
-        return normalVowelIndex;
+        return (
+          searchStart +
+          normalVowelIndex
+        );
       }
 
-      return word.indexOf("y");
+      return word.indexOf(
+        "y",
+        searchStart
+      );
     }
 
     function translateWord(
@@ -630,6 +667,10 @@
         street
         eet + str + eg
         eetstreg
+
+        quick
+        ick + qu + eg
+        ickqueg
 
         thy
         y + th + eg
@@ -705,6 +746,7 @@
 
         Appyheg → Åppyhęg
         Sieg → Sïęg
+        Ickqueg → Ïckquęg
         SUSAEG → SUSÅĘG
       */
       return styleOutputVowels(
@@ -828,6 +870,7 @@
     function loadExample() {
       englishInput.value =
         "I am very tired, my friend. " +
+        "Quick questions require quick answers. " +
         "Thy kingdom come. " +
         "Yes, happy people can't stay sad forever. " +
         "Let's go!";
