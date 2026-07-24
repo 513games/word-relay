@@ -196,13 +196,18 @@
       crap → apcreg<br>
       car → arceg<br>
       ear → seareg<br>
-      quick → ickqueg
+      quick → ickqueg<br>
+      I am → Sieg sameg<br>
+      I’m → Si’meg
     </div>
   </main>
 
   <script>
-    const inputText = document.getElementById("inputText");
-    const outputText = document.getElementById("outputText");
+    const inputText =
+      document.getElementById("inputText");
+
+    const outputText =
+      document.getElementById("outputText");
 
     const translateButton =
       document.getElementById("translateButton");
@@ -222,7 +227,7 @@
       const word = originalWord.toLowerCase();
 
       if (!word) {
-        return word;
+        return "";
       }
 
       let translatedWord = "";
@@ -230,39 +235,31 @@
       /*
         Vowel-starting words:
 
-        ear → s + ear + eg
         ear → seareg
+        I → Sieg
+        I'm → Si'meg
       */
       if (vowels.includes(word[0])) {
         translatedWord = "s" + word + "eg";
-      }
-
-      /*
-        Consonant-starting words:
-
-        car → ar + c + eg
-        crap → ap + cr + eg
-
-        QU is treated as a consonant unit:
-
-        quick → ick + qu + eg
-      */
-      else {
+      } else {
         let firstVowelPosition = 0;
 
+        /*
+          Find the first vowel.
+
+          QU is treated as one consonant unit:
+
+          quick → ickqueg
+          queen → eenqueg
+          square → aresqueg
+        */
         while (firstVowelPosition < word.length) {
-          const currentLetter = word[firstVowelPosition];
-          const nextLetter = word[firstVowelPosition + 1];
+          const currentLetter =
+            word[firstVowelPosition];
 
-          /*
-            Treat QU as one consonant unit.
+          const nextLetter =
+            word[firstVowelPosition + 1];
 
-            This also handles words such as:
-
-            quick
-            queen
-            squash
-          */
           if (
             currentLetter === "q" &&
             nextLetter === "u"
@@ -279,8 +276,8 @@
         }
 
         /*
-          If the word contains no regular vowel,
-          simply add -eg.
+          Words without a regular vowel
+          simply receive -eg.
         */
         if (firstVowelPosition >= word.length) {
           translatedWord = word + "eg";
@@ -292,49 +289,44 @@
             word.slice(firstVowelPosition);
 
           translatedWord =
-            restOfWord + consonantCluster + "eg";
+            restOfWord +
+            consonantCluster +
+            "eg";
         }
       }
 
-      return matchCapitalization(
-        originalWord,
-        translatedWord
-      );
-    }
-
-    function matchCapitalization(original, translated) {
       /*
-        ALL CAPS remains ALL CAPS.
-      */
-      if (
-        original === original.toUpperCase() &&
-        original !== original.toLowerCase()
-      ) {
-        return translated.toUpperCase();
-      }
+        Capitalize only the first letter when
+        the original word begins with a capital.
 
-      /*
-        A capitalized word stays capitalized.
+        I → Sieg
+        I'm → Si'meg
+        CRAP → Apcreg
       */
-      if (
-        original[0] === original[0].toUpperCase()
-      ) {
+      const beginsWithCapital =
+        originalWord[0] ===
+        originalWord[0].toUpperCase();
+
+      if (beginsWithCapital) {
         return (
-          translated[0].toUpperCase() +
-          translated.slice(1)
+          translatedWord[0].toUpperCase() +
+          translatedWord.slice(1)
         );
       }
 
-      return translated;
+      return translatedWord;
     }
 
     function translateText(text) {
       /*
-        Find each English word while preserving
-        spaces and punctuation.
+        Preserve contractions as one word.
+
+        Supports both:
+        I'm
+        I’m
       */
       return text.replace(
-        /[A-Za-z]+/g,
+        /[A-Za-z]+(?:['’][A-Za-z]+)*/g,
         translateWord
       );
     }
@@ -365,6 +357,7 @@
         if (!outputText.value) {
           message.textContent =
             "There is nothing to copy.";
+
           return;
         }
 
