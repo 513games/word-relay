@@ -535,10 +535,7 @@
       Capitalization is preserved.
     */
     function styleOutputVowels(text) {
-      return text.replace(
-        /[aAeEiIoOuU]/g,
-        function (vowel) {
-          return outputVowelMap[vowel];
+      return text;
         }
       );
     }
