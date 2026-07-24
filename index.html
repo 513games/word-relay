@@ -1,893 +1,485 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>S-EG Translator</title>
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<style>
+:root{
+--bg:#0d1117;
+--panel:#161b22;
+--input:#21262d;
+--border:#30363d;
+--text:#f0f6fc;
+--muted:#8b949e;
+--accent:#58a6ff;
+--accent2:#79c0ff;
+}
 
-  <title>S-EG Translator</title>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
 
-  <style>
-    :root {
-      --background: #0d1117;
-      --panel: #161b22;
-      --input: #21262d;
-      --border: #30363d;
-      --text: #f0f6fc;
-      --muted: #8b949e;
-      --accent: #58a6ff;
-      --accent-hover: #79c0ff;
-      --success: #3fb950;
-    }
+body{
+background:var(--bg);
+color:var(--text);
+font-family:Arial,Helvetica,sans-serif;
+padding:30px;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+.container{
+max-width:1000px;
+margin:auto;
+}
 
-    body {
-      min-height: 100vh;
-      margin: 0;
-      padding: 40px 16px;
+h1{
+font-size:3rem;
+margin-bottom:10px;
+}
 
-      background:
-        radial-gradient(
-          circle at top left,
-          rgba(88, 166, 255, 0.15),
-          transparent 500px
-        ),
-        var(--background);
+p{
+color:var(--muted);
+margin-bottom:30px;
+line-height:1.5;
+}
 
-      color: var(--text);
+.translator{
+display:grid;
+grid-template-columns:1fr auto 1fr;
+gap:20px;
+align-items:center;
+}
 
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-    }
+.panel{
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:14px;
+padding:18px;
+}
 
-    .container {
-      width: 100%;
-      max-width: 1050px;
-      margin: 0 auto;
-    }
+.panel-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px;
+}
 
-    header {
-      margin-bottom: 30px;
-    }
+.counter{
+font-size:.85rem;
+color:var(--muted);
+}
 
-    .eyebrow {
-      margin-bottom: 8px;
-      color: var(--accent);
-      font-size: 0.78rem;
-      font-weight: bold;
-      letter-spacing: 0.15em;
-    }
+.status{
+font-size:.85rem;
+color:#4ade80;
+}
 
-    h1 {
-      margin: 0 0 12px;
-      font-size: clamp(2.4rem, 7vw, 4.5rem);
-      letter-spacing: -0.05em;
-    }
+textarea{
+width:100%;
+height:260px;
+resize:vertical;
+padding:14px;
+font-size:1rem;
+line-height:1.6;
+background:var(--input);
+color:white;
+border:1px solid var(--border);
+border-radius:10px;
+outline:none;
+}
 
-    .description {
-      max-width: 780px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.6;
-    }
+textarea:focus{
+border-color:var(--accent);
+}
 
-    .translator {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items: center;
-      gap: 18px;
-    }
+.arrow{
+font-size:2rem;
+color:var(--accent);
+}
 
-    .panel {
-      padding: 18px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: var(--panel);
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
-    }
+.buttons{
+margin-top:14px;
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+}
 
-    .panel-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 30px;
-      margin-bottom: 10px;
-    }
+button{
+padding:10px 16px;
+border:none;
+border-radius:8px;
+font-weight:bold;
+cursor:pointer;
+}
 
-    label {
-      font-weight: bold;
-    }
+.primary{
+background:var(--accent);
+color:black;
+}
 
-    .counter,
-    .status {
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
+.primary:hover{
+background:var(--accent2);
+}
 
-    .status {
-      color: var(--success);
-    }
+.secondary{
+background:var(--input);
+color:white;
+border:1px solid var(--border);
+}
 
-    textarea {
-      width: 100%;
-      min-height: 270px;
-      padding: 16px;
-      resize: vertical;
+.clear{
+background:transparent;
+color:var(--muted);
+}
 
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      outline: none;
+.rules{
+margin-top:40px;
+}
 
-      background: var(--input);
-      color: var(--text);
+.rules h2{
+margin-bottom:18px;
+}
 
-      font: inherit;
-      font-size: 1rem;
-      line-height: 1.6;
-    }
+.rule{
+background:var(--panel);
+border:1px solid var(--border);
+padding:18px;
+border-radius:10px;
+margin-bottom:14px;
+}
 
-    textarea:focus {
-      border-color: var(--accent);
+.rule h3{
+margin-bottom:8px;
+}
 
-      box-shadow:
-        0 0 0 3px rgba(88, 166, 255, 0.18);
-    }
+.rule code{
+display:block;
+margin-top:8px;
+padding:6px;
+background:var(--input);
+border-radius:6px;
+}
 
-    .arrow {
-      color: var(--accent);
-      font-size: 2rem;
-      font-weight: bold;
-    }
+@media(max-width:800px){
 
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
-    }
+.translator{
+grid-template-columns:1fr;
+}
 
-    button {
-      min-height: 42px;
-      padding: 0 16px;
+.arrow{
+transform:rotate(90deg);
+text-align:center;
+}
 
-      border: 1px solid transparent;
-      border-radius: 9px;
+}
+</style>
 
-      cursor: pointer;
-
-      font: inherit;
-      font-weight: bold;
-
-      transition:
-        transform 0.15s ease,
-        background-color 0.15s ease;
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-    }
-
-    button:active {
-      transform: translateY(0);
-    }
-
-    .primary-button {
-      background: var(--accent);
-      color: #08111f;
-    }
-
-    .primary-button:hover {
-      background: var(--accent-hover);
-    }
-
-    .secondary-button {
-      border-color: var(--border);
-      background: var(--input);
-      color: var(--text);
-    }
-
-    .clear-button {
-      background: transparent;
-      color: var(--muted);
-    }
-
-    .rules {
-      margin-top: 40px;
-    }
-
-    .rules h2 {
-      margin-bottom: 16px;
-    }
-
-    .rule-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .rule {
-      padding: 18px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--panel);
-    }
-
-    .rule h3 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 1rem;
-    }
-
-    .rule p {
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .example {
-      display: block;
-      width: fit-content;
-      margin-top: 8px;
-      padding: 6px 9px;
-
-      border-radius: 6px;
-      background: var(--input);
-
-      font-family: monospace;
-    }
-
-    @media (max-width: 800px) {
-      .translator {
-        grid-template-columns: 1fr;
-      }
-
-      .arrow {
-        justify-self: center;
-        transform: rotate(90deg);
-      }
-
-      .rule-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
 </head>
 
 <body>
-  <main class="container">
-    <header>
-      <div class="eyebrow">
-        CUSTOM WORD CODE
-      </div>
-
-      <h1>S-EG Translator</h1>
-
-      <p class="description">
-        Words beginning with a vowel receive an S at the beginning
-        and EG at the end. Words beginning with consonants move their
-        opening consonant cluster to the end and add EG. The pair QU
-        is treated as one consonant unit at the beginning of a word.
-        Y acts as a vowel only when a word contains no A, E, I, O, or U.
-        In the translated output, A, E, I, and O are always written
-        as Å, Ę, Ï, and Ø.
-      </p>
-    </header>
-
-    <section class="translator">
-      <div class="panel">
-        <div class="panel-header">
-          <label for="englishInput">
-            English
-          </label>
-
-          <span
-            id="characterCount"
-            class="counter"
-          >
-            0 characters
-          </span>
-        </div>
-
-        <textarea
-          id="englishInput"
-          placeholder="Type English here..."
-          spellcheck="true"
-        ></textarea>
-
-        <div class="buttons">
-          <button
-            id="exampleButton"
-            class="secondary-button"
-            type="button"
-          >
-            Load example
-          </button>
-
-          <button
-            id="clearButton"
-            class="clear-button"
-            type="button"
-          >
-            Clear
-          </button>
-        </div>
-      </div>
-
-      <div class="arrow" aria-hidden="true">
-        →
-      </div>
-
-      <div class="panel">
-        <div class="panel-header">
-          <label for="translatedOutput">
-            S-EG
-          </label>
-
-          <span
-            id="statusMessage"
-            class="status"
-            role="status"
-            aria-live="polite"
-          ></span>
-        </div>
-
-        <textarea
-          id="translatedOutput"
-          placeholder="Your translation will appear here..."
-          readonly
-        ></textarea>
-
-        <div class="buttons">
-          <button
-            id="copyButton"
-            class="primary-button"
-            type="button"
-          >
-            Copy translation
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <section class="rules">
-      <h2>Rules</h2>
-
-      <div class="rule-grid">
-        <article class="rule">
-          <h3>Vowel-starting words</h3>
-
-          <p>
-            Add S to the beginning and EG to the end.
-            Then convert A, E, I, and O to their marked forms.
-          </p>
 
-          <span class="example">
-            I → Sïęg
-          </span>
-
-          <span class="example">
-            am → såmęg
-          </span>
-
-          <span class="example">
-            office → søffïcęęg
-          </span>
-        </article>
-
-        <article class="rule">
-          <h3>Consonant-starting words</h3>
+<div class="container">
 
-          <p>
-            Move every consonant before the first vowel to the end,
-            then add EG. QU stays together as one consonant pair.
-            Y becomes a vowel only when no A, E, I, O, or U exists.
-          </p>
+<h1>S-EG Translator</h1>
 
-          <span class="example">
-            happy → åppyhęg
-          </span>
-
-          <span class="example">
-            with → ïthwęg
-          </span>
-
-          <span class="example">
-            street → ęętstręg
-          </span>
-
-          <span class="example">
-            quick → ïckquęg
-          </span>
-
-          <span class="example">
-            thy → ythęg
-          </span>
-
-          <span class="example">
-            yes → ęsyęg
-          </span>
-        </article>
-
-        <article class="rule">
-          <h3>Contractions</h3>
-
-          <p>
-            Keep the apostrophe inside the word while moving the
-            opening consonant cluster.
-          </p>
-
-          <span class="example">
-            can't → ån'tcęg
-          </span>
-
-          <span class="example">
-            let's → ęt'slęg
-          </span>
-
-          <span class="example">
-            I'm → Sï'męg
-          </span>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    "use strict";
-
-    const englishInput =
-      document.getElementById("englishInput");
-
-    const translatedOutput =
-      document.getElementById("translatedOutput");
-
-    const characterCount =
-      document.getElementById("characterCount");
-
-    const statusMessage =
-      document.getElementById("statusMessage");
-
-    const exampleButton =
-      document.getElementById("exampleButton");
-
-    const clearButton =
-      document.getElementById("clearButton");
-
-    const copyButton =
-      document.getElementById("copyButton");
-
-    /*
-      Matches ordinary English words and contractions.
-
-      Examples:
-      hello
-      can't
-      let's
-      don’t
-    */
-    const wordPattern =
-      /[A-Za-z]+(?:['’][A-Za-z]+)*/g;
-
-    /*
-      A, E, I, O, and U are the normal vowels.
-
-      Y becomes a vowel only when the word contains
-      none of these normal vowels.
-
-      Examples:
-
-      thy:
-      No A, E, I, O, or U exists.
-      Y becomes the vowel.
-      thy → ytheg
-
-      yes:
-      The word contains E.
-      Y remains a consonant.
-      yes → esyeg
-    */
-    const normalVowelPattern = /[aeiou]/i;
-
-    /*
-      These characters are always used in the final
-      translated output.
-
-      Lowercase:
-      a → å
-      e → ę
-      i → ï
-      o → ø
-      u → ù
-
-      Uppercase:
-      A → Å
-      E → Ę
-      I → Ï
-      O → Ø
-      U → Ù
-    
-    */
-    const outputVowelMap = {};
-
-    function capitalizeFirstLetter(text) {
-      if (!text) {
-        return text;
-      }
-
-      return (
-        text.charAt(0).toUpperCase() +
-        text.slice(1)
-      );
-    }
-
-    /*
-      Converts every A, E, I, and O in the finished
-      translated word into its required marked form.
-
-      Capitalization is preserved.
-    */
-    function styleOutputVowels(text) {
-      return text;
-    }
-
-    /*
-      Finds the vowel that controls the word movement.
-
-      A, E, I, O, and U normally have priority.
-
-      If a word begins with QU, the U is treated as
-      part of the opening consonant cluster rather
-      than as the first vowel.
-
-      Examples:
-
-      quick:
-      QU stays together.
-      The controlling vowel is I.
-      quick → ickqueg
-
-      question:
-      QU stays together.
-      The controlling vowel is E.
-      question → estionqueg
-
-      Y is considered a vowel only when the word contains
-      no usable A, E, I, O, or U.
-    */
-    function findFirstVowelIndex(word) {
-      const searchStart =
-        word.startsWith("qu")
-          ? 2
-          : 0;
-
-      const searchablePart =
-        word.slice(searchStart);
-
-      const normalVowelIndex =
-        searchablePart.search(
-          normalVowelPattern
-        );
-
-      if (normalVowelIndex !== -1) {
-        return (
-          searchStart +
-          normalVowelIndex
-        );
-      }
-
-      return word.indexOf(
-        "y",
-        searchStart
-      );
-    }
-
-    function translateWord(
-      word,
-      sentenceBeginning = false
-    ) {
-      const lowerWord =
-        word.toLowerCase();
-
-      /*
-        Apostrophes are removed only while checking
-        capitalization.
-
-        They remain inside the translated word.
-      */
-      const lettersOnly =
-        word.replace(/['’]/g, "");
-
-      const firstVowelIndex =
-        findFirstVowelIndex(lowerWord);
-
-      /*
-        If the selected vowel is the first character,
-        the word counts as vowel-starting.
-      */
-      const startsWithVowel =
-        firstVowelIndex === 0;
-
-      let translatedWord;
-
-      /*
-        Vowel-starting rule:
-
-        am
-        s + am + eg
-        sameg
-      */
-      if (startsWithVowel) {
-        translatedWord =
-          "s" +
-          lowerWord +
-          "eg";
-      }
-
-      /*
-        Words containing no A, E, I, O, U, or Y.
-
-        Examples:
-        hmm → hmmeg
-        shh → shheg
-      */
-      else if (firstVowelIndex === -1) {
-        translatedWord =
-          lowerWord +
-          "eg";
-      }
-
-      /*
-        Consonant-starting rule:
-
-        happy
-        appy + h + eg
-        appyheg
-
-        street
-        eet + str + eg
-        eetstreg
-
-        quick
-        ick + qu + eg
-        ickqueg
-
-        thy
-        y + th + eg
-        ytheg
-
-        yes
-        es + y + eg
-        esyeg
-      */
-      else {
-        const openingConsonants =
-          lowerWord.slice(
-            0,
-            firstVowelIndex
-          );
-
-        const restOfWord =
-          lowerWord.slice(
-            firstVowelIndex
-          );
-
-        translatedWord =
-          restOfWord +
-          openingConsonants +
-          "eg";
-      }
-
-      /*
-        Preserve words typed in ALL CAPS.
-
-        USA:
-        susaeg
-        SUSAEG
-        SUSÅĘG after vowel styling
-      */
-      const wasAllCaps =
-        lettersOnly.length > 1 &&
-        lettersOnly ===
-          lettersOnly.toUpperCase();
-
-      if (wasAllCaps) {
-        translatedWord =
-          translatedWord.toUpperCase();
-      }
-
-      /*
-        Capitalize:
-
-        1. Words that were originally capitalized.
-        2. The first translated word of each sentence.
-      */
-      else {
-        const wasCapitalized =
-          lettersOnly.length > 0 &&
-          lettersOnly.charAt(0) ===
-            lettersOnly.charAt(0).toUpperCase();
-
-        if (
-          sentenceBeginning ||
-          wasCapitalized
-        ) {
-          translatedWord =
-            capitalizeFirstLetter(
-              translatedWord
-            );
-        }
-      }
-
-      /*
-        Apply the special vowel characters last.
-
-        This makes sure capitalization is already correct:
-
-        Appyheg → Åppyhęg
-        Sieg → Sïęg
-        Ickqueg → Ïckquęg
-        SUSAEG → SUSÅĘG
-      */
-      return styleOutputVowels(
-        translatedWord
-      );
-    }
-
-    function translateText(text) {
-      let beginningOfSentence = true;
-      let previousWordEnd = 0;
-
-      return text.replace(
-        wordPattern,
-
-        function (word, wordPosition) {
-          /*
-            Examine everything between the previous
-            word and the current word.
-
-            A period, question mark, exclamation point,
-            or new line makes the next word the start
-            of a new sentence.
-          */
-          const textBeforeWord =
-            text.slice(
-              previousWordEnd,
-              wordPosition
-            );
-
-          if (/[.!?\n]/.test(textBeforeWord)) {
-            beginningOfSentence = true;
-          }
-
-          const translatedWord =
-            translateWord(
-              word,
-              beginningOfSentence
-            );
-
-          beginningOfSentence = false;
-
-          previousWordEnd =
-            wordPosition +
-            word.length;
-
-          return translatedWord;
-        }
-      );
-    }
-
-    function updateTranslator() {
-      const originalText =
-        englishInput.value;
-
-      translatedOutput.value =
-        translateText(originalText);
-
-      const numberOfCharacters =
-        originalText.length;
-
-      characterCount.textContent =
-        numberOfCharacters +
-        " character" +
-        (
-          numberOfCharacters === 1
-            ? ""
-            : "s"
-        );
-
-      statusMessage.textContent = "";
-    }
-
-    async function copyTranslation() {
-      const translation =
-        translatedOutput.value;
-
-      if (!translation) {
-        statusMessage.textContent =
-          "Nothing to copy";
-
-        return;
-      }
-
-      try {
-        await navigator.clipboard.writeText(
-          translation
-        );
-
-        statusMessage.textContent =
-          "Copied!";
-      } catch (error) {
-        /*
-          Backup copy method for browsers that
-          block the Clipboard API.
-        */
-        translatedOutput.select();
-
-        document.execCommand("copy");
-
-        statusMessage.textContent =
-          "Copied!";
-      }
-
-      setTimeout(
-        function () {
-          statusMessage.textContent = "";
-        },
-        1800
-      );
-    }
-
-    function clearTranslator() {
-      englishInput.value = "";
-      translatedOutput.value = "";
-
-      updateTranslator();
-
-      englishInput.focus();
-    }
-
-    function loadExample() {
-      englishInput.value =
-        "I am very tired, my friend. " +
-        "Quick questions require quick answers. " +
-        "Thy kingdom come. " +
-        "Yes, happy people can't stay sad forever. " +
-        "Let's go!";
-
-      updateTranslator();
-
-      englishInput.focus();
-    }
-
-    englishInput.addEventListener(
-      "input",
-      updateTranslator
-    );
-
-    copyButton.addEventListener(
-      "click",
-      copyTranslation
-    );
-
-    clearButton.addEventListener(
-      "click",
-      clearTranslator
-    );
-
-    exampleButton.addEventListener(
-      "click",
-      loadExample
-    );
-
-    updateTranslator();
-  </script>
+<p>
+Words beginning with vowels become
+<strong>S + word + EG</strong>.
+Words beginning with consonants move the opening consonant
+cluster to the end and add
+<strong>EG</strong>.
+QU is treated as one consonant cluster.
+</p>
+
+<div class="translator">
+
+<div class="panel">
+
+<div class="panel-header">
+<strong>English</strong>
+<span
+id="count"
+class="counter"
+>0 characters</span>
+</div>
+
+<textarea
+id="input"
+placeholder="Type English here..."
+></textarea>
+
+<div class="buttons">
+
+<button
+id="example"
+class="secondary">
+Example
+</button>
+
+<button
+id="clear"
+class="clear">
+Clear
+</button>
+
+</div>
+
+</div>
+
+<div class="arrow">→</div>
+
+<div class="panel">
+
+<div class="panel-header">
+<strong>S-EG</strong>
+
+<span
+id="status"
+class="status">
+</span>
+
+</div>
+
+<textarea
+id="output"
+readonly
+placeholder="Translation..."
+></textarea>
+
+<div class="buttons">
+
+<button
+id="copy"
+class="primary">
+Copy
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="rules">
+
+<h2>Rules</h2>
+
+<div class="rule">
+<h3>Vowel</h3>
+
+Type:
+
+<code>
+apple
+</code>
+
+Becomes
+
+<code>
+sappleeg
+</code>
+
+</div>
+
+<div class="rule">
+
+<h3>Consonant</h3>
+
+<code>
+car → arceg
+</code>
+
+<code>
+crap → apcreg
+</code>
+
+<code>
+street → eetstreg
+</code>
+
+</div>
+
+<div class="rule">
+
+<h3>QU</h3>
+
+<code>
+quick → ickqueg
+</code>
+
+<code>
+question → estionqueg
+</code>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const input=document.getElementById("input");
+const output=document.getElementById("output");
+const count=document.getElementById("count");
+const status=document.getElementById("status");
+
+const copy=document.getElementById("copy");
+const clear=document.getElementById("clear");
+const example=document.getElementById("example");
+
+const wordPattern=/[A-Za-z]+(?:['’][A-Za-z]+)*/g;
+
+function firstVowel(word){
+
+let start=0;
+
+if(word.startsWith("qu")){
+start=2;
+}
+
+for(let i=start;i<word.length;i++){
+
+if("aeiou".includes(word[i])){
+
+return i;
+
+}
+
+}
+
+return -1;
+
+}
+
+function translateWord(word){
+
+const lower=word.toLowerCase();
+
+const vowel=firstVowel(lower);
+
+if(vowel===0){
+
+return "s"+lower+"eg";
+
+}
+
+if(vowel===-1){
+
+return lower+"eg";
+
+}
+
+const cluster=lower.slice(0,vowel);
+
+const rest=lower.slice(vowel);
+
+return rest+cluster+"eg";
+
+}
+
+function translateText(text){
+
+return text.replace(
+wordPattern,
+translateWord
+);
+
+}
+
+function update(){
+
+const original=input.value;
+
+output.value=translateText(original);
+
+count.textContent=
+original.length+
+" character"+
+(original.length===1?"":"s");
+
+status.textContent="";
+
+}
+input.addEventListener(
+"input",
+update
+);
+
+copy.addEventListener(
+"click",
+async function(){
+
+if(!output.value){
+
+status.textContent="Nothing to copy";
+
+return;
+
+}
+
+try{
+
+await navigator.clipboard.writeText(
+output.value
+);
+
+status.textContent="Copied!";
+
+}
+catch{
+
+output.select();
+
+document.execCommand("copy");
+
+status.textContent="Copied!";
+
+}
+
+setTimeout(function(){
+
+status.textContent="";
+
+},1500);
+
+}
+);
+
+clear.addEventListener(
+"click",
+function(){
+
+input.value="";
+output.value="";
+update();
+input.focus();
+
+}
+);
+
+example.addEventListener(
+"click",
+function(){
+
+input.value=
+"I am happy. " +
+"The quick brown fox jumps over the lazy dog. " +
+"Car crap street question apple ear quick.";
+
+update();
+
+input.focus();
+
+}
+);
+
+update();
+
+</script>
+
 </body>
 </html>
