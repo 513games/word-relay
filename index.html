@@ -169,6 +169,8 @@
       Vowel words stay intact and receive an ending
       based on their first vowel:
       <strong>-ak, -ek, -ik, -ok, -uk</strong>.
+      Y acts as a vowel only when a word contains
+      no A, E, I, O, or U.
     </p>
 
     <label for="inputText">English</label>
@@ -220,7 +222,12 @@
       crap → apcren<br>
       car → arcen<br>
       quick → ickquen<br>
-      store → oresten
+      store → oresten<br><br>
+
+      thy → ythen<br>
+      fly → yflen<br>
+      cry → ycren<br>
+      my → ymen
 
     </div>
 
@@ -248,13 +255,13 @@
 
 
     /*
-      Regular vowels used by the language.
+      Regular vowels.
     */
     const vowels = "aeiou";
 
 
     /*
-      Each vowel has its own ending.
+      Each regular vowel has its own ending.
 
       A → AK
       E → EK
@@ -285,14 +292,25 @@
 
 
       /*
+        Check whether the word contains
+        any regular vowel:
+        A, E, I, O, U
+      */
+      const hasRegularVowel =
+        [...word].some(letter =>
+          vowels.includes(letter)
+        );
+
+
+      /*
         --------------------------------
-        VOWEL-STARTING WORDS
+        REGULAR VOWEL-STARTING WORDS
         --------------------------------
 
         Keep the entire word intact.
 
-        The FIRST vowel determines
-        which ending gets added.
+        The first vowel determines
+        the ending.
 
         always → alwaysak
         ear    → earek
@@ -318,93 +336,122 @@
         --------------------------------
         CONSONANT-STARTING WORDS
         --------------------------------
-
-        Move the opening consonant
-        or consonant cluster to the end.
-
-        Then add EN.
-
-        car   → ar + c + en
-              → arcen
-
-        crap  → ap + cr + en
-              → apcren
-
-        store → ore + st + en
-              → oresten
       */
 
       else {
 
-        let firstVowelPosition = 0;
+        let firstVowelPosition = -1;
 
 
-        while (
-          firstVowelPosition < word.length
-        ) {
+        /*
+          --------------------------------
+          NORMAL CASE
+          --------------------------------
 
-          const currentLetter =
-            word[firstVowelPosition];
+          If the word contains A/E/I/O/U,
+          find the first one.
 
-          const nextLetter =
-            word[firstVowelPosition + 1];
+          Y remains a consonant.
 
+          yellow → ellowyen
+          year   → earyen
+        */
 
-          /*
-            QU is treated as one unit.
+        if (hasRegularVowel) {
 
-            The U in QU does NOT count
-            as the first vowel.
-
-            quick
-            qu + ick
-
-            → ick + qu + en
-            → ickquen
-          */
-
-          if (
-            currentLetter === "q" &&
-            nextLetter === "u"
+          for (
+            let i = 0;
+            i < word.length;
+            i++
           ) {
 
-            firstVowelPosition += 2;
+            const currentLetter =
+              word[i];
 
-            continue;
+            const nextLetter =
+              word[i + 1];
+
+
+            /*
+              QU is treated as one unit.
+
+              quick
+              qu + ick
+
+              → ick + qu + en
+              → ickquen
+            */
+
+            if (
+              currentLetter === "q" &&
+              nextLetter === "u"
+            ) {
+
+              i++;
+
+              continue;
+            }
+
+
+            if (
+              vowels.includes(currentLetter)
+            ) {
+
+              firstVowelPosition = i;
+
+              break;
+            }
           }
-
-
-          /*
-            Stop when the first true
-            vowel is reached.
-          */
-
-          if (
-            vowels.includes(currentLetter)
-          ) {
-
-            break;
-          }
-
-
-          firstVowelPosition++;
         }
 
 
         /*
-          If the word contains no
+          --------------------------------
+          Y FALLBACK
+          --------------------------------
+
+          If the word contains NO
           A, E, I, O, or U,
-          simply add EN.
+          then Y becomes the vowel.
+
+          thy → y + th + en
+              → ythen
+
+          fly → y + fl + en
+              → yflen
+
+          cry → y + cr + en
+              → ycren
+        */
+
+        else {
+
+          firstVowelPosition =
+            word.indexOf("y");
+        }
+
+
+        /*
+          If there is no regular vowel
+          AND no Y, simply add EN.
         */
 
         if (
-          firstVowelPosition >= word.length
+          firstVowelPosition === -1
         ) {
 
           translatedWord =
             word + "en";
+        }
 
-        } else {
+
+        /*
+          Otherwise move everything
+          before the vowel to the end
+          and add EN.
+        */
+
+        else {
 
           const consonantCluster =
             word.slice(
@@ -433,16 +480,11 @@
         --------------------------------
 
         Only preserve capitalization
-        of the FIRST LETTER.
+        of the FIRST letter.
 
-        I → Iik
-
-        Apple → Appleak
-
+        I    → Iik
         CRAP → Apcren
-
-        Everything after the first
-        character remains lowercase.
+        Thy  → Ythen
       */
 
       const beginsWithCapital =
@@ -470,7 +512,7 @@
       /*
         Treat contractions as one word.
 
-        This supports both apostrophes:
+        Supports:
 
         I'm
         I’m
@@ -511,7 +553,7 @@
 
 
     /*
-      Automatically translate
+      Translate automatically
       while typing.
     */
 
@@ -573,9 +615,7 @@
       function () {
 
         inputText.value = "";
-
         outputText.value = "";
-
         message.textContent = "";
 
         inputText.focus();
