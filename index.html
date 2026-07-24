@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>-EG Translator</title>
+  <title>-EN / -EK Translator</title>
 
   <style>
     * {
@@ -160,12 +160,13 @@
 <body>
 
   <main class="translator">
-    <h1>-EG Translator</h1>
+    <h1>-EN / -EK Translator</h1>
 
     <p class="description">
       Consonant beginnings move to the end and receive
-      <strong>-eg</strong>. Vowel beginnings receive
-      <strong>s-</strong> and <strong>-eg</strong>.
+      <strong>-en</strong>.
+      Vowel beginnings receive
+      <strong>s-</strong> and <strong>-ek</strong>.
     </p>
 
     <label for="inputText">English</label>
@@ -193,12 +194,14 @@
 
     <div class="examples">
       <strong>Examples</strong><br>
-      crap → apcreg<br>
-      car → arceg<br>
-      ear → seareg<br>
-      quick → ickqueg<br>
-      I am → Sieg sameg<br>
-      I’m → Si’meg
+      crap → apcren<br>
+      car → arcen<br>
+      ear → searek<br>
+      apple → sappleek<br>
+      quick → ickquen<br>
+      I am → Siek samek<br>
+      I’m → Si’mek<br>
+      store → oresten
     </div>
   </main>
 
@@ -233,33 +236,52 @@
       let translatedWord = "";
 
       /*
-        Vowel-starting words:
+        VOWEL-STARTING WORDS
 
-        ear → seareg
-        I → Sieg
-        I'm → Si'meg
+        Add S to the beginning
+        and EK to the end.
+
+        I      → siek
+        am     → samek
+        apple  → sappleek
+        orange → sorangeek
       */
       if (vowels.includes(word[0])) {
-        translatedWord = "s" + word + "eg";
+
+        translatedWord =
+          "s" + word + "ek";
+
       } else {
-        let firstVowelPosition = 0;
 
         /*
-          Find the first vowel.
+          CONSONANT-STARTING WORDS
 
-          QU is treated as one consonant unit:
+          Move the opening consonant
+          or consonant cluster to the end
+          and add EN.
 
-          quick → ickqueg
-          queen → eenqueg
-          square → aresqueg
-        */
-        while (firstVowelPosition < word.length) {
+          car   → ar + c + en
+          crap  → ap + cr + en
+          store → ore + st + en
+      */
+
+        let firstVowelPosition = 0;
+
+        while (
+          firstVowelPosition < word.length
+        ) {
+
           const currentLetter =
             word[firstVowelPosition];
 
           const nextLetter =
             word[firstVowelPosition + 1];
 
+          /*
+            QU is treated as one unit.
+
+            quick → ickquen
+          */
           if (
             currentLetter === "q" &&
             nextLetter === "u"
@@ -268,7 +290,9 @@
             continue;
           }
 
-          if (vowels.includes(currentLetter)) {
+          if (
+            vowels.includes(currentLetter)
+          ) {
             break;
           }
 
@@ -276,38 +300,52 @@
         }
 
         /*
-          Words without a regular vowel
-          simply receive -eg.
+          If there is no A, E, I, O, or U,
+          simply add EN.
         */
-        if (firstVowelPosition >= word.length) {
-          translatedWord = word + "eg";
+        if (
+          firstVowelPosition >= word.length
+        ) {
+
+          translatedWord =
+            word + "en";
+
         } else {
+
           const consonantCluster =
-            word.slice(0, firstVowelPosition);
+            word.slice(
+              0,
+              firstVowelPosition
+            );
 
           const restOfWord =
-            word.slice(firstVowelPosition);
+            word.slice(
+              firstVowelPosition
+            );
 
           translatedWord =
             restOfWord +
             consonantCluster +
-            "eg";
+            "en";
         }
       }
 
       /*
-        Capitalize only the first letter when
-        the original word begins with a capital.
+        Preserve capitalization,
+        but ONLY capitalize the first letter.
 
-        I → Sieg
-        I'm → Si'meg
-        CRAP → Apcreg
+        I    → Siek
+        I'm  → Si'mek
+        CRAP → Apcren
       */
       const beginsWithCapital =
-        originalWord[0] ===
-        originalWord[0].toUpperCase();
+        /^[A-Z]/.test(originalWord);
 
-      if (beginsWithCapital) {
+      if (
+        beginsWithCapital &&
+        translatedWord.length > 0
+      ) {
+
         return (
           translatedWord[0].toUpperCase() +
           translatedWord.slice(1)
@@ -318,12 +356,18 @@
     }
 
     function translateText(text) {
-      /*
-        Preserve contractions as one word.
 
-        Supports both:
+      /*
+        Treat contractions as one word.
+
+        Supports:
+
         I'm
         I’m
+        don't
+        don’t
+        I'll
+        I’ll
       */
       return text.replace(
         /[A-Za-z]+(?:['’][A-Za-z]+)*/g,
@@ -332,8 +376,11 @@
     }
 
     function runTranslation() {
+
       outputText.value =
-        translateText(inputText.value);
+        translateText(
+          inputText.value
+        );
 
       message.textContent = "";
     }
@@ -344,7 +391,8 @@
     );
 
     /*
-      Translate automatically while typing.
+      Translate automatically
+      while typing.
     */
     inputText.addEventListener(
       "input",
@@ -354,7 +402,9 @@
     copyButton.addEventListener(
       "click",
       async function () {
+
         if (!outputText.value) {
+
           message.textContent =
             "There is nothing to copy.";
 
@@ -362,15 +412,21 @@
         }
 
         try {
+
           await navigator.clipboard.writeText(
             outputText.value
           );
 
           message.textContent =
             "Translation copied!";
+
         } catch (error) {
+
           outputText.select();
-          document.execCommand("copy");
+
+          document.execCommand(
+            "copy"
+          );
 
           message.textContent =
             "Translation copied!";
@@ -381,6 +437,7 @@
     clearButton.addEventListener(
       "click",
       function () {
+
         inputText.value = "";
         outputText.value = "";
         message.textContent = "";
