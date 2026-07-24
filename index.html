@@ -164,8 +164,6 @@
     <h1>Translator</h1>
 
     <p class="description">
-      Before a vowel-starting word, add the letter
-      <strong>v</strong>.
       Vowel-starting words stay in place and receive
       <strong>-en</strong>.
       Consonant beginnings move to the end and receive
@@ -213,11 +211,11 @@
 
       <strong>Examples</strong><br><br>
 
-      eat → veăten<br>
-      act → văcten<br>
-      elephant → velephănten<br>
-      open → vøpenen<br>
-      I → Vìen<br><br>
+      eat → eăten<br>
+      act → ăcten<br>
+      elephant → elephănten<br>
+      open → øpenen<br>
+      I → Ìen<br><br>
 
       crap → ăpcren<br>
       car → ărcen<br>
@@ -350,27 +348,25 @@
         VOWEL-STARTING WORDS
         --------------------------------
 
-        Add V before the word.
-
         Keep the original word
         in its original order.
 
         Add EN.
 
         eat
-        → veaten
+        → eaten
 
         act
-        → vacten
+        → acten
 
         elephant
-        → velephanten
+        → elephanten
 
         open
-        → vopenen
+        → openen
 
         I
-        → vien
+        → ien
       */
 
       if (
@@ -378,7 +374,7 @@
       ) {
 
         translatedWord =
-          "v" + word + "en";
+          word + "en";
       }
 
 
@@ -581,7 +577,7 @@
     function translateText(text) {
 
       return text.replace(
-        /[A-Za-z]+(?:['’][A-Za-z]+)*/g,
+        /\p{L}+(?:['’]\p{L}+)*/gu,
         translateWord
       );
     }
