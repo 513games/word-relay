@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>-EN / -EK Translator</title>
+  <title>-EN Translator</title>
 
   <style>
     * {
@@ -160,13 +160,15 @@
 <body>
 
   <main class="translator">
-    <h1>-EN / -EK Translator</h1>
+
+    <h1>Translator</h1>
 
     <p class="description">
       Consonant beginnings move to the end and receive
       <strong>-en</strong>.
-      Vowel beginnings receive
-      <strong>s-</strong> and <strong>-ek</strong>.
+      Vowel words stay intact and receive an ending
+      based on their first vowel:
+      <strong>-ak, -ek, -ik, -ok, -uk</strong>.
     </p>
 
     <label for="inputText">English</label>
@@ -177,14 +179,26 @@
     ></textarea>
 
     <div class="buttons">
-      <button id="translateButton">Translate</button>
-      <button id="copyButton">Copy</button>
-      <button id="clearButton">Clear</button>
+
+      <button id="translateButton">
+        Translate
+      </button>
+
+      <button id="copyButton">
+        Copy
+      </button>
+
+      <button id="clearButton">
+        Clear
+      </button>
+
     </div>
 
     <div id="message"></div>
 
-    <label for="outputText">Translation</label>
+    <label for="outputText">
+      Translation
+    </label>
 
     <textarea
       id="outputText"
@@ -193,19 +207,27 @@
     ></textarea>
 
     <div class="examples">
+
       <strong>Examples</strong><br>
+
+      always → alwaysak<br>
+      ear → earek<br>
+      I → Iik<br>
+      inside → insideik<br>
+      open → openok<br>
+      up → upuk<br><br>
+
       crap → apcren<br>
       car → arcen<br>
-      ear → searek<br>
-      apple → sappleek<br>
       quick → ickquen<br>
-      I am → Siek samek<br>
-      I’m → Si’mek<br>
       store → oresten
+
     </div>
+
   </main>
 
   <script>
+
     const inputText =
       document.getElementById("inputText");
 
@@ -224,48 +246,98 @@
     const message =
       document.getElementById("message");
 
+
+    /*
+      Regular vowels used by the language.
+    */
     const vowels = "aeiou";
 
+
+    /*
+      Each vowel has its own ending.
+
+      A → AK
+      E → EK
+      I → IK
+      O → OK
+      U → UK
+    */
+    const vowelEndings = {
+      a: "ak",
+      e: "ek",
+      i: "ik",
+      o: "ok",
+      u: "uk"
+    };
+
+
     function translateWord(originalWord) {
-      const word = originalWord.toLowerCase();
+
+      const word =
+        originalWord.toLowerCase();
 
       if (!word) {
         return "";
       }
 
+
       let translatedWord = "";
 
+
       /*
+        --------------------------------
         VOWEL-STARTING WORDS
+        --------------------------------
 
-        Add S to the beginning
-        and EK to the end.
+        Keep the entire word intact.
 
-        I      → siek
-        am     → samek
-        apple  → sappleek
-        orange → sorangeek
+        The FIRST vowel determines
+        which ending gets added.
+
+        always → alwaysak
+        ear    → earek
+        I      → iik
+        open   → openok
+        under  → underuk
       */
+
       if (vowels.includes(word[0])) {
 
+        const firstVowel =
+          word[0];
+
+        const ending =
+          vowelEndings[firstVowel];
+
         translatedWord =
-          "s" + word + "ek";
+          word + ending;
+      }
 
-      } else {
 
-        /*
-          CONSONANT-STARTING WORDS
+      /*
+        --------------------------------
+        CONSONANT-STARTING WORDS
+        --------------------------------
 
-          Move the opening consonant
-          or consonant cluster to the end
-          and add EN.
+        Move the opening consonant
+        or consonant cluster to the end.
 
-          car   → ar + c + en
-          crap  → ap + cr + en
-          store → ore + st + en
+        Then add EN.
+
+        car   → ar + c + en
+              → arcen
+
+        crap  → ap + cr + en
+              → apcren
+
+        store → ore + st + en
+              → oresten
       */
 
+      else {
+
         let firstVowelPosition = 0;
+
 
         while (
           firstVowelPosition < word.length
@@ -277,32 +349,54 @@
           const nextLetter =
             word[firstVowelPosition + 1];
 
+
           /*
             QU is treated as one unit.
 
-            quick → ickquen
+            The U in QU does NOT count
+            as the first vowel.
+
+            quick
+            qu + ick
+
+            → ick + qu + en
+            → ickquen
           */
+
           if (
             currentLetter === "q" &&
             nextLetter === "u"
           ) {
+
             firstVowelPosition += 2;
+
             continue;
           }
+
+
+          /*
+            Stop when the first true
+            vowel is reached.
+          */
 
           if (
             vowels.includes(currentLetter)
           ) {
+
             break;
           }
+
 
           firstVowelPosition++;
         }
 
+
         /*
-          If there is no A, E, I, O, or U,
+          If the word contains no
+          A, E, I, O, or U,
           simply add EN.
         */
+
         if (
           firstVowelPosition >= word.length
         ) {
@@ -318,10 +412,12 @@
               firstVowelPosition
             );
 
+
           const restOfWord =
             word.slice(
               firstVowelPosition
             );
+
 
           translatedWord =
             restOfWord +
@@ -330,16 +426,28 @@
         }
       }
 
-      /*
-        Preserve capitalization,
-        but ONLY capitalize the first letter.
 
-        I    → Siek
-        I'm  → Si'mek
+      /*
+        --------------------------------
+        CAPITALIZATION
+        --------------------------------
+
+        Only preserve capitalization
+        of the FIRST LETTER.
+
+        I → Iik
+
+        Apple → Appleak
+
         CRAP → Apcren
+
+        Everything after the first
+        character remains lowercase.
       */
+
       const beginsWithCapital =
         /^[A-Z]/.test(originalWord);
+
 
       if (
         beginsWithCapital &&
@@ -352,28 +460,34 @@
         );
       }
 
+
       return translatedWord;
     }
+
 
     function translateText(text) {
 
       /*
         Treat contractions as one word.
 
-        Supports:
+        This supports both apostrophes:
 
         I'm
         I’m
+
         don't
         don’t
+
         I'll
         I’ll
       */
+
       return text.replace(
         /[A-Za-z]+(?:['’][A-Za-z]+)*/g,
         translateWord
       );
     }
+
 
     function runTranslation() {
 
@@ -385,22 +499,35 @@
       message.textContent = "";
     }
 
+
+    /*
+      Translate button
+    */
+
     translateButton.addEventListener(
       "click",
       runTranslation
     );
 
+
     /*
-      Translate automatically
+      Automatically translate
       while typing.
     */
+
     inputText.addEventListener(
       "input",
       runTranslation
     );
 
+
+    /*
+      Copy button
+    */
+
     copyButton.addEventListener(
       "click",
+
       async function () {
 
         if (!outputText.value) {
@@ -410,6 +537,7 @@
 
           return;
         }
+
 
         try {
 
@@ -434,17 +562,26 @@
       }
     );
 
+
+    /*
+      Clear button
+    */
+
     clearButton.addEventListener(
       "click",
+
       function () {
 
         inputText.value = "";
+
         outputText.value = "";
+
         message.textContent = "";
 
         inputText.focus();
       }
     );
+
   </script>
 
 </body>
