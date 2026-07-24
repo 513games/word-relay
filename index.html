@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>-EN Translator</title>
+  <title>Translator</title>
 
   <style>
     * {
@@ -164,11 +164,10 @@
     <h1>Translator</h1>
 
     <p class="description">
+      Vowel words receive
+      <strong>s-</strong> and <strong>-ek</strong>.
       Consonant beginnings move to the end and receive
       <strong>-en</strong>.
-      Vowel words stay intact and receive an ending
-      based on their first vowel:
-      <strong>-ak, -ek, -ik, -ok, -uk</strong>.
       Y acts as a vowel only when a word contains
       no A, E, I, O, or U.
     </p>
@@ -210,19 +209,20 @@
 
     <div class="examples">
 
-      <strong>Examples</strong><br>
+      <strong>Examples</strong><br><br>
 
-      always → alwaysak<br>
-      ear → earek<br>
-      I → Iik<br>
-      inside → insideik<br>
-      open → openok<br>
-      up → upuk<br><br>
+      I → Sìek<br>
+      am → sămek<br>
+      apple → săppleek<br>
+      open → søpenek<br>
+      inside → sìnsìdeek<br>
+      around → sărøundek<br><br>
 
-      crap → apcren<br>
-      car → arcen<br>
-      quick → ickquen<br>
-      store → oresten<br><br>
+      crap → ăpcren<br>
+      car → ărcen<br>
+      quick → ìckquen<br>
+      store → øresten<br>
+      going → øìnggen<br><br>
 
       thy → ythen<br>
       fly → yflen<br>
@@ -255,27 +255,39 @@
 
 
     /*
-      Regular vowels.
+      Regular vowels used to determine
+      how a word is transformed.
+
+      Y is handled separately.
     */
     const vowels = "aeiou";
 
 
     /*
-      Each regular vowel has its own ending.
+      Apply the special written characters
+      AFTER the word has been translated.
 
-      A → AK
-      E → EK
-      I → IK
-      O → OK
-      U → UK
+      a → ă
+      o → ø
+      i → ì
+
+      Uppercase:
+      A → Ă
+      O → Ø
+      I → Ì
+
+      E and U remain unchanged.
     */
-    const vowelEndings = {
-      a: "ak",
-      e: "ek",
-      i: "ik",
-      o: "ok",
-      u: "uk"
-    };
+    function applySpecialLetters(text) {
+
+      return text
+        .replace(/a/g, "ă")
+        .replace(/A/g, "Ă")
+        .replace(/o/g, "ø")
+        .replace(/O/g, "Ø")
+        .replace(/i/g, "ì")
+        .replace(/I/g, "Ì");
+    }
 
 
     function translateWord(originalWord) {
@@ -293,8 +305,7 @@
 
       /*
         Check whether the word contains
-        any regular vowel:
-        A, E, I, O, U
+        A, E, I, O, or U.
       */
       const hasRegularVowel =
         [...word].some(letter =>
@@ -304,31 +315,24 @@
 
       /*
         --------------------------------
-        REGULAR VOWEL-STARTING WORDS
+        VOWEL-STARTING WORDS
         --------------------------------
 
-        Keep the entire word intact.
+        Add S to the beginning
+        and EK to the end.
 
-        The first vowel determines
-        the ending.
-
-        always → alwaysak
-        ear    → earek
-        I      → iik
-        open   → openok
-        under  → underuk
+        I       → siek
+        am      → samek
+        apple   → sappleek
+        open    → sopenek
+        inside  → sinsideek
+        around  → saroundek
       */
 
       if (vowels.includes(word[0])) {
 
-        const firstVowel =
-          word[0];
-
-        const ending =
-          vowelEndings[firstVowel];
-
         translatedWord =
-          word + ending;
+          "s" + word + "ek";
       }
 
 
@@ -336,6 +340,23 @@
         --------------------------------
         CONSONANT-STARTING WORDS
         --------------------------------
+
+        Move the opening consonant
+        or consonant cluster to the end.
+
+        Then add EN.
+
+        car
+        → ar + c + en
+        → arcen
+
+        crap
+        → ap + cr + en
+        → apcren
+
+        store
+        → ore + st + en
+        → oresten
       */
 
       else {
@@ -344,17 +365,10 @@
 
 
         /*
-          --------------------------------
-          NORMAL CASE
-          --------------------------------
+          If the word contains a regular vowel,
+          find the first A/E/I/O/U.
 
-          If the word contains A/E/I/O/U,
-          find the first one.
-
-          Y remains a consonant.
-
-          yellow → ellowyen
-          year   → earyen
+          Y remains a consonant in these words.
         */
 
         if (hasRegularVowel) {
@@ -373,13 +387,16 @@
 
 
             /*
-              QU is treated as one unit.
+              QU is treated as one
+              consonant unit.
 
               quick
-              qu + ick
-
               → ick + qu + en
               → ickquen
+
+              The U belonging to QU
+              is NOT treated as the
+              first vowel.
             */
 
             if (
@@ -412,16 +429,23 @@
 
           If the word contains NO
           A, E, I, O, or U,
-          then Y becomes the vowel.
+          Y acts as the vowel.
 
-          thy → y + th + en
-              → ythen
+          thy
+          → y + th + en
+          → ythen
 
-          fly → y + fl + en
-              → yflen
+          fly
+          → y + fl + en
+          → yflen
 
-          cry → y + cr + en
-              → ycren
+          cry
+          → y + cr + en
+          → ycren
+
+          my
+          → y + m + en
+          → ymen
         */
 
         else {
@@ -433,7 +457,7 @@
 
         /*
           If there is no regular vowel
-          AND no Y, simply add EN.
+          and no Y, simply add EN.
         */
 
         if (
@@ -446,8 +470,8 @@
 
 
         /*
-          Otherwise move everything
-          before the vowel to the end
+          Move the opening consonant
+          or consonant cluster to the end
           and add EN.
         */
 
@@ -479,12 +503,15 @@
         CAPITALIZATION
         --------------------------------
 
-        Only preserve capitalization
-        of the FIRST letter.
+        Preserve ONLY initial
+        capitalization.
 
-        I    → Iik
+        I → Siek
+        Apple → Sappleek
         CRAP → Apcren
-        Thy  → Ythen
+
+        We do this BEFORE applying
+        the special characters.
       */
 
       const beginsWithCapital =
@@ -496,11 +523,33 @@
         translatedWord.length > 0
       ) {
 
-        return (
+        translatedWord =
           translatedWord[0].toUpperCase() +
-          translatedWord.slice(1)
-        );
+          translatedWord.slice(1);
       }
+
+
+      /*
+        --------------------------------
+        SPECIAL LETTERS
+        --------------------------------
+
+        Apply the spelling changes
+        to the finished translated word.
+
+        a → ă
+        o → ø
+        i → ì
+
+        A → Ă
+        O → Ø
+        I → Ì
+      */
+
+      translatedWord =
+        applySpecialLetters(
+          translatedWord
+        );
 
 
       return translatedWord;
@@ -512,7 +561,7 @@
       /*
         Treat contractions as one word.
 
-        Supports:
+        Supports both apostrophe styles:
 
         I'm
         I’m
@@ -615,7 +664,9 @@
       function () {
 
         inputText.value = "";
+
         outputText.value = "";
+
         message.textContent = "";
 
         inputText.focus();
