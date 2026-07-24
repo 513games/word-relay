@@ -164,12 +164,15 @@
     <h1>Translator</h1>
 
     <p class="description">
-      Nouns stay in normal English order and receive
+      Vowel-starting words stay in place and receive
       <strong>-en</strong>.
-     
+      Consonant beginnings move to the end and receive
+      <strong>-en</strong>.
     </p>
 
-    <label for="inputText">English</label>
+    <label for="inputText">
+      English
+    </label>
 
     <textarea
       id="inputText"
@@ -200,7 +203,7 @@
 
     <textarea
       id="outputText"
-      placeholder="Your translation will appear here.."
+      placeholder="Your translation will appear here..."
       readonly
     ></textarea>
 
@@ -208,22 +211,16 @@
 
       <strong>Examples</strong><br><br>
 
-      dog → døgen<br>
-      person → persønen<br>
-      apple → ăppleen<br>
-      orange → ørăngeen<br>
-      car → căren<br>
-      friend → ìenden<br><br>
+      eat → eaten<br>
+      act → ăcten<br>
+      elephant → elephănten<br>
+      open → øpenen<br>
+      I → Ìen<br><br>
 
-      I → Sìek<br>
-      am → sămek<br>
-      open → søpenek<br>
-      around → sărøundek<br><br>
-
-      good → øødgen<br>
-      think → ìnkthen<br>
-      quick → ìckquen<br>
-      probably → øbăblypren<br><br>
+      crap → ăpcren<br>
+      car → ărcen<br>
+      store → øresten<br>
+      quick → ìckquen<br><br>
 
       thy → ythen<br>
       fly → yflen<br>
@@ -262,371 +259,9 @@
 
 
     /*
-      ==================================================
-      NOUN LIST
-      ==================================================
-
-      Words in this list:
-
-      1. stay in normal English order
-      2. receive EN
-      3. receive the special spelling changes
-
-      Add more nouns whenever you need them.
-    */
-
-    const nouns = new Set([
-
-      // PEOPLE
-      "person",
-      "people",
-      "man",
-      "men",
-      "woman",
-      "women",
-      "boy",
-      "boys",
-      "girl",
-      "girls",
-      "child",
-      "children",
-      "baby",
-      "babies",
-      "friend",
-      "friends",
-      "family",
-      "father",
-      "mother",
-      "dad",
-      "mom",
-      "brother",
-      "sister",
-      "son",
-      "daughter",
-      "husband",
-      "wife",
-      "teacher",
-      "student",
-      "doctor",
-      "nurse",
-      "worker",
-      "customer",
-      "boss",
-      "king",
-      "queen",
-      "knight",
-      "soldier",
-      "president",
-
-      // ANIMALS
-      "dog",
-      "dogs",
-      "cat",
-      "cats",
-      "bird",
-      "birds",
-      "fish",
-      "horse",
-      "horses",
-      "cow",
-      "cows",
-      "pig",
-      "pigs",
-      "chicken",
-      "chickens",
-      "lion",
-      "lions",
-      "tiger",
-      "tigers",
-      "bear",
-      "bears",
-
-      // PLACES
-      "house",
-      "home",
-      "room",
-      "rooms",
-      "bathroom",
-      "bathrooms",
-      "bedroom",
-      "bedrooms",
-      "kitchen",
-      "office",
-      "offices",
-      "school",
-      "schools",
-      "church",
-      "churches",
-      "store",
-      "stores",
-      "shop",
-      "shops",
-      "restaurant",
-      "restaurants",
-      "city",
-      "cities",
-      "town",
-      "towns",
-      "country",
-      "countries",
-      "street",
-      "streets",
-      "road",
-      "roads",
-      "park",
-      "parks",
-      "beach",
-      "beaches",
-      "hospital",
-      "hospitals",
-      "airport",
-      "airports",
-      "station",
-      "stations",
-      "building",
-      "buildings",
-      "hotel",
-      "hotels",
-
-      // VEHICLES
-      "car",
-      "cars",
-      "truck",
-      "trucks",
-      "bus",
-      "buses",
-      "train",
-      "trains",
-      "plane",
-      "planes",
-      "boat",
-      "boats",
-      "ship",
-      "ships",
-      "bike",
-      "bikes",
-      "bicycle",
-      "bicycles",
-
-      // OBJECTS
-      "phone",
-      "phones",
-      "computer",
-      "computers",
-      "table",
-      "tables",
-      "chair",
-      "chairs",
-      "bed",
-      "beds",
-      "door",
-      "doors",
-      "window",
-      "windows",
-      "book",
-      "books",
-      "paper",
-      "papers",
-      "pen",
-      "pens",
-      "pencil",
-      "pencils",
-      "cup",
-      "cups",
-      "glass",
-      "glasses",
-      "bottle",
-      "bottles",
-      "plate",
-      "plates",
-      "fork",
-      "forks",
-      "knife",
-      "knives",
-      "spoon",
-      "spoons",
-      "bag",
-      "bags",
-      "box",
-      "boxes",
-      "shirt",
-      "shirts",
-      "shoe",
-      "shoes",
-      "hat",
-      "hats",
-      "helmet",
-      "helmets",
-      "mask",
-      "masks",
-      "skull",
-      "skulls",
-      "flag",
-      "flags",
-      "board",
-      "boards",
-
-      // CHESS
-      "king",
-      "kings",
-      "queen",
-      "queens",
-      "rook",
-      "rooks",
-      "bishop",
-      "bishops",
-      "knight",
-      "knights",
-      "pawn",
-      "pawns",
-
-      // FOOD
-      "food",
-      "bread",
-      "rice",
-      "bean",
-      "beans",
-      "pizza",
-      "apple",
-      "apples",
-      "orange",
-      "oranges",
-      "banana",
-      "bananas",
-      "egg",
-      "eggs",
-      "meat",
-      "chicken",
-      "beef",
-      "fish",
-      "cheese",
-      "milk",
-      "water",
-      "coffee",
-      "tea",
-
-      // TIME
-      "day",
-      "days",
-      "night",
-      "nights",
-      "morning",
-      "mornings",
-      "afternoon",
-      "afternoons",
-      "evening",
-      "evenings",
-      "week",
-      "weeks",
-      "month",
-      "months",
-      "year",
-      "years",
-      "hour",
-      "hours",
-      "minute",
-      "minutes",
-      "time",
-      "times",
-
-      // BODY
-      "head",
-      "heads",
-      "face",
-      "faces",
-      "eye",
-      "eyes",
-      "ear",
-      "ears",
-      "nose",
-      "noses",
-      "mouth",
-      "mouths",
-      "hand",
-      "hands",
-      "arm",
-      "arms",
-      "leg",
-      "legs",
-      "foot",
-      "feet",
-      "body",
-      "bodies",
-      "hair",
-      "heart",
-      "hearts",
-
-      // NATURE
-      "sun",
-      "moon",
-      "star",
-      "stars",
-      "sky",
-      "rain",
-      "snow",
-      "wind",
-      "tree",
-      "trees",
-      "flower",
-      "flowers",
-      "river",
-      "rivers",
-      "lake",
-      "lakes",
-      "ocean",
-      "oceans",
-      "sea",
-      "seas",
-      "mountain",
-      "mountains",
-      "earth",
-
-      // ABSTRACT / COMMON NOUNS
-      "life",
-      "love",
-      "war",
-      "peace",
-      "work",
-      "job",
-      "jobs",
-      "money",
-      "game",
-      "games",
-      "music",
-      "language",
-      "languages",
-      "word",
-      "words",
-      "name",
-      "names",
-      "idea",
-      "ideas",
-      "problem",
-      "problems",
-      "question",
-      "questions",
-      "answer",
-      "answers",
-      "thing",
-      "things",
-      "way",
-      "ways",
-      "place",
-      "places",
-      "part",
-      "parts",
-      "world",
-      "company",
-      "companies",
-      "product",
-      "products"
-    ]);
-
-
-    /*
-      ==================================================
+      --------------------------------
       SPECIAL LETTERS
-      ==================================================
+      --------------------------------
 
       a → ă
       o → ø
@@ -652,7 +287,15 @@
 
 
     /*
-      Preserve only initial capitalization.
+      --------------------------------
+      CAPITALIZATION
+      --------------------------------
+
+      Preserve only the first
+      capital letter.
+
+      Car → Arcen
+      CRAP → Apcren
     */
 
     function preserveCapitalization(
@@ -681,9 +324,9 @@
 
 
     /*
-      ==================================================
+      --------------------------------
       TRANSLATE ONE WORD
-      ==================================================
+      --------------------------------
     */
 
     function translateWord(originalWord) {
@@ -701,92 +344,29 @@
 
 
       /*
-        ==================================================
-        NOUN RULE
-        ==================================================
+        --------------------------------
+        VOWEL-STARTING WORDS
+        --------------------------------
 
-        Nouns are NOT scrambled.
+        Keep the word exactly
+        in its original order.
 
-        Nouns are NOT given any prefix.
+        Add EN.
 
-        Nouns simply remain in normal
-        English spelling order and receive EN.
+        eat
+        → eaten
 
-        dog
-        → dogen
-        → døgen
+        act
+        → acten
 
-        person
-        → personen
-        → persønen
-
-        apple
-        → appleen
-        → ăppleen
-
-        orange
-        → orangeen
-        → ørăngeen
-
-        car
-        → caren
-        → căren
-      */
-
-      if (nouns.has(word)) {
-
-        translatedWord =
-          word + "en";
-
-
-        translatedWord =
-          preserveCapitalization(
-            originalWord,
-            translatedWord
-          );
-
-
-        translatedWord =
-          applySpecialLetters(
-            translatedWord
-          );
-
-
-        return translatedWord;
-      }
-
-
-      /*
-        Everything below here applies
-        only to words that are NOT nouns.
-      */
-
-
-      const hasRegularVowel =
-        [...word].some(
-          letter =>
-            vowels.includes(letter)
-        );
-
-
-      /*
-        ==================================================
-        NON-NOUN VOWEL WORD
-        ==================================================
-
-        s + word + ek
-
-        I
-        → siek
-        → Sìek
-
-        am
-        → samek
-        → sămek
+        elephant
+        → elephanten
 
         open
-        → sopenek
-        → søpenek
+        → openen
+
+        I
+        → ien
       */
 
       if (
@@ -794,25 +374,49 @@
       ) {
 
         translatedWord =
-          "s" + word + "ek";
+          word + "en";
       }
 
 
       /*
-        ==================================================
-        NON-NOUN CONSONANT WORD
-        ==================================================
+        --------------------------------
+        CONSONANT-STARTING WORDS
+        --------------------------------
 
-        Move opening consonant or
-        consonant cluster to the end.
+        Move the first consonant
+        or consonant cluster to the end.
 
         Add EN.
+
+        car
+        → ar + c + en
+        → arcen
+
+        crap
+        → ap + cr + en
+        → apcren
+
+        store
+        → ore + st + en
+        → oresten
       */
 
       else {
 
+        const hasRegularVowel =
+          [...word].some(
+            letter =>
+              vowels.includes(letter)
+          );
+
+
         let firstVowelPosition = -1;
 
+
+        /*
+          If A/E/I/O/U exists,
+          find the first one.
+        */
 
         if (hasRegularVowel) {
 
@@ -830,10 +434,10 @@
 
 
             /*
-              QU is treated as one
-              consonant unit.
+              QU stays together.
 
               quick
+              → ick + qu + en
               → ickquen
             */
 
@@ -863,13 +467,25 @@
 
 
         /*
-          Y becomes the vowel only
-          when there is no A/E/I/O/U.
+          --------------------------------
+          Y RULE
+          --------------------------------
 
-          thy → ythen
-          fly → yflen
-          cry → ycren
-          my → ymen
+          If there is no A/E/I/O/U,
+          Y acts as the vowel.
+
+          thy
+          → y + th + en
+          → ythen
+
+          fly
+          → yflen
+
+          cry
+          → ycren
+
+          my
+          → ymen
         */
 
         else {
@@ -880,7 +496,8 @@
 
 
         /*
-          No vowel and no Y.
+          If the word has no vowel
+          and no Y, simply add EN.
         */
 
         if (
@@ -893,8 +510,10 @@
 
 
         /*
-          Move opening consonants
-          to the end and add EN.
+          Move everything before
+          the vowel to the end.
+
+          Then add EN.
         */
 
         else {
@@ -921,7 +540,7 @@
 
 
       /*
-        Preserve initial capitalization.
+        Preserve capitalization.
       */
 
       translatedWord =
@@ -946,9 +565,9 @@
 
 
     /*
-      ==================================================
+      --------------------------------
       TRANSLATE FULL TEXT
-      ==================================================
+      --------------------------------
 
       Spaces and punctuation remain.
 
@@ -965,9 +584,9 @@
 
 
     /*
-      ==================================================
+      --------------------------------
       RUN TRANSLATION
-      ==================================================
+      --------------------------------
     */
 
     function runTranslation() {
@@ -999,7 +618,9 @@
 
 
     /*
+      --------------------------------
       COPY
+      --------------------------------
     */
 
     copyButton.addEventListener(
@@ -1041,7 +662,9 @@
 
 
     /*
+      --------------------------------
       CLEAR
+      --------------------------------
     */
 
     clearButton.addEventListener(
