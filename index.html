@@ -1,679 +1,717 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Translator</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-      padding: 24px;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      background: #0d1117;
-      color: #f0f6fc;
-
-      font-family: Arial, sans-serif;
-    }
-
-    .translator {
-      width: 100%;
-      max-width: 700px;
-      padding: 28px;
-
-      background: #161b22;
-      border: 1px solid #30363d;
-      border-radius: 16px;
-
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
-    }
-
-    h1 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-
-    .description {
-      margin-top: 0;
-      margin-bottom: 24px;
-
-      color: #8b949e;
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
-
-    textarea {
-      width: 100%;
-      min-height: 150px;
-      padding: 14px;
-      margin-bottom: 16px;
-
-      resize: vertical;
-
-      background: #21262d;
-      color: #f0f6fc;
-
-      border: 1px solid #30363d;
-      border-radius: 10px;
-
-      font-family: inherit;
-      font-size: 17px;
-      line-height: 1.5;
-    }
-
-    textarea:focus {
-      outline: 2px solid #58a6ff;
-      border-color: transparent;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    button {
-      flex: 1;
-      padding: 12px 16px;
-
-      border: none;
-      border-radius: 9px;
-
-      background: #238636;
-      color: white;
-
-      font-size: 16px;
-      font-weight: bold;
-
-      cursor: pointer;
-    }
-
-    button:hover {
-      filter: brightness(1.12);
-    }
-
-    #copyButton {
-      background: #1f6feb;
-    }
-
-    #clearButton {
-      background: #30363d;
-    }
-
-    .examples {
-      margin-top: 8px;
-      padding: 14px;
-
-      background: #21262d;
-      border-radius: 10px;
-
-      color: #8b949e;
-      line-height: 1.7;
-    }
-
-    .examples strong {
-      color: #f0f6fc;
-    }
-
-    #message {
-      min-height: 20px;
-      margin-top: -8px;
-      margin-bottom: 12px;
-
-      color: #3fb950;
-      font-size: 14px;
-    }
-
-    @media (max-width: 550px) {
-      .buttons {
-        flex-direction: column;
-      }
-
-      .translator {
-        padding: 20px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-  <main class="translator">
-
-    <h1>Translator</h1>
-
-    <p class="description">
-      Vowel words receive
-      <strong>s-</strong> and <strong>-ek</strong>.
-      Consonant beginnings move to the end and receive
-      <strong>-en</strong>.
-      Y acts as a vowel only when a word contains
-      no A, E, I, O, or U.
-    </p>
-
-    <label for="inputText">English</label>
-
-    <textarea
-      id="inputText"
-      placeholder="Type something here..."
-    ></textarea>
-
-    <div class="buttons">
-
-      <button id="translateButton">
-        Translate
-      </button>
-
-      <button id="copyButton">
-        Copy
-      </button>
-
-      <button id="clearButton">
-        Clear
-      </button>
-
-    </div>
-
-    <div id="message"></div>
-
-    <label for="outputText">
-      Translation
-    </label>
-
-    <textarea
-      id="outputText"
-      placeholder="Your translation will appear here..."
-      readonly
-    ></textarea>
-
-    <div class="examples">
-
-      <strong>Examples</strong><br><br>
-
-      I → Sìek<br>
-      am → sămek<br>
-      apple → săppleek<br>
-      open → søpenek<br>
-      inside → sìnsìdeek<br>
-      around → sărøundek<br><br>
-
-      crap → ăpcren<br>
-      car → ărcen<br>
-      quick → ìckquen<br>
-      store → øresten<br>
-      going → øìnggen<br><br>
-
-      thy → ythen<br>
-      fly → yflen<br>
-      cry → ycren<br>
-      my → ymen
-
-    </div>
-
-  </main>
-
-  <script>
-
-    const inputText =
-      document.getElementById("inputText");
-
-    const outputText =
-      document.getElementById("outputText");
-
-    const translateButton =
-      document.getElementById("translateButton");
-
-    const copyButton =
-      document.getElementById("copyButton");
-
-    const clearButton =
-      document.getElementById("clearButton");
-
-    const message =
-      document.getElementById("message");
-
-
-    /*
-      Regular vowels used to determine
-      how a word is transformed.
-
-      Y is handled separately.
-    */
-    const vowels = "aeiou";
-
-
-    /*
-      Apply the special written characters
-      AFTER the word has been translated.
-
-      a → ă
-      o → ø
-      i → ì
-
-      Uppercase:
-      A → Ă
-      O → Ø
-      I → Ì
-
-      E and U remain unchanged.
-    */
-    function applySpecialLetters(text) {
-
-      return text
-        .replace(/a/g, "ă")
-        .replace(/A/g, "Ă")
-        .replace(/o/g, "ø")
-        .replace(/O/g, "Ø")
-        .replace(/i/g, "ì")
-        .replace(/I/g, "Ì");
-    }
-
-
-    function translateWord(originalWord) {
-
-      const word =
-        originalWord.toLowerCase();
-
-      if (!word) {
-        return "";
-      }
-
-
-      let translatedWord = "";
-
-
-      /*
-        Check whether the word contains
-        A, E, I, O, or U.
-      */
-      const hasRegularVowel =
-        [...word].some(letter =>
-          vowels.includes(letter)
-        );
-
-
-      /*
-        --------------------------------
-        VOWEL-STARTING WORDS
-        --------------------------------
-
-        Add S to the beginning
-        and EK to the end.
-
-        I       → siek
-        am      → samek
-        apple   → sappleek
-        open    → sopenek
-        inside  → sinsideek
-        around  → saroundek
-      */
-
-      if (vowels.includes(word[0])) {
-
-        translatedWord =
-          "s" + word + "ek";
-      }
-
-
-      /*
-        --------------------------------
-        CONSONANT-STARTING WORDS
-        --------------------------------
-
-        Move the opening consonant
-        or consonant cluster to the end.
-
-        Then add EN.
-
-        car
-        → ar + c + en
-        → arcen
-
-        crap
-        → ap + cr + en
-        → apcren
-
-        store
-        → ore + st + en
-        → oresten
-      */
-
-      else {
-
-        let firstVowelPosition = -1;
-
-
-        /*
-          If the word contains a regular vowel,
-          find the first A/E/I/O/U.
-
-          Y remains a consonant in these words.
-        */
-
-        if (hasRegularVowel) {
-
-          for (
-            let i = 0;
-            i < word.length;
-            i++
-          ) {
-
-            const currentLetter =
-              word[i];
-
-            const nextLetter =
-              word[i + 1];
-
-
-            /*
-              QU is treated as one
-              consonant unit.
-
-              quick
-              → ick + qu + en
-              → ickquen
-
-              The U belonging to QU
-              is NOT treated as the
-              first vowel.
-            */
-
-            if (
-              currentLetter === "q" &&
-              nextLetter === "u"
-            ) {
-
-              i++;
-
-              continue;
-            }
-
-
-            if (
-              vowels.includes(currentLetter)
-            ) {
-
-              firstVowelPosition = i;
-
-              break;
-            }
-          }
-        }
-
-
-        /*
-          --------------------------------
-          Y FALLBACK
-          --------------------------------
-
-          If the word contains NO
-          A, E, I, O, or U,
-          Y acts as the vowel.
-
-          thy
-          → y + th + en
-          → ythen
-
-          fly
-          → y + fl + en
-          → yflen
-
-          cry
-          → y + cr + en
-          → ycren
-
-          my
-          → y + m + en
-          → ymen
-        */
-
-        else {
-
-          firstVowelPosition =
-            word.indexOf("y");
-        }
-
-
-        /*
-          If there is no regular vowel
-          and no Y, simply add EN.
-        */
-
-        if (
-          firstVowelPosition === -1
-        ) {
-
-          translatedWord =
-            word + "en";
-        }
-
-
-        /*
-          Move the opening consonant
-          or consonant cluster to the end
-          and add EN.
-        */
-
-        else {
-
-          const consonantCluster =
-            word.slice(
-              0,
-              firstVowelPosition
-            );
-
-
-          const restOfWord =
-            word.slice(
-              firstVowelPosition
-            );
-
-
-          translatedWord =
-            restOfWord +
-            consonantCluster +
-            "en";
-        }
-      }
-
-
-      /*
-        --------------------------------
-        CAPITALIZATION
-        --------------------------------
-
-        Preserve ONLY initial
-        capitalization.
-
-        I → Siek
-        Apple → Sappleek
-        CRAP → Apcren
-
-        We do this BEFORE applying
-        the special characters.
-      */
-
-      const beginsWithCapital =
-        /^[A-Z]/.test(originalWord);
-
-
-      if (
-        beginsWithCapital &&
-        translatedWord.length > 0
-      ) {
-
-        translatedWord =
-          translatedWord[0].toUpperCase() +
-          translatedWord.slice(1);
-      }
-
-
-      /*
-        --------------------------------
-        SPECIAL LETTERS
-        --------------------------------
-
-        Apply the spelling changes
-        to the finished translated word.
-
-        a → ă
-        o → ø
-        i → ì
-
-        A → Ă
-        O → Ø
-        I → Ì
-      */
-
-      translatedWord =
-        applySpecialLetters(
-          translatedWord
-        );
-
-
-      return translatedWord;
-    }
-
-
-    function translateText(text) {
-
-      /*
-        Treat contractions as one word.
-
-        Supports both apostrophe styles:
-
-        I'm
-        I’m
-
-        don't
-        don’t
-
-        I'll
-        I’ll
-      */
-
-      return text.replace(
-        /[A-Za-z]+(?:['’][A-Za-z]+)*/g,
-        translateWord
+<script>
+
+  const inputText =
+    document.getElementById("inputText");
+
+  const outputText =
+    document.getElementById("outputText");
+
+  const translateButton =
+    document.getElementById("translateButton");
+
+  const copyButton =
+    document.getElementById("copyButton");
+
+  const clearButton =
+    document.getElementById("clearButton");
+
+  const message =
+    document.getElementById("message");
+
+
+  /*
+    Regular vowels.
+
+    Y is handled separately.
+  */
+  const vowels = "aeiou";
+
+
+  /*
+    --------------------------------
+    NOUN LIST
+    --------------------------------
+
+    Any word in this list stays in its
+    ORIGINAL order and simply gets EN.
+
+    Then the special letters are applied.
+
+    dog    → dogen    → døgen
+    person → personen → persønen
+    car    → caren    → căren
+    house  → houseen  → høuseen
+
+    Add as many nouns as you want here.
+  */
+
+  const nouns = new Set([
+
+    // PEOPLE
+    "person",
+    "people",
+    "man",
+    "men",
+    "woman",
+    "women",
+    "boy",
+    "boys",
+    "girl",
+    "girls",
+    "child",
+    "children",
+    "baby",
+    "friend",
+    "friends",
+    "family",
+    "father",
+    "mother",
+    "dad",
+    "mom",
+    "brother",
+    "sister",
+    "son",
+    "daughter",
+    "husband",
+    "wife",
+    "teacher",
+    "student",
+    "doctor",
+    "nurse",
+    "worker",
+    "customer",
+    "boss",
+    "king",
+    "queen",
+    "knight",
+    "soldier",
+    "president",
+
+    // ANIMALS
+    "dog",
+    "dogs",
+    "cat",
+    "cats",
+    "bird",
+    "birds",
+    "fish",
+    "horse",
+    "horses",
+    "cow",
+    "cows",
+    "pig",
+    "pigs",
+    "chicken",
+    "chickens",
+    "lion",
+    "tiger",
+    "bear",
+
+    // PLACES
+    "house",
+    "home",
+    "room",
+    "bathroom",
+    "bedroom",
+    "kitchen",
+    "office",
+    "school",
+    "church",
+    "store",
+    "shop",
+    "restaurant",
+    "city",
+    "town",
+    "country",
+    "street",
+    "road",
+    "park",
+    "beach",
+    "hospital",
+    "airport",
+    "station",
+    "building",
+    "hotel",
+
+    // OBJECTS
+    "car",
+    "truck",
+    "bus",
+    "train",
+    "plane",
+    "boat",
+    "ship",
+    "bike",
+    "bicycle",
+    "phone",
+    "computer",
+    "table",
+    "chair",
+    "bed",
+    "door",
+    "window",
+    "book",
+    "paper",
+    "pen",
+    "pencil",
+    "cup",
+    "glass",
+    "bottle",
+    "plate",
+    "fork",
+    "knife",
+    "spoon",
+    "bag",
+    "box",
+    "shirt",
+    "shoe",
+    "shoes",
+    "hat",
+    "helmet",
+    "mask",
+    "skull",
+    "flag",
+    "board",
+    "queen",
+    "rook",
+    "bishop",
+    "pawn",
+
+    // FOOD
+    "food",
+    "bread",
+    "rice",
+    "bean",
+    "beans",
+    "pizza",
+    "apple",
+    "apples",
+    "orange",
+    "oranges",
+    "banana",
+    "bananas",
+    "egg",
+    "eggs",
+    "meat",
+    "chicken",
+    "beef",
+    "fish",
+    "cheese",
+    "milk",
+    "water",
+    "coffee",
+    "tea",
+
+    // TIME
+    "day",
+    "days",
+    "night",
+    "nights",
+    "morning",
+    "afternoon",
+    "evening",
+    "week",
+    "weeks",
+    "month",
+    "months",
+    "year",
+    "years",
+    "hour",
+    "hours",
+    "minute",
+    "minutes",
+    "time",
+
+    // BODY
+    "head",
+    "face",
+    "eye",
+    "eyes",
+    "ear",
+    "ears",
+    "nose",
+    "mouth",
+    "hand",
+    "hands",
+    "arm",
+    "arms",
+    "leg",
+    "legs",
+    "foot",
+    "feet",
+    "body",
+    "hair",
+    "heart",
+
+    // NATURE
+    "sun",
+    "moon",
+    "star",
+    "stars",
+    "sky",
+    "rain",
+    "snow",
+    "wind",
+    "tree",
+    "trees",
+    "flower",
+    "flowers",
+    "river",
+    "lake",
+    "ocean",
+    "sea",
+    "mountain",
+    "earth",
+
+    // ABSTRACT / COMMON NOUNS
+    "life",
+    "love",
+    "war",
+    "peace",
+    "work",
+    "job",
+    "money",
+    "game",
+    "music",
+    "language",
+    "word",
+    "words",
+    "name",
+    "idea",
+    "problem",
+    "question",
+    "answer",
+    "thing",
+    "things",
+    "way",
+    "place",
+    "part",
+    "world",
+    "company",
+    "product",
+    "products"
+  ]);
+
+
+  /*
+    --------------------------------
+    SPECIAL LETTERS
+    --------------------------------
+
+    a → ă
+    o → ø
+    i → ì
+
+    A → Ă
+    O → Ø
+    I → Ì
+
+    E and U stay normal.
+  */
+
+  function applySpecialLetters(text) {
+
+    return text
+      .replace(/a/g, "ă")
+      .replace(/A/g, "Ă")
+      .replace(/o/g, "ø")
+      .replace(/O/g, "Ø")
+      .replace(/i/g, "ì")
+      .replace(/I/g, "Ì");
+  }
+
+
+  /*
+    Preserve only initial capitalization.
+  */
+
+  function preserveCapitalization(
+    originalWord,
+    translatedWord
+  ) {
+
+    const beginsWithCapital =
+      /^[A-Z]/.test(originalWord);
+
+
+    if (
+      beginsWithCapital &&
+      translatedWord.length > 0
+    ) {
+
+      return (
+        translatedWord[0].toUpperCase() +
+        translatedWord.slice(1)
       );
     }
 
 
-    function runTranslation() {
+    return translatedWord;
+  }
 
-      outputText.value =
-        translateText(
-          inputText.value
+
+  function translateWord(originalWord) {
+
+    const word =
+      originalWord.toLowerCase();
+
+
+    if (!word) {
+      return "";
+    }
+
+
+    let translatedWord = "";
+
+
+    /*
+      --------------------------------
+      NOUN RULE
+      --------------------------------
+
+      Nouns DO NOT move letters.
+
+      They simply receive EN.
+
+      dog
+      → dogen
+      → døgen
+
+      car
+      → caren
+      → căren
+
+      person
+      → personen
+      → persønen
+    */
+
+    if (nouns.has(word)) {
+
+      translatedWord =
+        word + "en";
+
+
+      translatedWord =
+        preserveCapitalization(
+          originalWord,
+          translatedWord
         );
 
-      message.textContent = "";
+
+      return applySpecialLetters(
+        translatedWord
+      );
     }
 
 
     /*
-      Translate button
+      Check whether the word contains
+      A, E, I, O, or U.
     */
 
-    translateButton.addEventListener(
-      "click",
-      runTranslation
-    );
+    const hasRegularVowel =
+      [...word].some(
+        letter =>
+          vowels.includes(letter)
+      );
 
 
     /*
-      Translate automatically
-      while typing.
+      --------------------------------
+      VOWEL-STARTING WORDS
+      --------------------------------
+
+      S + WORD + EK
+
+      am
+      → samek
+      → sămek
+
+      open
+      → sopenek
+      → søpenek
+
+      I
+      → siek
+      → sìek
     */
 
-    inputText.addEventListener(
-      "input",
-      runTranslation
-    );
+    if (
+      vowels.includes(word[0])
+    ) {
+
+      translatedWord =
+        "s" + word + "ek";
+    }
 
 
     /*
-      Copy button
+      --------------------------------
+      CONSONANT-STARTING WORDS
+      --------------------------------
     */
 
-    copyButton.addEventListener(
-      "click",
+    else {
 
-      async function () {
-
-        if (!outputText.value) {
-
-          message.textContent =
-            "There is nothing to copy.";
-
-          return;
-        }
+      let firstVowelPosition = -1;
 
 
-        try {
+      /*
+        Normal A/E/I/O/U case.
+      */
 
-          await navigator.clipboard.writeText(
-            outputText.value
-          );
+      if (hasRegularVowel) {
 
-          message.textContent =
-            "Translation copied!";
+        for (
+          let i = 0;
+          i < word.length;
+          i++
+        ) {
 
-        } catch (error) {
+          const currentLetter =
+            word[i];
 
-          outputText.select();
+          const nextLetter =
+            word[i + 1];
 
-          document.execCommand(
-            "copy"
-          );
 
-          message.textContent =
-            "Translation copied!";
+          /*
+            QU stays together.
+
+            quick
+            → ickquen
+            → ìckquen
+          */
+
+          if (
+            currentLetter === "q" &&
+            nextLetter === "u"
+          ) {
+
+            i++;
+
+            continue;
+          }
+
+
+          if (
+            vowels.includes(
+              currentLetter
+            )
+          ) {
+
+            firstVowelPosition = i;
+
+            break;
+          }
         }
       }
-    );
+
+
+      /*
+        --------------------------------
+        Y FALLBACK
+        --------------------------------
+
+        If there is no A/E/I/O/U,
+        Y becomes the vowel.
+
+        thy
+        → ythen
+
+        fly
+        → yflen
+
+        cry
+        → ycren
+
+        my
+        → ymen
+      */
+
+      else {
+
+        firstVowelPosition =
+          word.indexOf("y");
+      }
+
+
+      /*
+        No vowel and no Y.
+      */
+
+      if (
+        firstVowelPosition === -1
+      ) {
+
+        translatedWord =
+          word + "en";
+      }
+
+
+      /*
+        Move the opening consonant
+        or consonant cluster to the end
+        and add EN.
+      */
+
+      else {
+
+        const consonantCluster =
+          word.slice(
+            0,
+            firstVowelPosition
+          );
+
+
+        const restOfWord =
+          word.slice(
+            firstVowelPosition
+          );
+
+
+        translatedWord =
+          restOfWord +
+          consonantCluster +
+          "en";
+      }
+    }
 
 
     /*
-      Clear button
+      Preserve capitalization.
     */
 
-    clearButton.addEventListener(
-      "click",
+    translatedWord =
+      preserveCapitalization(
+        originalWord,
+        translatedWord
+      );
 
-      function () {
 
-        inputText.value = "";
+    /*
+      Apply the special letters LAST.
+    */
 
-        outputText.value = "";
+    translatedWord =
+      applySpecialLetters(
+        translatedWord
+      );
 
-        message.textContent = "";
 
-        inputText.focus();
-      }
+    return translatedWord;
+  }
+
+
+  function translateText(text) {
+
+    /*
+      Preserve contractions as
+      individual words.
+
+      I'm
+      I’m
+      don't
+      don’t
+      I'll
+      I’ll
+    */
+
+    return text.replace(
+      /[A-Za-z]+(?:['’][A-Za-z]+)*/g,
+      translateWord
     );
+  }
 
-  </script>
 
-</body>
-</html>
+  function runTranslation() {
+
+    outputText.value =
+      translateText(
+        inputText.value
+      );
+
+    message.textContent = "";
+  }
+
+
+  translateButton.addEventListener(
+    "click",
+    runTranslation
+  );
+
+
+  /*
+    Translate automatically
+    while typing.
+  */
+
+  inputText.addEventListener(
+    "input",
+    runTranslation
+  );
+
+
+  /*
+    Copy
+  */
+
+  copyButton.addEventListener(
+    "click",
+
+    async function () {
+
+      if (!outputText.value) {
+
+        message.textContent =
+          "There is nothing to copy.";
+
+        return;
+      }
+
+
+      try {
+
+        await navigator.clipboard.writeText(
+          outputText.value
+        );
+
+        message.textContent =
+          "Translation copied!";
+
+      } catch (error) {
+
+        outputText.select();
+
+        document.execCommand(
+          "copy"
+        );
+
+        message.textContent =
+          "Translation copied!";
+      }
+    }
+  );
+
+
+  /*
+    Clear
+  */
+
+  clearButton.addEventListener(
+    "click",
+
+    function () {
+
+      inputText.value = "";
+
+      outputText.value = "";
+
+      message.textContent = "";
+
+      inputText.focus();
+    }
+  );
+
+</script>
