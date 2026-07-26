@@ -165,9 +165,9 @@
 
     <p class="description">
       Vowel-starting words stay in place and receive
-      <strong>-en</strong>.
+      <strong>-ay</strong>.
       Consonant beginnings move to the end and receive
-      <strong>-en</strong>.
+      <strong>-ay</strong>.
     </p>
 
     <label for="inputText">
@@ -211,21 +211,23 @@
 
       <strong>Examples</strong><br><br>
 
-      eat → eăten<br>
-      act → ăcten<br>
-      elephant → elephănten<br>
-      open → øpenen<br>
-      I → Ìen<br><br>
+      eat → eăta y<br>
+      act → ăctay<br>
+      elephant → elephăntay<br>
+      open → øpenay<br>
+      I → Ìay<br>
+      about → ăbøutay<br>
+      inside → ìnsìdeay<br><br>
 
-      crap → ăpcren<br>
-      car → ărcen<br>
-      store → øresten<br>
-      quick → ìckquen<br><br>
+      crap → ăpcray<br>
+      car → ărcay<br>
+      store → ørestay<br>
+      quick → ìckquay<br><br>
 
-      thy → ythen<br>
-      fly → yflen<br>
-      cry → ycren<br>
-      my → ymen
+      thy → ythay<br>
+      fly → yflay<br>
+      cry → ycray<br>
+      my → ymay
 
     </div>
 
@@ -272,6 +274,11 @@
       I → Ì
 
       e and u stay normal.
+
+      IMPORTANT:
+      These are applied BEFORE
+      the final -ay suffix so the
+      suffix always remains "-ay".
     */
 
     function applySpecialLetters(text) {
@@ -294,8 +301,8 @@
       Preserve only the first
       capital letter.
 
-      Car → Arcen
-      CRAP → Apcren
+      Car → Arcay
+      CRAP → Apcray
     */
 
     function preserveCapitalization(
@@ -340,7 +347,7 @@
       }
 
 
-      let translatedWord = "";
+      let translatedCore = "";
 
 
       /*
@@ -351,30 +358,36 @@
         Keep the original word
         in its original order.
 
-        Add EN.
+        Add AY.
 
         eat
-        → eaten
+        → eatay
 
         act
-        → acten
+        → actay
 
         elephant
-        → elephanten
+        → elephantay
 
         open
-        → openen
+        → openay
+
+        about
+        → aboutay
+
+        inside
+        → insideay
 
         I
-        → ien
+        → iay
       */
 
       if (
         vowels.includes(word[0])
       ) {
 
-        translatedWord =
-          word + "en";
+        translatedCore =
+          word;
       }
 
 
@@ -386,19 +399,19 @@
         Move the first consonant
         or consonant cluster to the end.
 
-        Add EN.
+        Add AY.
 
         car
-        → ar + c + en
-        → arcen
+        → ar + c + ay
+        → arcay
 
         crap
-        → ap + cr + en
-        → apcren
+        → ap + cr + ay
+        → apcray
 
         store
-        → ore + st + en
-        → oresten
+        → ore + st + ay
+        → orestay
       */
 
       else {
@@ -437,8 +450,8 @@
               QU stays together.
 
               quick
-              → ick + qu + en
-              → ickquen
+              → ick + qu + ay
+              → ickquay
             */
 
             if (
@@ -475,17 +488,17 @@
           Y acts as the vowel.
 
           thy
-          → y + th + en
-          → ythen
+          → y + th + ay
+          → ythay
 
           fly
-          → yflen
+          → yflay
 
           cry
-          → ycren
+          → ycray
 
           my
-          → ymen
+          → ymay
         */
 
         else {
@@ -497,15 +510,15 @@
 
         /*
           If the word has no vowel
-          and no Y, simply add EN.
+          and no Y, simply add AY.
         */
 
         if (
           firstVowelPosition === -1
         ) {
 
-          translatedWord =
-            word + "en";
+          translatedCore =
+            word;
         }
 
 
@@ -513,7 +526,7 @@
           Move everything before
           the vowel to the end.
 
-          Then add EN.
+          AY is added afterward.
         */
 
         else {
@@ -531,36 +544,49 @@
             );
 
 
-          translatedWord =
+          translatedCore =
             restOfWord +
-            consonantCluster +
-            "en";
+            consonantCluster;
         }
       }
 
 
       /*
-        Preserve capitalization.
+        Preserve capitalization
+        BEFORE special letters.
       */
 
-      translatedWord =
+      translatedCore =
         preserveCapitalization(
           originalWord,
-          translatedWord
+          translatedCore
         );
 
 
       /*
-        Apply the special letters LAST.
+        Apply special letters
+        to the translated word itself.
       */
 
-      translatedWord =
+      translatedCore =
         applySpecialLetters(
-          translatedWord
+          translatedCore
         );
 
 
-      return translatedWord;
+      /*
+        Add the literal -ay suffix LAST.
+
+        This keeps:
+
+        -ay
+
+        instead of:
+
+        -ăy
+      */
+
+      return translatedCore + "ay";
     }
 
 
