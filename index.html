@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Translator</title>
+  <title>Vowel Switch Translator</title>
 
   <style>
     * {
@@ -161,13 +161,12 @@
 
   <main class="translator">
 
-    <h1>Translator</h1>
+    <h1>Vowel Switch Translator</h1>
 
     <p class="description">
-      Vowel-starting words stay in place and receive
-      <strong>-ay</strong>.
-      Consonant beginnings move to the end and receive
-      <strong>-ay</strong>.
+      Every vowel changes to the next vowel:
+      <strong>A → E → I → O → U → A</strong>.
+      Consonants stay the same.
     </p>
 
     <label for="inputText">
@@ -198,7 +197,7 @@
     <div id="message"></div>
 
     <label for="outputText">
-      Translation
+      Vowel Switch
     </label>
 
     <textarea
@@ -211,23 +210,12 @@
 
       <strong>Examples</strong><br><br>
 
-      eat → eăta y<br>
-      act → ăctay<br>
-      elephant → elephăntay<br>
-      open → øpenay<br>
-      I → Ìay<br>
-      about → ăbøutay<br>
-      inside → ìnsìdeay<br><br>
-
-      crap → ăpcray<br>
-      car → ărcay<br>
-      store → ørestay<br>
-      quick → ìckquay<br><br>
-
-      thy → ythay<br>
-      fly → yflay<br>
-      cry → ycray<br>
-      my → ymay
+      I am eating → O em ietong<br>
+      hot dog → hut dug<br>
+      I just got home → O jast gut humi<br>
+      they broke up → thiy bruki ap<br>
+      traffic sucks → treffoc secks<br>
+      I am outside → O em uatsodi
 
     </div>
 
@@ -255,364 +243,55 @@
 
 
     /*
-      Regular vowels.
+      VOWEL SWITCH RULE
+
+      a → e
+      e → i
+      i → o
+      o → u
+      u → a
+
+      Capital letters follow
+      the same pattern.
     */
-    const vowels = "aeiou";
+
+    const vowelSwitch = {
+      a: "e",
+      e: "i",
+      i: "o",
+      o: "u",
+      u: "a",
+
+      A: "E",
+      E: "I",
+      I: "O",
+      O: "U",
+      U: "A"
+    };
 
 
     /*
-      --------------------------------
-      SPECIAL LETTERS
-      --------------------------------
-
-      a → ă
-      o → ø
-      i → ì
-
-      A → Ă
-      O → Ø
-      I → Ì
-
-      e and u stay normal.
-
-      IMPORTANT:
-      These are applied BEFORE
-      the final -ay suffix so the
-      suffix always remains "-ay".
-    */
-
-    function applySpecialLetters(text) {
-
-      return text
-        .replace(/a/g, "ă")
-        .replace(/A/g, "Ă")
-        .replace(/o/g, "ø")
-        .replace(/O/g, "Ø")
-        .replace(/i/g, "ì")
-        .replace(/I/g, "Ì");
-    }
-
-
-    /*
-      --------------------------------
-      CAPITALIZATION
-      --------------------------------
-
-      Preserve only the first
-      capital letter.
-
-      Car → Arcay
-      CRAP → Apcray
-    */
-
-    function preserveCapitalization(
-      originalWord,
-      translatedWord
-    ) {
-
-      const beginsWithCapital =
-        /^[A-Z]/.test(originalWord);
-
-
-      if (
-        beginsWithCapital &&
-        translatedWord.length > 0
-      ) {
-
-        return (
-          translatedWord[0].toUpperCase() +
-          translatedWord.slice(1)
-        );
-      }
-
-
-      return translatedWord;
-    }
-
-
-    /*
-      --------------------------------
-      TRANSLATE ONE WORD
-      --------------------------------
-    */
-
-    function translateWord(originalWord) {
-
-      const word =
-        originalWord.toLowerCase();
-
-
-      if (!word) {
-        return "";
-      }
-
-
-      let translatedCore = "";
-
-
-      /*
-        --------------------------------
-        VOWEL-STARTING WORDS
-        --------------------------------
-
-        Keep the original word
-        in its original order.
-
-        Add AY.
-
-        eat
-        → eatay
-
-        act
-        → actay
-
-        elephant
-        → elephantay
-
-        open
-        → openay
-
-        about
-        → aboutay
-
-        inside
-        → insideay
-
-        I
-        → iay
-      */
-
-      if (
-        vowels.includes(word[0])
-      ) {
-
-        translatedCore =
-          word;
-      }
-
-
-      /*
-        --------------------------------
-        CONSONANT-STARTING WORDS
-        --------------------------------
-
-        Move the first consonant
-        or consonant cluster to the end.
-
-        Add AY.
-
-        car
-        → ar + c + ay
-        → arcay
-
-        crap
-        → ap + cr + ay
-        → apcray
-
-        store
-        → ore + st + ay
-        → orestay
-      */
-
-      else {
-
-        const hasRegularVowel =
-          [...word].some(
-            letter =>
-              vowels.includes(letter)
-          );
-
-
-        let firstVowelPosition = -1;
-
-
-        /*
-          If A/E/I/O/U exists,
-          find the first one.
-        */
-
-        if (hasRegularVowel) {
-
-          for (
-            let i = 0;
-            i < word.length;
-            i++
-          ) {
-
-            const currentLetter =
-              word[i];
-
-            const nextLetter =
-              word[i + 1];
-
-
-            /*
-              QU stays together.
-
-              quick
-              → ick + qu + ay
-              → ickquay
-            */
-
-            if (
-              currentLetter === "q" &&
-              nextLetter === "u"
-            ) {
-
-              i++;
-
-              continue;
-            }
-
-
-            if (
-              vowels.includes(
-                currentLetter
-              )
-            ) {
-
-              firstVowelPosition = i;
-
-              break;
-            }
-          }
-        }
-
-
-        /*
-          --------------------------------
-          Y RULE
-          --------------------------------
-
-          If there is no A/E/I/O/U,
-          Y acts as the vowel.
-
-          thy
-          → y + th + ay
-          → ythay
-
-          fly
-          → yflay
-
-          cry
-          → ycray
-
-          my
-          → ymay
-        */
-
-        else {
-
-          firstVowelPosition =
-            word.indexOf("y");
-        }
-
-
-        /*
-          If the word has no vowel
-          and no Y, simply add AY.
-        */
-
-        if (
-          firstVowelPosition === -1
-        ) {
-
-          translatedCore =
-            word;
-        }
-
-
-        /*
-          Move everything before
-          the vowel to the end.
-
-          AY is added afterward.
-        */
-
-        else {
-
-          const consonantCluster =
-            word.slice(
-              0,
-              firstVowelPosition
-            );
-
-
-          const restOfWord =
-            word.slice(
-              firstVowelPosition
-            );
-
-
-          translatedCore =
-            restOfWord +
-            consonantCluster;
-        }
-      }
-
-
-      /*
-        Preserve capitalization
-        BEFORE special letters.
-      */
-
-      translatedCore =
-        preserveCapitalization(
-          originalWord,
-          translatedCore
-        );
-
-
-      /*
-        Apply special letters
-        to the translated word itself.
-      */
-
-      translatedCore =
-        applySpecialLetters(
-          translatedCore
-        );
-
-
-      /*
-        Add the literal -ay suffix LAST.
-
-        This keeps:
-
-        -ay
-
-        instead of:
-
-        -ăy
-      */
-
-      return translatedCore + "ay";
-    }
-
-
-    /*
-      --------------------------------
-      TRANSLATE FULL TEXT
-      --------------------------------
-
-      Spaces and punctuation remain.
-
-      Contractions stay together.
+      Translate the complete text.
+
+      Only vowels change.
+      Everything else remains
+      exactly where it is.
     */
 
     function translateText(text) {
 
       return text.replace(
-        /\p{L}+(?:['’]\p{L}+)*/gu,
-        translateWord
+        /[aeiouAEIOU]/g,
+
+        function (vowel) {
+          return vowelSwitch[vowel];
+        }
       );
     }
 
 
     /*
-      --------------------------------
-      RUN TRANSLATION
-      --------------------------------
+      Run the translation.
     */
 
     function runTranslation() {
@@ -644,9 +323,7 @@
 
 
     /*
-      --------------------------------
-      COPY
-      --------------------------------
+      Copy the translation.
     */
 
     copyButton.addEventListener(
@@ -688,9 +365,7 @@
 
 
     /*
-      --------------------------------
-      CLEAR
-      --------------------------------
+      Clear both boxes.
     */
 
     clearButton.addEventListener(
