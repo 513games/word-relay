@@ -8,7 +8,7 @@
     content="width=device-width, initial-scale=1.0"
   >
 
-  <title>Vowel Switch Translator</title>
+  <title>Letter Before Translator</title>
 
   <style>
     * {
@@ -161,12 +161,13 @@
 
   <main class="translator">
 
-    <h1>Vowel Switch Translator</h1>
+    <h1>Letter Before Translator</h1>
 
     <p class="description">
-      Every vowel changes to the next vowel:
-      <strong>A → E → I → O → U → A</strong>.
-      Consonants stay the same.
+      Every letter changes to the letter immediately before it
+      in the alphabet.
+      <strong>A becomes Z, B becomes A, C becomes B</strong>,
+      and so on.
     </p>
 
     <label for="inputText">
@@ -197,12 +198,12 @@
     <div id="message"></div>
 
     <label for="outputText">
-      Vowel Switch
+      Letter Before Code
     </label>
 
     <textarea
       id="outputText"
-      placeholder="Your translation will appear here..."
+      placeholder="Your coded text will appear here..."
       readonly
     ></textarea>
 
@@ -210,12 +211,12 @@
 
       <strong>Examples</strong><br><br>
 
-      I am eating → O em ietong<br>
-      hot dog → hut dug<br>
-      I just got home → O jast gut humi<br>
-      they broke up → thiy bruki ap<br>
-      traffic sucks → treffoc secks<br>
-      I am outside → O em uatsodi
+      Dog → Cnf<br>
+      Hello → Gdkkn<br>
+      Thank you → Sgzmj xnt<br>
+      You try → Xnt sqx<br>
+      My fault → Lx eztks<br>
+      See this is easy → Rdd sghr hr dzrx
 
     </div>
 
@@ -243,53 +244,84 @@
 
 
     /*
-      VOWEL SWITCH RULE
+      LETTER BEFORE RULE
 
-      a → e
-      e → i
-      i → o
-      o → u
-      u → a
-      y → æ
+      Every English letter moves
+      backward by one position:
+
+      b → a
+      c → b
+      d → c
+
+      a wraps around to z.
 
       Capital letters follow
-      the same pattern.
+      the same rule:
+
+      B → A
+      C → B
+      A → Z
     */
 
-    const vowelSwitch = {
-      a: "e",
-      e: "i",
-      i: "o",
-      o: "u",
-      u: "a",
-      y: "æ",
 
-      A: "E",
-      E: "I",
-      I: "O",
-      O: "U",
-      U: "A",
-      Y: "Æ"
-    };
+    /*
+      Move one letter backward.
+
+      Non-English letters, spaces,
+      numbers, punctuation, and symbols
+      remain unchanged.
+    */
+
+    function moveLetterBackward(character) {
+
+      const code =
+        character.charCodeAt(0);
+
+
+      // Lowercase a becomes z.
+      if (character === "a") {
+        return "z";
+      }
+
+
+      // Uppercase A becomes Z.
+      if (character === "A") {
+        return "Z";
+      }
+
+
+      // Lowercase letters b through z.
+      if (code >= 98 && code <= 122) {
+
+        return String.fromCharCode(
+          code - 1
+        );
+      }
+
+
+      // Uppercase letters B through Z.
+      if (code >= 66 && code <= 90) {
+
+        return String.fromCharCode(
+          code - 1
+        );
+      }
+
+
+      // Leave everything else alone.
+      return character;
+    }
 
 
     /*
       Translate the complete text.
-
-      Only vowels change.
-      Everything else remains
-      exactly where it is.
     */
 
     function translateText(text) {
 
-      return text.replace(
-        /[aeiouyAEIOUY]/g,
-
-        function (vowel) {
-          return vowelSwitch[vowel];
-        }
-      );
+      return Array.from(text)
+        .map(moveLetterBackward)
+        .join("");
     }
 
 
@@ -326,7 +358,7 @@
 
 
     /*
-      Copy the translation.
+      Copy the coded text.
     */
 
     copyButton.addEventListener(
@@ -350,7 +382,7 @@
           );
 
           message.textContent =
-            "Translation copied!";
+            "Coded text copied!";
 
         } catch (error) {
 
@@ -361,7 +393,7 @@
           );
 
           message.textContent =
-            "Translation copied!";
+            "Coded text copied!";
         }
       }
     );
