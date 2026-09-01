@@ -135,7 +135,7 @@ button {
 }
 
 .hero-body {
-    padding: 23px;
+    padding: 20px 23px 22px;
 
     background:
         linear-gradient(
@@ -147,20 +147,35 @@ button {
     color: white;
 }
 
-.brand {
-    font-size: 38px;
-    font-weight: 950;
 
-    line-height: 1;
+/* NEW WORD RELAY LOGO */
 
-    letter-spacing: -1px;
+.hero-logo {
+    display: block;
+
+    width: min(100%, 360px);
+    height: auto;
+
+    margin:
+        0 auto
+        8px;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            0 3px 2px rgba(0,0,0,.18)
+        );
 }
 
+
 .tag {
-    margin-top: 8px;
+    margin-top: 5px;
 
     font-size: 14px;
     line-height: 1.45;
+
+    text-align: center;
 
     opacity: .94;
 }
@@ -1113,8 +1128,12 @@ button:disabled {
 
 @media (max-width: 380px) {
 
-    .brand {
-        font-size: 33px;
+    .hero-logo {
+        width: min(100%, 315px);
+    }
+
+    .tag {
+        font-size: 13px;
     }
 
     .word-tile {
@@ -1177,9 +1196,11 @@ button:disabled {
 
         <div class="hero-body">
 
-            <div class="brand">
-                WORD RELAY
-            </div>
+            <img
+                src="WR.png"
+                alt="Word Relay"
+                class="hero-logo"
+            >
 
             <div class="tag">
                 Build the chain.
@@ -1395,26 +1416,20 @@ button:disabled {
         >
 
             <span>
-
                 <span
                     class="legend-dot"
                     style="background:#1fa957"
                 ></span>
-
                 Correct
-
             </span>
 
 
             <span>
-
                 <span
                     class="legend-dot"
                     style="background:#df4141"
                 ></span>
-
                 Wrong position
-
             </span>
 
         </div>
@@ -1549,15 +1564,11 @@ button:disabled {
                 </div>
 
                 <div>
-
                     <strong>
                         Start with the locked word.
                     </strong>
-
                     <br>
-
                     It never moves.
-
                 </div>
 
             </div>
@@ -1570,16 +1581,12 @@ button:disabled {
                 </div>
 
                 <div>
-
                     <strong>
                         Build one continuous chain.
                     </strong>
-
                     <br>
-
                     Every neighboring pair forms
                     a familiar phrase or compound word.
-
                 </div>
 
             </div>
@@ -1592,16 +1599,12 @@ button:disabled {
                 </div>
 
                 <div>
-
                     <strong>
                         Tap and move.
                     </strong>
-
                     <br>
-
                     Select a word, then move it
                     left or right.
-
                 </div>
 
             </div>
@@ -1614,16 +1617,12 @@ button:disabled {
                 </div>
 
                 <div>
-
                     <strong>
                         Check your work.
                     </strong>
-
                     <br>
-
                     Green words are correct.
                     Red words are misplaced.
-
                 </div>
 
             </div>
@@ -1633,7 +1632,6 @@ button:disabled {
 
 
         <p>
-
             <strong>Daily Relay</strong>
             is timed.
 
@@ -1641,7 +1639,6 @@ button:disabled {
             to your final score.
 
             Library Relays are completely untimed.
-
         </p>
 
     </div>
@@ -1747,11 +1744,11 @@ button:disabled {
 
         <div class="best-box">
 
-            <div class="stat-label"
-                 style="color:#222">
-
+            <div
+                class="stat-label"
+                style="color:#222"
+            >
                 Daily #001 Best
-
             </div>
 
 
@@ -1766,11 +1763,9 @@ button:disabled {
 
 
         <p>
-
             Beta note:
             stats are currently kept
             for this browser session.
-
         </p>
 
     </div>
@@ -1791,19 +1786,10 @@ button:disabled {
 
 const library = [
 
-
-    /* ==================================================
-       RELAY 01
-       COAT → CHECK → BOX → OFFICE → SPACE →
-       BAR → CODE → WORD → PLAY → GROUND → BEEF
-    ================================================== */
-
     {
-
         name: "COAT",
 
         solution: [
-
             "COAT",
             "CHECK",
             "BOX",
@@ -1815,25 +1801,14 @@ const library = [
             "PLAY",
             "GROUND",
             "BEEF"
-
         ]
-
     },
 
 
-    /* ==================================================
-       RELAY 02
-       RAIN → BOW → TIE → BREAKER → BOX →
-       SPRING → BREAK → ROOM → SERVICE →
-       DOG → HOUSE
-    ================================================== */
-
     {
-
         name: "RAIN",
 
         solution: [
-
             "RAIN",
             "BOW",
             "TIE",
@@ -1845,25 +1820,14 @@ const library = [
             "SERVICE",
             "DOG",
             "HOUSE"
-
         ]
-
     },
 
 
-    /* ==================================================
-       RELAY 03
-       FIRE → TRUCK → STOP → WATCH → DOG →
-       HOUSE → PARTY → LINE → DANCE →
-       FLOOR → PLAN
-    ================================================== */
-
     {
-
         name: "FIRE",
 
         solution: [
-
             "FIRE",
             "TRUCK",
             "STOP",
@@ -1875,25 +1839,14 @@ const library = [
             "DANCE",
             "FLOOR",
             "PLAN"
-
         ]
-
     },
 
 
-    /* ==================================================
-       RELAY 04
-       SUN → FLOWER → BED → ROCK → GARDEN →
-       PARTY → ANIMAL → KINGDOM → COME →
-       BACK → YARD
-    ================================================== */
-
     {
-
         name: "SUN",
 
         solution: [
-
             "SUN",
             "FLOWER",
             "BED",
@@ -1905,25 +1858,14 @@ const library = [
             "COME",
             "BACK",
             "YARD"
-
         ]
-
     },
 
 
-    /* ==================================================
-       RELAY 05
-       TREE → TOP → HAT → TRICK → QUESTION →
-       MARK → DOWN → TOWN → HALL →
-       PASS → WORD
-    ================================================== */
-
     {
-
         name: "TREE",
 
         solution: [
-
             "TREE",
             "TOP",
             "HAT",
@@ -1935,24 +1877,14 @@ const library = [
             "HALL",
             "PASS",
             "WORD"
-
         ]
-
     },
 
-   /* ==================================================
-       RELAY 06
-       BLACK → BIRD → HOUSE → PLANT → FOOD →
-       COURT → CASE → STUDY → HALL →
-       PASS → WORD
-    ================================================== */
 
     {
-
         name: "BLACK",
 
         solution: [
-
             "BLACK",
             "BIRD",
             "HOUSE",
@@ -1964,24 +1896,14 @@ const library = [
             "HALL",
             "PASS",
             "WORD"
-
         ]
-
     },
 
-   /* ==================================================
-       RELAY 07
-       BUTTER → FLY → TRAP → DOOR → BELL →
-       BOY → FRIEND → ZONE → OUT →
-       SIDE → WALK
-    ================================================== */
 
     {
-
         name: "BUTTER",
 
         solution: [
-
             "BUTTER",
             "FLY",
             "TRAP",
@@ -1993,10 +1915,8 @@ const library = [
             "OUT",
             "SIDE",
             "WALK"
-
         ]
-
-    },
+    }
 
 ];
 
@@ -2013,15 +1933,7 @@ const dailyRelay = {
 
     number: 1,
 
-
-    /*
-        SCHOOL → BUS → STOP → SIGN →
-        LANGUAGE → ARTS → CENTER →
-        FIELD → GOAL → LINE → DRIVE
-    */
-
     solution: [
-
         "SCHOOL",
         "BUS",
         "STOP",
@@ -2033,21 +1945,9 @@ const dailyRelay = {
         "GOAL",
         "LINE",
         "DRIVE"
-
     ],
 
-
-    /*
-        IMPORTANT:
-
-        Everyone gets the SAME scramble.
-
-        This makes Daily Relay times
-        comparable between players.
-    */
-
     scramble: [
-
         "SCHOOL",
         "FIELD",
         "BUS",
@@ -2059,7 +1959,6 @@ const dailyRelay = {
         "GOAL",
         "ARTS",
         "LINE"
-
     ]
 
 };
@@ -2072,181 +1971,97 @@ const dailyRelay = {
 
 
 const homeScreen =
-    document.getElementById(
-        "homeScreen"
-    );
-
+    document.getElementById("homeScreen");
 
 const gameScreen =
-    document.getElementById(
-        "gameScreen"
-    );
-
+    document.getElementById("gameScreen");
 
 const howScreen =
-    document.getElementById(
-        "howScreen"
-    );
-
+    document.getElementById("howScreen");
 
 const statsScreen =
-    document.getElementById(
-        "statsScreen"
-    );
+    document.getElementById("statsScreen");
 
 
 const allScreens = [
-
     homeScreen,
     gameScreen,
     howScreen,
     statsScreen
-
 ];
 
 
 const resumeButton =
-    document.getElementById(
-        "resumeButton"
-    );
-
+    document.getElementById("resumeButton");
 
 const dailyStatus =
-    document.getElementById(
-        "dailyStatus"
-    );
-
+    document.getElementById("dailyStatus");
 
 const dailyPlay =
-    document.getElementById(
-        "dailyPlay"
-    );
-
+    document.getElementById("dailyPlay");
 
 const relayList =
-    document.getElementById(
-        "relayList"
-    );
-
+    document.getElementById("relayList");
 
 const relayBadge =
-    document.getElementById(
-        "relayBadge"
-    );
-
+    document.getElementById("relayBadge");
 
 const gameTitle =
-    document.getElementById(
-        "gameTitle"
-    );
-
+    document.getElementById("gameTitle");
 
 const timerRow =
-    document.getElementById(
-        "timerRow"
-    );
-
+    document.getElementById("timerRow");
 
 const timerElement =
-    document.getElementById(
-        "timer"
-    );
-
+    document.getElementById("timer");
 
 const penaltyElement =
-    document.getElementById(
-        "penalty"
-    );
-
+    document.getElementById("penalty");
 
 const statusElement =
-    document.getElementById(
-        "status"
-    );
-
+    document.getElementById("status");
 
 const scoreElement =
-    document.getElementById(
-        "score"
-    );
-
+    document.getElementById("score");
 
 const startNote =
-    document.getElementById(
-        "startNote"
-    );
-
+    document.getElementById("startNote");
 
 const wordChain =
-    document.getElementById(
-        "wordChain"
-    );
-
+    document.getElementById("wordChain");
 
 const legend =
-    document.getElementById(
-        "legend"
-    );
-
+    document.getElementById("legend");
 
 const moveLeft =
-    document.getElementById(
-        "moveLeft"
-    );
-
+    document.getElementById("moveLeft");
 
 const moveRight =
-    document.getElementById(
-        "moveRight"
-    );
-
+    document.getElementById("moveRight");
 
 const checkButton =
-    document.getElementById(
-        "checkButton"
-    );
-
+    document.getElementById("checkButton");
 
 const result =
-    document.getElementById(
-        "result"
-    );
-
+    document.getElementById("result");
 
 const finalTime =
-    document.getElementById(
-        "finalTime"
-    );
-
+    document.getElementById("finalTime");
 
 const resultDetail =
-    document.getElementById(
-        "resultDetail"
-    );
-
+    document.getElementById("resultDetail");
 
 const resultButtons =
-    document.getElementById(
-        "resultButtons"
-    );
-
+    document.getElementById("resultButtons");
 
 const shareButton =
-    document.getElementById(
-        "shareButton"
-    );
-
+    document.getElementById("shareButton");
 
 const resultHomeButton =
-    document.getElementById(
-        "resultHomeButton"
-    );
-
+    document.getElementById("resultHomeButton");
 
 const sharePreview =
-    document.getElementById(
-        "sharePreview"
-    );
+    document.getElementById("sharePreview");
 
 
 
@@ -2291,7 +2106,6 @@ let activeGame = null;
 const solvedLibrary =
     new Set();
 
-
 let dailySolved = false;
 
 let dailyBest = null;
@@ -2300,15 +2114,10 @@ let dailyBest = null;
 /* Stats */
 
 const stats = {
-
     librarySolved: 0,
-
     totalChecks: 0,
-
     dailySolved: 0,
-
     oneCheck: 0
-
 };
 
 
@@ -2322,35 +2131,21 @@ function showScreen(screen) {
 
     allScreens.forEach(
         function (item) {
-
-            item.classList.remove(
-                "active"
-            );
-
+            item.classList.remove("active");
         }
     );
 
 
-    screen.classList.add(
-        "active"
-    );
+    screen.classList.add("active");
 
 
-    if (
-        screen === homeScreen
-    ) {
-
+    if (screen === homeScreen) {
         renderHome();
-
     }
 
 
-    if (
-        screen === statsScreen
-    ) {
-
+    if (screen === statsScreen) {
         renderStats();
-
     }
 
 }
@@ -2364,16 +2159,12 @@ function showScreen(screen) {
 
 function shuffleArray(array) {
 
-    const copy =
-        [...array];
+    const copy = [...array];
 
 
     for (
-        let i =
-            copy.length - 1;
-
+        let i = copy.length - 1;
         i > 0;
-
         i--
     ) {
 
@@ -2409,9 +2200,7 @@ function shuffleArray(array) {
 ====================================================== */
 
 
-function createLibraryScramble(
-    solution
-) {
+function createLibraryScramble(solution) {
 
     const remaining =
         solution.slice(1);
@@ -2423,19 +2212,14 @@ function createLibraryScramble(
     do {
 
         shuffled =
-            shuffleArray(
-                remaining
-            );
+            shuffleArray(remaining);
 
     }
 
     while (
 
         shuffled.every(
-            function (
-                word,
-                index
-            ) {
+            function (word, index) {
 
                 return (
                     word ===
@@ -2449,11 +2233,8 @@ function createLibraryScramble(
 
 
     return [
-
         solution[0],
-
         ...shuffled
-
     ];
 
 }
@@ -2465,9 +2246,7 @@ function createLibraryScramble(
 ====================================================== */
 
 
-function formatTime(
-    milliseconds
-) {
+function formatTime(milliseconds) {
 
     const totalSeconds =
         Math.max(
@@ -2499,10 +2278,7 @@ function formatTime(
         minutes +
         ":" +
         String(seconds)
-            .padStart(
-                2,
-                "0"
-            ) +
+            .padStart(2, "0") +
         "." +
         tenths
     );
@@ -2523,9 +2299,7 @@ function startTimer() {
         timerStart !== null ||
         completed
     ) {
-
         return;
-
     }
 
 
@@ -2561,17 +2335,14 @@ function startTimer() {
 
 function stopTimer() {
 
-    if (
-        timerInterval
-    ) {
+    if (timerInterval) {
 
         clearInterval(
             timerInterval
         );
 
 
-        timerInterval =
-            null;
+        timerInterval = null;
 
     }
 
@@ -2586,12 +2357,8 @@ function stopTimer() {
 
 function correctCount() {
 
-    if (
-        !currentPuzzle
-    ) {
-
+    if (!currentPuzzle) {
         return 0;
-
     }
 
 
@@ -2642,13 +2409,7 @@ function isSolved() {
 
 function renderHome() {
 
-
-    /*
-        Resume
-    */
-
     const canResume =
-
         activeGame &&
         !activeGame.completed;
 
@@ -2659,28 +2420,18 @@ function renderHome() {
     );
 
 
-    /*
-        Daily status
-    */
-
-    if (
-        dailySolved
-    ) {
+    if (dailySolved) {
 
         dailyStatus.textContent =
             "✓ Daily #001 completed · Best " +
-            formatTime(
-                dailyBest
-            );
+            formatTime(dailyBest);
 
     }
 
     else if (
-
         activeGame &&
         activeGame.dailyMode &&
         !activeGame.completed
-
     ) {
 
         dailyStatus.textContent =
@@ -2695,10 +2446,6 @@ function renderHome() {
 
     }
 
-
-    /*
-        Library
-    */
 
     relayList.innerHTML = "";
 
@@ -2724,9 +2471,7 @@ function renderHome() {
 
 
             const finished =
-                solvedLibrary.has(
-                    index
-                );
+                solvedLibrary.has(index);
 
 
             button.innerHTML =
@@ -2736,10 +2481,7 @@ function renderHome() {
                     '<span class="relay-number">' +
 
                         String(index + 1)
-                            .padStart(
-                                2,
-                                "0"
-                            ) +
+                            .padStart(2, "0") +
 
                     '</span>' +
 
@@ -2778,9 +2520,7 @@ function renderHome() {
                 "click",
                 function () {
 
-                    openLibraryPuzzle(
-                        index
-                    );
+                    openLibraryPuzzle(index);
 
                 }
             );
@@ -2814,44 +2554,25 @@ function setupGame({
     stopTimer();
 
 
-    currentPuzzle =
-        puzzle;
+    currentPuzzle = puzzle;
 
+    dailyMode = isDaily;
 
-    dailyMode =
-        isDaily;
+    currentIndex = puzzleIndex;
 
+    order = [...startingOrder];
 
-    currentIndex =
-        puzzleIndex;
+    selectedIndex = -1;
 
+    checked = false;
 
-    order =
-        [...startingOrder];
+    checks = 0;
 
+    completed = false;
 
-    selectedIndex =
-        -1;
+    timerStart = null;
 
-
-    checked =
-        false;
-
-
-    checks =
-        0;
-
-
-    completed =
-        false;
-
-
-    timerStart =
-        null;
-
-
-    elapsedMilliseconds =
-        0;
+    elapsedMilliseconds = 0;
 
 
     timerElement.textContent =
@@ -2899,9 +2620,7 @@ function setupGame({
     );
 
 
-    if (
-        dailyMode
-    ) {
+    if (dailyMode) {
 
         relayBadge.textContent =
             "DAILY #001";
@@ -2920,13 +2639,8 @@ function setupGame({
 
         relayBadge.textContent =
             "RELAY " +
-            String(
-                currentIndex + 1
-            )
-            .padStart(
-                2,
-                "0"
-            );
+            String(currentIndex + 1)
+                .padStart(2, "0");
 
 
         gameTitle.textContent =
@@ -2965,9 +2679,7 @@ function setupGame({
     };
 
 
-    showScreen(
-        gameScreen
-    );
+    showScreen(gameScreen);
 
 
     renderGame();
@@ -2983,18 +2695,10 @@ function setupGame({
 
 function openDailyRelay() {
 
-
-    /*
-        If the Daily Relay is already
-        in progress, resume it.
-    */
-
     if (
-
         activeGame &&
         activeGame.dailyMode &&
         !activeGame.completed
-
     ) {
 
         resumeGame();
@@ -3029,9 +2733,7 @@ function openDailyRelay() {
 ====================================================== */
 
 
-function openLibraryPuzzle(
-    index
-) {
+function openLibraryPuzzle(index) {
 
     const puzzle =
         library[index];
@@ -3066,12 +2768,8 @@ function openLibraryPuzzle(
 
 function saveActiveGame() {
 
-    if (
-        !currentPuzzle
-    ) {
-
+    if (!currentPuzzle) {
         return;
-
     }
 
 
@@ -3111,12 +2809,8 @@ function saveActiveGame() {
 
 function resumeGame() {
 
-    if (
-        !activeGame
-    ) {
-
+    if (!activeGame) {
         return;
-
     }
 
 
@@ -3133,12 +2827,8 @@ function resumeGame() {
 
     currentPuzzle =
         dailyMode
-
         ? dailyRelay
-
-        : library[
-            currentIndex
-        ];
+        : library[currentIndex];
 
 
     order =
@@ -3182,9 +2872,7 @@ function resumeGame() {
     );
 
 
-    if (
-        dailyMode
-    ) {
+    if (dailyMode) {
 
         relayBadge.textContent =
             "DAILY #001";
@@ -3199,13 +2887,8 @@ function resumeGame() {
 
         relayBadge.textContent =
             "RELAY " +
-            String(
-                currentIndex + 1
-            )
-            .padStart(
-                2,
-                "0"
-            );
+            String(currentIndex + 1)
+                .padStart(2, "0");
 
 
         gameTitle.textContent =
@@ -3259,16 +2942,10 @@ function resumeGame() {
         "Welcome back. Keep building.";
 
 
-    /*
-        Resume running Daily clock.
-    */
-
     if (
-
         dailyMode &&
         timerStart !== null &&
         !completed
-
     ) {
 
         const savedElapsed =
@@ -3309,9 +2986,7 @@ function resumeGame() {
     }
 
 
-    showScreen(
-        gameScreen
-    );
+    showScreen(gameScreen);
 
 
     renderGame();
@@ -3327,8 +3002,7 @@ function resumeGame() {
 
 function clearFeedback() {
 
-    checked =
-        false;
+    checked = false;
 
 
     legend.classList.remove(
@@ -3356,12 +3030,8 @@ function clearFeedback() {
 
 function renderGame() {
 
-    if (
-        !currentPuzzle
-    ) {
-
+    if (!currentPuzzle) {
         return;
-
     }
 
 
@@ -3405,13 +3075,7 @@ function renderGame() {
                 word;
 
 
-            /*
-                Locked first word
-            */
-
-            if (
-                index === 0
-            ) {
+            if (index === 0) {
 
                 tile.classList.add(
                     "locked"
@@ -3420,21 +3084,11 @@ function renderGame() {
             }
 
 
-            /*
-                Selected word
-            */
-
             if (
-
-                index ===
-                    selectedIndex &&
-
+                index === selectedIndex &&
                 !checked &&
-
                 !completed &&
-
                 index !== 0
-
             ) {
 
                 tile.classList.add(
@@ -3444,20 +3098,12 @@ function renderGame() {
             }
 
 
-            /*
-                Check colors
-            */
-
-            if (
-                checked
-            ) {
+            if (checked) {
 
                 if (
-
                     word ===
                     currentPuzzle
                         .solution[index]
-
                 ) {
 
                     tile.classList.add(
@@ -3477,26 +3123,16 @@ function renderGame() {
             }
 
 
-            /*
-                Select tile
-            */
-
             tile.addEventListener(
                 "click",
                 function () {
 
-                    if (
-                        completed
-                    ) {
-
+                    if (completed) {
                         return;
-
                     }
 
 
-                    if (
-                        index === 0
-                    ) {
+                    if (index === 0) {
 
                         statusElement.textContent =
 
@@ -3535,10 +3171,6 @@ function renderGame() {
             );
 
 
-            /*
-                Arrow
-            */
-
             if (
                 index <
                 order.length - 1
@@ -3568,10 +3200,6 @@ function renderGame() {
     );
 
 
-    /*
-        Button state
-    */
-
     moveLeft.disabled =
 
         completed ||
@@ -3597,45 +3225,29 @@ function renderGame() {
 ====================================================== */
 
 
-function moveWord(
-    direction
-) {
+function moveWord(direction) {
 
     if (
-
         selectedIndex < 1 ||
         completed
-
     ) {
-
         return;
-
     }
 
 
     const targetIndex =
-
         selectedIndex +
         direction;
 
 
     if (
-
         targetIndex < 1 ||
         targetIndex >=
             order.length
-
     ) {
-
         return;
-
     }
 
-
-    /*
-        Daily timer begins
-        on first actual move.
-    */
 
     startTimer();
 
@@ -3707,19 +3319,10 @@ checkButton.addEventListener(
     "click",
     function () {
 
-        if (
-            completed
-        ) {
-
+        if (completed) {
             return;
-
         }
 
-
-        /*
-            Daily clock starts if the
-            player checks before moving.
-        */
 
         startTimer();
 
@@ -3730,12 +3333,10 @@ checkButton.addEventListener(
         stats.totalChecks++;
 
 
-        checked =
-            true;
+        checked = true;
 
 
-        selectedIndex =
-            -1;
+        selectedIndex = -1;
 
 
         legend.classList.add(
@@ -3743,9 +3344,7 @@ checkButton.addEventListener(
         );
 
 
-        if (
-            dailyMode
-        ) {
+        if (dailyMode) {
 
             penaltyElement.textContent =
 
@@ -3776,26 +3375,17 @@ checkButton.addEventListener(
         );
 
 
-        /*
-            SOLVED
-        */
+        if (correct === 11) {
 
-        if (
-            correct === 11
-        ) {
-
-            completed =
-                true;
+            completed = true;
 
 
             stopTimer();
 
 
             if (
-
                 dailyMode &&
                 timerStart !== null
-
             ) {
 
                 elapsedMilliseconds =
@@ -3820,13 +3410,7 @@ checkButton.addEventListener(
             );
 
 
-            /*
-                DAILY RESULT
-            */
-
-            if (
-                dailyMode
-            ) {
+            if (dailyMode) {
 
                 const penaltyMilliseconds =
                     checks *
@@ -3873,13 +3457,9 @@ checkButton.addEventListener(
                     " sec";
 
 
-                if (
-                    !dailySolved
-                ) {
+                if (!dailySolved) {
 
-                    dailySolved =
-                        true;
-
+                    dailySolved = true;
 
                     stats.dailySolved++;
 
@@ -3887,12 +3467,9 @@ checkButton.addEventListener(
 
 
                 if (
-
                     dailyBest === null ||
-
                     finalMilliseconds <
                         dailyBest
-
                 ) {
 
                     dailyBest =
@@ -3901,11 +3478,6 @@ checkButton.addEventListener(
                 }
 
             }
-
-
-            /*
-                LIBRARY RESULT
-            */
 
             else {
 
@@ -3944,13 +3516,7 @@ checkButton.addEventListener(
             }
 
 
-            /*
-                One-check stat
-            */
-
-            if (
-                checks === 1
-            ) {
+            if (checks === 1) {
 
                 stats.oneCheck++;
 
@@ -3960,11 +3526,6 @@ checkButton.addEventListener(
             saveActiveGame();
 
         }
-
-
-        /*
-            NOT SOLVED
-        */
 
         else {
 
@@ -3997,9 +3558,7 @@ shareButton.addEventListener(
         let shareText;
 
 
-        if (
-            dailyMode
-        ) {
+        if (dailyMode) {
 
             const finalMilliseconds =
 
@@ -4048,10 +3607,7 @@ shareButton.addEventListener(
                 String(
                     currentIndex + 1
                 )
-                .padStart(
-                    2,
-                    "0"
-                ) +
+                .padStart(2, "0") +
 
                 "\n" +
 
@@ -4068,15 +3624,7 @@ shareButton.addEventListener(
         }
 
 
-        /*
-            On phones that support
-            native sharing, open the
-            phone Share Sheet.
-        */
-
-        if (
-            navigator.share
-        ) {
+        if (navigator.share) {
 
             try {
 
@@ -4100,19 +3648,10 @@ shareButton.addEventListener(
 
             catch (error) {
 
-                /*
-                    User may simply
-                    cancel the share.
-                */
-
             }
 
         }
 
-
-        /*
-            Fallback preview.
-        */
 
         sharePreview.textContent =
             shareText;
