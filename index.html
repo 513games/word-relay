@@ -1,50 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 
 <meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
-
-<meta name="theme-color" content="#1976d2">
-
-<meta
-  name="apple-mobile-web-app-capable"
-  content="yes"
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
 >
 
 <meta
-  name="apple-mobile-web-app-status-bar-style"
-  content="default"
+    name="theme-color"
+    content="#1976d2"
 >
 
-<link rel="apple-touch-icon" sizes="180x180" href="app-icon.png?v=3">
-  
-  <link rel="manifest" href="manifest.json">
+<meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+>
+
+<meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="default"
+>
+
+<meta
+    name="apple-mobile-web-app-title"
+    content="Word Relay"
+>
 
 <link
-  rel="apple-touch-icon"
-  href="app-icon.png?v=3"
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="app-icon.png?v=3"
 >
 
 <link
-  rel="icon"
-  type="image/png"
-  href="app-icon.png?v=3"
+    rel="manifest"
+    href="manifest.json"
 >
 
-<meta
-  name="apple-mobile-web-app-title"
-  content="Word Relay"
+<link
+    rel="icon"
+    type="image/png"
+    href="app-icon.png?v=3"
 >
 
 <title>Word Relay Beta</title>
 
+
 <style>
 
 :root {
+
     --blue: #1976d2;
     --blue-dark: #0d47a1;
     --blue-light: #72baff;
@@ -61,17 +70,22 @@
     --text: #171717;
     --muted: #666666;
     --border: #d5d5d5;
+
 }
+
 
 * {
     box-sizing: border-box;
 }
 
+
 html {
     -webkit-text-size-adjust: 100%;
 }
 
+
 body {
+
     margin: 0;
 
     padding:
@@ -85,19 +99,23 @@ body {
         sans-serif;
 
     background:
+
         radial-gradient(
             circle at top left,
             rgba(105,183,255,.65) 0%,
             transparent 28%
         ),
+
         radial-gradient(
             circle at bottom right,
             rgba(255,212,0,.38) 0%,
             transparent 24%
         ),
-        #f4f5f7;
+
+        var(--page);
 
     color: var(--text);
+
 }
 
 
@@ -105,25 +123,36 @@ body {
    APP
 ====================================================== */
 
+
 .app {
+
     width: min(520px, 100%);
+
     margin: 0 auto;
 
     touch-action: manipulation;
+
 }
 
+
 button {
+
     font-family: inherit;
+
     font-size: 16px;
 
     touch-action: manipulation;
 
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color:
+        transparent;
+
 }
+
 
 .screen {
     display: none;
 }
+
 
 .screen.active {
     display: block;
@@ -134,36 +163,52 @@ button {
    HOME HEADER
 ====================================================== */
 
+
 .hero {
+
     overflow: hidden;
 
-    border: 3px solid var(--black);
+    border:
+        3px solid var(--black);
+
     border-radius: 23px;
 
     background: var(--card);
+
 }
 
+
 .hero-stripe {
+
     height: 11px;
 
     background: var(--yellow);
+
 }
+
 
 .hero-body {
-    padding: 20px 23px 22px;
 
-    background: var(--blue-light);
+    padding:
+        20px
+        23px
+        22px;
+
+    background:
+        var(--blue-light);
 
     color: #111;
+
 }
 
 
-/* NEW WORD RELAY LOGO */
-
 .hero-logo {
+
     display: block;
 
-    width: min(100%, 360px);
+    width:
+        min(100%, 360px);
+
     height: auto;
 
     margin:
@@ -176,10 +221,12 @@ button {
         drop-shadow(
             0 3px 2px rgba(0,0,0,.18)
         );
+
 }
 
 
 .tag {
+
     margin-top: 5px;
 
     font-size: 14px;
@@ -188,6 +235,60 @@ button {
     text-align: center;
 
     opacity: .94;
+
+}
+
+
+/* ======================================================
+   NEW RELAYS
+====================================================== */
+
+
+.new-relays-card {
+
+    margin-top: 16px;
+
+    padding: 15px;
+
+    border:
+        3px solid var(--black);
+
+    border-radius: 16px;
+
+    background:
+        var(--yellow);
+
+    color: #111;
+
+    box-shadow:
+        0 4px 0 var(--black);
+
+    text-align: center;
+
+}
+
+
+.new-relays-title {
+
+    font-size: 17px;
+
+    font-weight: 950;
+
+    letter-spacing: .03em;
+
+}
+
+
+.new-relays-text {
+
+    margin-top: 4px;
+
+    font-size: 12px;
+
+    line-height: 1.45;
+
+    font-weight: 750;
+
 }
 
 
@@ -195,26 +296,36 @@ button {
    RESUME
 ====================================================== */
 
+
 .resume-button {
+
     display: none;
 
     width: 100%;
+
     min-height: 54px;
 
     margin-top: 12px;
 
-    border: 3px solid var(--black);
+    border:
+        3px solid var(--black);
+
     border-radius: 14px;
 
-    background: var(--blue-light);
+    background:
+        var(--blue-light);
+
     color: #111;
 
     font-weight: 950;
 
-    box-shadow: 0 4px 0 var(--black);
+    box-shadow:
+        0 4px 0 var(--black);
 
     cursor: pointer;
+
 }
+
 
 .resume-button.show {
     display: block;
@@ -222,80 +333,42 @@ button {
 
 
 /* ======================================================
-   DAILY
+   HOME NAV
 ====================================================== */
 
-.daily-card {
-    margin-top: 16px;
 
-    padding: 16px;
+.home-nav {
 
-    border: 3px solid var(--black);
-    border-radius: 18px;
+    display: grid;
 
-    background: var(--yellow);
-    color: #111;
+    grid-template-columns:
+        1fr
+        1fr;
 
-    box-shadow: 0 4px 0 var(--black);
+    gap: 9px;
+
+    margin-top: 14px;
+
 }
 
-.daily-eyebrow {
-    font-size: 11px;
-    font-weight: 950;
 
-    letter-spacing: .14em;
+.nav-button {
 
-    text-transform: uppercase;
-}
+    min-height: 50px;
 
-.daily-title {
-    margin-top: 3px;
+    border:
+        2px solid #111;
 
-    font-size: 27px;
-    font-weight: 950;
-}
-
-.daily-details {
-    margin-top: 5px;
-
-    font-size: 13px;
-    line-height: 1.5;
-
-    font-weight: 750;
-}
-
-.daily-status {
-    margin-top: 10px;
-
-    padding: 8px 10px;
-
-    border: 2px solid #111;
-    border-radius: 10px;
-
-    background:
-        rgba(255,255,255,.55);
-
-    font-size: 12px;
-    font-weight: 900;
-}
-
-.daily-play {
-    width: 100%;
-    min-height: 55px;
-
-    margin-top: 11px;
-
-    border: 3px solid #111;
     border-radius: 13px;
 
-    background: #111;
-    color: white;
+    background: white;
 
-    font-weight: 950;
+    color: var(--text);
 
-    box-shadow: 0 3px 0 #555;
+    font-weight: 900;
 
     cursor: pointer;
+
 }
 
 
@@ -303,13 +376,16 @@ button {
    LIBRARY
 ====================================================== */
 
+
 .section-title {
+
     margin:
         22px
         2px
         9px;
 
     font-size: 12px;
+
     font-weight: 950;
 
     letter-spacing: .14em;
@@ -317,127 +393,149 @@ button {
     text-transform: uppercase;
 
     color: var(--muted);
+
 }
 
+
 .relay-list {
+
     display: grid;
 
     gap: 9px;
+
 }
 
+
 .relay {
+
     width: 100%;
+
     min-height: 62px;
 
-    padding: 9px 13px;
+    padding:
+        9px
+        13px;
 
     display: flex;
+
     align-items: center;
-    justify-content: space-between;
+
+    justify-content:
+        space-between;
 
     gap: 12px;
 
-    border: 3px solid #111;
+    border:
+        3px solid #111;
+
     border-radius: 15px;
 
-    background: var(--blue-light);
+    background:
+        var(--blue-light);
+
     color: #111;
 
-    box-shadow: 0 4px 0 #111;
+    box-shadow:
+        0 4px 0 #111;
 
     cursor: pointer;
 
     text-align: left;
+
 }
 
+
 .relay-left {
+
     display: flex;
+
     align-items: center;
 
     gap: 11px;
 
     min-width: 0;
+
 }
 
+
 .relay-number {
+
     width: 43px;
+
     height: 39px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     flex: 0 0 auto;
 
-    border: 2px solid #111;
+    border:
+        2px solid #111;
+
     border-radius: 9px;
 
-    background: var(--yellow);
+    background:
+        var(--yellow);
+
     color: #111;
 
     font-size: 13px;
+
     font-weight: 950;
+
 }
 
+
 .relay-name {
+
     font-size: 21px;
+
     font-weight: 950;
 
     letter-spacing: .02em;
+
 }
 
+
 .relay-subtitle {
+
     display: block;
 
     margin-top: 1px;
 
     font-size: 11px;
+
     font-weight: 750;
 
     color: #111;
+
     opacity: .65;
+
 }
 
+
 .relay-arrow {
+
     font-size: 23px;
+
     font-weight: 950;
 
     color: #111;
+
 }
 
+
 .relay-done {
+
     font-size: 22px;
+
     font-weight: 950;
 
     color: var(--green);
-}
 
-
-/* ======================================================
-   HOME NAV
-====================================================== */
-
-.home-nav {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    gap: 9px;
-
-    margin-top: 14px;
-}
-
-.nav-button {
-    min-height: 50px;
-
-    border: 2px solid #111;
-    border-radius: 13px;
-
-    background: white;
-    color: var(--text);
-
-    font-weight: 900;
-
-    cursor: pointer;
 }
 
 
@@ -445,127 +543,96 @@ button {
    GAME CARD
 ====================================================== */
 
+
 .game-card,
 .panel {
+
     padding: 16px;
 
-    border: 3px solid #111;
+    border:
+        3px solid #111;
+
     border-radius: 21px;
 
     background: white;
+
 }
+
 
 .game-top {
+
     display: flex;
+
     align-items: center;
-    justify-content: space-between;
+
+    justify-content:
+        space-between;
 
     gap: 10px;
+
 }
 
+
 .back-button {
+
     min-height: 44px;
 
-    padding: 0 13px;
+    padding:
+        0
+        13px;
 
-    border: 2px solid #111;
+    border:
+        2px solid #111;
+
     border-radius: 11px;
 
     background: white;
+
     color: #111;
 
     font-weight: 900;
 
     cursor: pointer;
+
 }
 
-.relay-badge {
-    padding: 8px 10px;
 
-    border: 2px solid #111;
+.relay-badge {
+
+    padding:
+        8px
+        10px;
+
+    border:
+        2px solid #111;
+
     border-radius: 9px;
 
-    background: var(--yellow);
+    background:
+        var(--yellow);
+
     color: #111;
 
     font-size: 13px;
+
     font-weight: 950;
 
     letter-spacing: .04em;
+
 }
 
-.relay-badge.daily {
-    background: #111;
-    color: var(--yellow);
-
-    border-color: var(--yellow);
-}
 
 .game-title {
+
     margin:
         15px
         0
         3px;
 
     font-size: 28px;
-    font-weight: 950;
-}
 
-
-/* ======================================================
-   DAILY TIMER
-====================================================== */
-
-.timer-row {
-    display: none;
-
-    grid-template-columns:
-        1.2fr
-        .8fr;
-
-    gap: 8px;
-
-    margin-top: 11px;
-}
-
-.timer-row.show {
-    display: grid;
-}
-
-.metric {
-    padding: 10px;
-
-    border: 2px solid #111;
-    border-radius: 11px;
-
-    background: var(--soft);
-
-    text-align: center;
-}
-
-.metric-label {
-    font-size: 10px;
     font-weight: 950;
 
-    letter-spacing: .1em;
-
-    text-transform: uppercase;
-
-    color: var(--muted);
-}
-
-.metric-value {
-    margin-top: 2px;
-
-    font-size: 24px;
-    font-weight: 950;
-
-    font-variant-numeric:
-        tabular-nums;
-}
-
-.penalty {
-    color: var(--red);
 }
 
 
@@ -573,45 +640,65 @@ button {
    STATUS
 ====================================================== */
 
+
 .status-row {
+
     min-height: 32px;
 
     margin-top: 8px;
 
     display: flex;
+
     align-items: center;
-    justify-content: space-between;
+
+    justify-content:
+        space-between;
 
     gap: 8px;
+
 }
 
+
 .status {
+
     min-width: 0;
 
     font-size: 13px;
+
     font-weight: 750;
 
     color: var(--muted);
+
 }
 
+
 .score {
+
     display: none;
 
     flex: 0 0 auto;
 
-    padding: 5px 8px;
+    padding:
+        5px
+        8px;
 
-    border: 2px solid var(--yellow);
+    border:
+        2px solid var(--yellow);
+
     border-radius: 999px;
 
     background: #111;
+
     color: white;
 
     font-size: 11px;
+
     font-weight: 950;
 
     white-space: nowrap;
+
 }
+
 
 .score.show {
     display: block;
@@ -619,13 +706,17 @@ button {
 
 
 /* ======================================================
-   START WORD MESSAGE
+   START NOTE
 ====================================================== */
 
+
 .start-note {
+
     margin-top: 9px;
 
-    padding: 11px 13px;
+    padding:
+        11px
+        13px;
 
     border-left:
         6px solid var(--blue);
@@ -637,15 +728,20 @@ button {
     color: #111;
 
     font-size: 14px;
+
     font-weight: 800;
 
     line-height: 1.45;
+
 }
 
+
 .start-word {
+
     color: var(--blue);
 
     font-weight: 950;
+
 }
 
 
@@ -653,7 +749,9 @@ button {
    WORD CHAIN
 ====================================================== */
 
+
 .chain {
+
     min-height: 125px;
 
     margin-top: 11px;
@@ -661,33 +759,46 @@ button {
     padding: 11px;
 
     display: flex;
+
     flex-wrap: wrap;
+
     align-items: center;
 
     gap: 7px;
 
-    border: 3px solid #111;
+    border:
+        3px solid #111;
+
     border-radius: 15px;
 
     background: #eef6ff;
 
     touch-action: manipulation;
+
 }
 
+
 .word-tile {
+
     position: relative;
 
     min-height: 46px;
 
-    padding: 0 11px;
+    padding:
+        0
+        11px;
 
-    border: 2px solid #111;
+    border:
+        2px solid #111;
+
     border-radius: 10px;
 
     background: white;
+
     color: #111;
 
     font-size: 14px;
+
     font-weight: 950;
 
     box-shadow:
@@ -701,23 +812,31 @@ button {
 
     -webkit-tap-highlight-color:
         transparent;
+
 }
 
+
 .word-tile.locked {
+
     padding-right: 43px;
 
     background: #111;
+
     color: var(--yellow);
 
     cursor: default;
+
 }
 
+
 .word-tile.locked::after {
+
     content: "START";
 
     position: absolute;
 
     right: 7px;
+
     top: 50%;
 
     transform:
@@ -730,47 +849,73 @@ button {
     color: white;
 
     opacity: .74;
+
 }
 
+
 .word-tile.selected {
-    background: var(--yellow);
+
+    background:
+        var(--yellow);
 
     outline:
         4px solid var(--blue);
 
     outline-offset: 2px;
+
 }
 
+
 .word-tile.correct {
-    background: var(--green);
+
+    background:
+        var(--green);
+
     color: white;
 
-    border-color: #0b7032;
+    border-color:
+        #0b7032;
 
     box-shadow:
         0 3px 0 #0b7032;
+
 }
 
+
 .word-tile.wrong {
-    background: var(--red);
+
+    background:
+        var(--red);
+
     color: white;
 
-    border-color: #982121;
+    border-color:
+        #982121;
 
     box-shadow:
         0 3px 0 #982121;
+
 }
+
 
 .word-tile.locked.correct {
-    background: var(--green);
+
+    background:
+        var(--green);
+
     color: white;
+
 }
 
+
 .arrow {
+
     font-size: 18px;
+
     font-weight: 950;
 
     color: var(--blue);
+
 }
 
 
@@ -778,7 +923,9 @@ button {
    LEGEND
 ====================================================== */
 
+
 .legend {
+
     display: none;
 
     gap: 16px;
@@ -788,25 +935,34 @@ button {
     margin-top: 12px;
 
     font-size: 12px;
+
     font-weight: 850;
+
 }
+
 
 .legend.show {
     display: flex;
 }
 
+
 .legend-dot {
+
     display: inline-block;
 
     width: 11px;
+
     height: 11px;
 
     margin-right: 5px;
 
-    border: 1px solid #111;
+    border:
+        1px solid #111;
+
     border-radius: 50%;
 
     vertical-align: -1px;
+
 }
 
 
@@ -814,7 +970,9 @@ button {
    CONTROLS
 ====================================================== */
 
+
 .controls {
+
     display: grid;
 
     grid-template-columns:
@@ -824,10 +982,13 @@ button {
     gap: 9px;
 
     margin-top: 14px;
+
 }
+
 
 .move-button,
 .check-button {
+
     border:
         3px solid #111;
 
@@ -836,6 +997,7 @@ button {
     color: #111;
 
     font-size: 16px;
+
     font-weight: 950;
 
     box-shadow:
@@ -847,16 +1009,22 @@ button {
 
     -webkit-tap-highlight-color:
         transparent;
+
 }
 
+
 .move-button {
+
     min-height: 53px;
 
     background:
         var(--blue-light);
+
 }
 
+
 .check-button {
+
     grid-column:
         1 / -1;
 
@@ -864,20 +1032,27 @@ button {
 
     background:
         var(--yellow);
+
 }
 
+
 button:active:not(:disabled) {
+
     transform:
         translateY(2px);
 
     box-shadow:
         0 2px 0 #111;
+
 }
 
+
 button:disabled {
+
     opacity: .35;
 
     cursor: default;
+
 }
 
 
@@ -885,7 +1060,9 @@ button:disabled {
    RESULT
 ====================================================== */
 
+
 .result {
+
     display: none;
 
     margin-top: 15px;
@@ -898,42 +1075,56 @@ button:disabled {
     border-radius: 15px;
 
     background: #111;
+
     color: white;
 
     text-align: center;
+
 }
+
 
 .result.show {
     display: block;
 }
 
+
 .result-title {
+
     font-size: 22px;
+
     font-weight: 950;
 
     color: var(--yellow);
+
 }
 
+
 .final-time {
+
     margin-top: 7px;
 
     font-size: 35px;
+
     font-weight: 950;
 
-    font-variant-numeric:
-        tabular-nums;
 }
 
+
 .result-detail {
+
     margin-top: 4px;
 
     font-size: 13px;
+
     font-weight: 800;
 
     color: #dddddd;
+
 }
 
+
 .result-buttons {
+
     display: none;
 
     grid-template-columns:
@@ -943,66 +1134,49 @@ button:disabled {
     gap: 9px;
 
     margin-top: 11px;
+
 }
+
 
 .result-buttons.show {
     display: grid;
 }
 
+
 .result-button {
+
     min-height: 51px;
 
-    border: 3px solid #111;
+    border:
+        3px solid #111;
+
     border-radius: 12px;
 
     font-size: 16px;
+
     font-weight: 950;
 
     cursor: pointer;
+
 }
 
+
 .share-button {
+
     background:
         var(--blue-light);
 
     color: #111;
+
 }
 
+
 .home-result-button {
+
     background: white;
 
     color: #111;
-}
 
-
-/* ======================================================
-   SHARE PREVIEW
-====================================================== */
-
-.share-preview {
-    display: none;
-
-    margin-top: 11px;
-
-    padding: 13px;
-
-    border:
-        2px dashed var(--border);
-
-    border-radius: 11px;
-
-    background: var(--soft);
-
-    white-space: pre-line;
-
-    font-family: monospace;
-
-    font-size: 13px;
-    line-height: 1.5;
-}
-
-.share-preview.show {
-    display: block;
 }
 
 
@@ -1010,32 +1184,45 @@ button:disabled {
    INFO / STATS
 ====================================================== */
 
+
 .panel h2 {
+
     margin:
         13px
         0
         10px;
 
     font-size: 28px;
+
     font-weight: 950;
+
 }
 
+
 .panel p {
+
     font-size: 14px;
+
     line-height: 1.55;
 
     color: var(--muted);
+
 }
 
+
 .how-list {
+
     display: grid;
 
     gap: 10px;
 
     margin-top: 13px;
+
 }
 
+
 .how-item {
+
     display: flex;
 
     gap: 11px;
@@ -1047,15 +1234,22 @@ button:disabled {
 
     border-radius: 12px;
 
-    background: var(--soft);
+    background:
+        var(--soft);
+
 }
 
+
 .how-number {
+
     width: 29px;
+
     height: 29px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     flex: 0 0 auto;
@@ -1065,70 +1259,81 @@ button:disabled {
 
     border-radius: 50%;
 
-    background: var(--yellow);
+    background:
+        var(--yellow);
+
     color: #111;
 
     font-weight: 950;
+
 }
 
+
+.example-chain {
+
+    margin-top: 6px;
+
+    font-weight: 950;
+
+    color: var(--blue);
+
+}
+
+
 .stats-grid {
+
     display: grid;
 
     grid-template-columns:
-        1fr
-        1fr;
+        repeat(3, 1fr);
 
     gap: 9px;
 
     margin-top: 12px;
+
 }
 
+
 .stat {
-    padding: 15px;
+
+    padding: 15px 8px;
 
     border:
         1px solid var(--border);
 
     border-radius: 13px;
 
-    background: var(--soft);
+    background:
+        var(--soft);
 
     text-align: center;
+
 }
+
 
 .stat-value {
+
     font-size: 27px;
+
     font-weight: 950;
+
 }
 
+
 .stat-label {
-    font-size: 10px;
+
+    margin-top: 3px;
+
+    font-size: 9px;
+
     font-weight: 900;
 
-    letter-spacing: .09em;
+    letter-spacing: .06em;
 
     text-transform: uppercase;
 
     color: var(--muted);
-}
 
-.best-box {
-    margin-top: 10px;
-
-    padding: 14px;
-
-    border: 2px solid #111;
-    border-radius: 13px;
-
-    background: var(--yellow);
-    color: #111;
-
-    text-align: center;
-}
-
-.best-time {
-    font-size: 28px;
-    font-weight: 950;
 }
 
 
@@ -1136,35 +1341,63 @@ button:disabled {
    MOBILE
 ====================================================== */
 
+
 @media (max-width: 380px) {
 
     .hero-logo {
-        width: min(100%, 315px);
+
+        width:
+            min(100%, 315px);
+
     }
+
 
     .tag {
+
         font-size: 13px;
+
     }
 
+
     .word-tile {
+
         padding:
             0
             9px;
 
         font-size: 13px;
+
     }
+
 
     .word-tile.locked {
+
         padding-right: 41px;
+
     }
+
 
     .chain {
+
         gap: 6px;
+
         padding: 9px;
+
     }
 
+
     .relay-name {
+
         font-size: 19px;
+
+    }
+
+
+    .stats-grid {
+
+        grid-template-columns:
+            1fr;
+
     }
 
 }
@@ -1174,7 +1407,10 @@ button:disabled {
    REDUCED MOTION
 ====================================================== */
 
-@media (prefers-reduced-motion: reduce) {
+
+@media (
+    prefers-reduced-motion: reduce
+) {
 
     button {
         transition: none;
@@ -1183,6 +1419,7 @@ button:disabled {
 }
 
 </style>
+
 </head>
 
 
@@ -1195,16 +1432,23 @@ button:disabled {
      HOME
 ===================================================== -->
 
+
 <section
     id="homeScreen"
     class="screen active"
 >
 
+
     <div class="hero">
 
-        <div class="hero-stripe"></div>
+        <div
+            class="hero-stripe"
+        ></div>
 
-        <div class="hero-body">
+
+        <div
+            class="hero-body"
+        >
 
             <img
                 src="WR.png"
@@ -1212,10 +1456,13 @@ button:disabled {
                 class="hero-logo"
             >
 
+
             <div class="tag">
+
                 Build the chain.
-                Beat the clock.
+                Make the connections.
                 Challenge your friends.
+
             </div>
 
         </div>
@@ -1232,66 +1479,54 @@ button:disabled {
     </button>
 
 
-    <div class="daily-card">
-
-        <div class="daily-eyebrow">
-            ☀️ BETA DAILY · #001
-        </div>
-
-        <div class="daily-title">
-            Daily Relay
-        </div>
-
-        <div class="daily-details">
-
-            Same Relay for everyone · Timed · +5 sec per Check
-
-            <br>
-
-            New challenge every day at
-            <strong>9:00 AM ET</strong>
-
-        </div>
+    <div
+        class="new-relays-card"
+    >
 
         <div
-            id="dailyStatus"
-            class="daily-status"
+            class="new-relays-title"
         >
-            Today's Relay: Not played
+            🔗 NEW RELAYS ADDED DAILY
         </div>
 
+
+        <div
+            class="new-relays-text"
+        >
+            Quick word-chain puzzles whenever you've got a few minutes to kill.
+            Pick any Relay below and build the chain.
+        </div>
+
+    </div>
+
+
+    <div
+        class="home-nav"
+    >
+
         <button
-            id="dailyPlay"
-            class="daily-play"
+            id="howButton"
+            class="nav-button"
             type="button"
         >
-            PLAY TODAY'S RELAY →
+            How to Play
+        </button>
+
+
+        <button
+            id="statsButton"
+            class="nav-button"
+            type="button"
+        >
+            Stats
         </button>
 
     </div>
 
-  <div class="home-nav">
 
-    <button
-        id="howButton"
-        class="nav-button"
-        type="button"
+    <div
+        class="section-title"
     >
-        How to Play
-    </button>
-
-    <button
-        id="statsButton"
-        class="nav-button"
-        type="button"
-    >
-        Stats
-    </button>
-
-</div>
-
-
-    <div class="section-title">
         Relay Library · Untimed
     </div>
 
@@ -1302,11 +1537,6 @@ button:disabled {
     ></div>
 
 
-    <div class="home-nav">
-
-
-    </div>
-
 </section>
 
 
@@ -1315,15 +1545,22 @@ button:disabled {
      GAME
 ===================================================== -->
 
+
 <section
     id="gameScreen"
     class="screen"
 >
 
-    <div class="game-card">
+
+    <div
+        class="game-card"
+    >
 
 
-        <div class="game-top">
+        <div
+            class="game-top"
+        >
+
 
             <button
                 id="gameBackButton"
@@ -1341,6 +1578,7 @@ button:disabled {
                 RELAY 01
             </div>
 
+
         </div>
 
 
@@ -1353,45 +1591,9 @@ button:disabled {
 
 
         <div
-            id="timerRow"
-            class="timer-row"
+            class="status-row"
         >
 
-            <div class="metric">
-
-                <div class="metric-label">
-                    Time
-                </div>
-
-                <div
-                    id="timer"
-                    class="metric-value"
-                >
-                    0:00.0
-                </div>
-
-            </div>
-
-
-            <div class="metric">
-
-                <div class="metric-label">
-                    Check Penalty
-                </div>
-
-                <div
-                    id="penalty"
-                    class="metric-value penalty"
-                >
-                    +0 sec
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="status-row">
 
             <div
                 id="status"
@@ -1408,6 +1610,7 @@ button:disabled {
             >
                 0 / 11
             </div>
+
 
         </div>
 
@@ -1431,26 +1634,35 @@ button:disabled {
         >
 
             <span>
+
                 <span
                     class="legend-dot"
                     style="background:#1fa957"
                 ></span>
+
                 Correct
+
             </span>
 
 
             <span>
+
                 <span
                     class="legend-dot"
                     style="background:#df4141"
                 ></span>
+
                 Wrong position
+
             </span>
 
         </div>
 
 
-        <div class="controls">
+        <div
+            class="controls"
+        >
+
 
             <button
                 id="moveLeft"
@@ -1480,6 +1692,7 @@ button:disabled {
                 ✓ Check Progress
             </button>
 
+
         </div>
 
 
@@ -1488,7 +1701,10 @@ button:disabled {
             class="result"
         >
 
-            <div class="result-title">
+
+            <div
+                class="result-title"
+            >
                 🔗 RELAY COMPLETE
             </div>
 
@@ -1504,6 +1720,7 @@ button:disabled {
                 class="result-detail"
             ></div>
 
+
         </div>
 
 
@@ -1511,6 +1728,7 @@ button:disabled {
             id="resultButtons"
             class="result-buttons"
         >
+
 
             <button
                 id="shareButton"
@@ -1529,16 +1747,12 @@ button:disabled {
                 Home
             </button>
 
+
         </div>
 
 
-        <div
-            id="sharePreview"
-            class="share-preview"
-        ></div>
-
-
     </div>
+
 
 </section>
 
@@ -1548,12 +1762,17 @@ button:disabled {
      HOW TO PLAY
 ===================================================== -->
 
+
 <section
     id="howScreen"
     class="screen"
 >
 
-    <div class="panel">
+
+    <div
+        class="panel"
+    >
+
 
         <button
             id="howBackButton"
@@ -1569,78 +1788,126 @@ button:disabled {
         </h2>
 
 
-        <div class="how-list">
+        <div
+            class="how-list"
+        >
 
 
-            <div class="how-item">
+            <div
+                class="how-item"
+            >
 
-                <div class="how-number">
+                <div
+                    class="how-number"
+                >
                     1
                 </div>
 
+
                 <div>
+
                     <strong>
                         Start with the locked word.
                     </strong>
+
                     <br>
+
                     It never moves.
+
                 </div>
 
             </div>
 
 
-            <div class="how-item">
+            <div
+                class="how-item"
+            >
 
-                <div class="how-number">
+                <div
+                    class="how-number"
+                >
                     2
                 </div>
 
+
                 <div>
+
                     <strong>
                         Build one continuous chain.
                     </strong>
+
                     <br>
+
                     Every neighboring pair forms
-                    a familiar phrase or compound word and each 
-                    word plays off the next.
-                    FOOT > BALL > PARK > BENCH
+                    a familiar phrase or compound word.
+                    Each word plays off the next.
+
+                    <div
+                        class="example-chain"
+                    >
+                        FOOT → BALL → PARK → BENCH
+                    </div>
+
                 </div>
 
             </div>
 
 
-            <div class="how-item">
+            <div
+                class="how-item"
+            >
 
-                <div class="how-number">
+                <div
+                    class="how-number"
+                >
                     3
                 </div>
 
+
                 <div>
+
                     <strong>
                         Tap and move.
                     </strong>
+
                     <br>
+
                     Select a word, then move it
-                    left or right to fit where you think it goes.
+                    left or right to fit where
+                    you think it goes.
+
                 </div>
 
             </div>
 
 
-            <div class="how-item">
+            <div
+                class="how-item"
+            >
 
-                <div class="how-number">
+                <div
+                    class="how-number"
+                >
                     4
                 </div>
 
+
                 <div>
+
                     <strong>
                         Check your work.
                     </strong>
+
                     <br>
-                    Click Check Progress to see how close you are. 
-                    Green words are in their correct place.
+
+                    Tap Check Progress to see
+                    how close you are.
+
+                    Green words are in their
+                    correct place.
+
                     Red words are misplaced.
+
                 </div>
 
             </div>
@@ -1650,16 +1917,18 @@ button:disabled {
 
 
         <p>
-            <strong>Daily Relay</strong>
-            is timed.
 
-            Every Check adds five seconds
-            to your final score.
+            All Relays are untimed.
 
-            Library Relays are completely untimed.
+            Take your time, experiment,
+            and see how few Checks
+            you can solve them in.
+
         </p>
 
+
     </div>
+
 
 </section>
 
@@ -1669,12 +1938,17 @@ button:disabled {
      STATS
 ===================================================== -->
 
+
 <section
     id="statsScreen"
     class="screen"
 >
 
-    <div class="panel">
+
+    <div
+        class="panel"
+    >
+
 
         <button
             id="statsBackButton"
@@ -1690,10 +1964,14 @@ button:disabled {
         </h2>
 
 
-        <div class="stats-grid">
+        <div
+            class="stats-grid"
+        >
 
 
-            <div class="stat">
+            <div
+                class="stat"
+            >
 
                 <div
                     id="librarySolvedStat"
@@ -1702,14 +1980,19 @@ button:disabled {
                     0
                 </div>
 
-                <div class="stat-label">
-                    Library Solved
+
+                <div
+                    class="stat-label"
+                >
+                    Relays Solved
                 </div>
 
             </div>
 
 
-            <div class="stat">
+            <div
+                class="stat"
+            >
 
                 <div
                     id="totalChecksStat"
@@ -1718,30 +2001,19 @@ button:disabled {
                     0
                 </div>
 
-                <div class="stat-label">
+
+                <div
+                    class="stat-label"
+                >
                     Total Checks
                 </div>
 
             </div>
 
 
-            <div class="stat">
-
-                <div
-                    id="dailySolvedStat"
-                    class="stat-value"
-                >
-                    0
-                </div>
-
-                <div class="stat-label">
-                    Daily Solved
-                </div>
-
-            </div>
-
-
-            <div class="stat">
+            <div
+                class="stat"
+            >
 
                 <div
                     id="oneCheckStat"
@@ -1750,7 +2022,10 @@ button:disabled {
                     0
                 </div>
 
-                <div class="stat-label">
+
+                <div
+                    class="stat-label"
+                >
                     One-Check Solves
                 </div>
 
@@ -1760,38 +2035,23 @@ button:disabled {
         </div>
 
 
-        <div class="best-box">
-
-            <div
-                class="stat-label"
-                style="color:#222"
-            >
-                Daily #001 Best
-            </div>
-
-
-            <div
-                id="bestTime"
-                class="best-time"
-            >
-                —
-            </div>
-
-        </div>
-
-
         <p>
+
             Beta note:
             stats are currently kept
             for this browser session.
+
         </p>
 
+
     </div>
+
 
 </section>
 
 
 </div>
+
 
 
 <script>
@@ -1803,6 +2063,7 @@ button:disabled {
 
 
 const library = [
+
 
     {
         name: "COAT",
@@ -1936,105 +2197,65 @@ const library = [
         ]
     },
 
-  {
-  name: "WATER",
 
-solution: [
-    "WATER",
-    "FALL",
-    "BACK",
-    "PACK",
-    "RAT",
-    "RACE",
-    "CAR",
-    "WASH",
-    "CLOTH",
-    "DIAPER",
-    "BAG"
-  ]
+    {
+        name: "WATER",
 
-  },
+        solution: [
+            "WATER",
+            "FALL",
+            "BACK",
+            "PACK",
+            "RAT",
+            "RACE",
+            "CAR",
+            "WASH",
+            "CLOTH",
+            "DIAPER",
+            "BAG"
+        ]
+    },
 
-  {
-    name: "HEAD",
 
-    solution: [
-        "HEAD",
-        "LIGHT",
-        "HOUSE",
-        "BOAT",
-        "RACE",
-        "TRACK",
-        "STAR",
-        "FISH",
-        "TANK",
-        "TOP",
-        "SECRET"
-    ]
-},
+    {
+        name: "HEAD",
 
-  {
-    name: "FOOT",
+        solution: [
+            "HEAD",
+            "LIGHT",
+            "HOUSE",
+            "BOAT",
+            "RACE",
+            "TRACK",
+            "STAR",
+            "FISH",
+            "TANK",
+            "TOP",
+            "SECRET"
+        ]
+    },
 
-    solution: [
-        "FOOT",
-        "BALL",
-        "PARK",
-        "BENCH",
-        "PRESS",
-        "RELEASE",
-        "DATE",
-        "NIGHT",
-        "LIFE",
-        "BOAT",
-        "HOUSE"
-    ]
-}
-  
+
+    {
+        name: "FOOT",
+
+        solution: [
+            "FOOT",
+            "BALL",
+            "PARK",
+            "BENCH",
+            "PRESS",
+            "RELEASE",
+            "DATE",
+            "NIGHT",
+            "LIFE",
+            "BOAT",
+            "HOUSE"
+        ]
+    }
+
+
 ];
-
-
-
-/* ======================================================
-   DAILY RELAY #001
-====================================================== */
-
-
-const dailyRelay = {
-
-    name: "SCHOOL",
-
-    number: 1,
-
-    solution: [
-        "SCHOOL",
-        "BUS",
-        "STOP",
-        "SIGN",
-        "LANGUAGE",
-        "ARTS",
-        "CENTER",
-        "FIELD",
-        "GOAL",
-        "LINE",
-        "DRIVE"
-    ],
-
-    scramble: [
-        "SCHOOL",
-        "FIELD",
-        "BUS",
-        "LANGUAGE",
-        "DRIVE",
-        "STOP",
-        "CENTER",
-        "SIGN",
-        "GOAL",
-        "ARTS",
-        "LINE"
-    ]
-
-};
 
 
 
@@ -2044,97 +2265,139 @@ const dailyRelay = {
 
 
 const homeScreen =
-    document.getElementById("homeScreen");
+    document.getElementById(
+        "homeScreen"
+    );
+
 
 const gameScreen =
-    document.getElementById("gameScreen");
+    document.getElementById(
+        "gameScreen"
+    );
+
 
 const howScreen =
-    document.getElementById("howScreen");
+    document.getElementById(
+        "howScreen"
+    );
+
 
 const statsScreen =
-    document.getElementById("statsScreen");
+    document.getElementById(
+        "statsScreen"
+    );
 
 
 const allScreens = [
+
     homeScreen,
     gameScreen,
     howScreen,
     statsScreen
+
 ];
 
 
 const resumeButton =
-    document.getElementById("resumeButton");
+    document.getElementById(
+        "resumeButton"
+    );
 
-const dailyStatus =
-    document.getElementById("dailyStatus");
-
-const dailyPlay =
-    document.getElementById("dailyPlay");
 
 const relayList =
-    document.getElementById("relayList");
+    document.getElementById(
+        "relayList"
+    );
+
 
 const relayBadge =
-    document.getElementById("relayBadge");
+    document.getElementById(
+        "relayBadge"
+    );
 
-const gameTitle =
-    document.getElementById("gameTitle");
-
-const timerRow =
-    document.getElementById("timerRow");
-
-const timerElement =
-    document.getElementById("timer");
-
-const penaltyElement =
-    document.getElementById("penalty");
 
 const statusElement =
-    document.getElementById("status");
+    document.getElementById(
+        "status"
+    );
+
 
 const scoreElement =
-    document.getElementById("score");
+    document.getElementById(
+        "score"
+    );
+
 
 const startNote =
-    document.getElementById("startNote");
+    document.getElementById(
+        "startNote"
+    );
+
 
 const wordChain =
-    document.getElementById("wordChain");
+    document.getElementById(
+        "wordChain"
+    );
+
 
 const legend =
-    document.getElementById("legend");
+    document.getElementById(
+        "legend"
+    );
+
 
 const moveLeft =
-    document.getElementById("moveLeft");
+    document.getElementById(
+        "moveLeft"
+    );
+
 
 const moveRight =
-    document.getElementById("moveRight");
+    document.getElementById(
+        "moveRight"
+    );
+
 
 const checkButton =
-    document.getElementById("checkButton");
+    document.getElementById(
+        "checkButton"
+    );
+
 
 const result =
-    document.getElementById("result");
+    document.getElementById(
+        "result"
+    );
+
 
 const finalTime =
-    document.getElementById("finalTime");
+    document.getElementById(
+        "finalTime"
+    );
+
 
 const resultDetail =
-    document.getElementById("resultDetail");
+    document.getElementById(
+        "resultDetail"
+    );
+
 
 const resultButtons =
-    document.getElementById("resultButtons");
+    document.getElementById(
+        "resultButtons"
+    );
+
 
 const shareButton =
-    document.getElementById("shareButton");
+    document.getElementById(
+        "shareButton"
+    );
+
 
 const resultHomeButton =
-    document.getElementById("resultHomeButton");
-
-const sharePreview =
-    document.getElementById("sharePreview");
+    document.getElementById(
+        "resultHomeButton"
+    );
 
 
 
@@ -2147,8 +2410,6 @@ let currentPuzzle = null;
 
 let currentIndex = -1;
 
-let dailyMode = false;
-
 let order = [];
 
 let selectedIndex = -1;
@@ -2159,38 +2420,21 @@ let checks = 0;
 
 let completed = false;
 
-
-/* Timer */
-
-let timerStart = null;
-
-let elapsedMilliseconds = 0;
-
-let timerInterval = null;
-
-
-/* Resume */
-
 let activeGame = null;
 
-
-/* Progress */
 
 const solvedLibrary =
     new Set();
 
-let dailySolved = false;
-
-let dailyBest = null;
-
-
-/* Stats */
 
 const stats = {
+
     librarySolved: 0,
+
     totalChecks: 0,
-    dailySolved: 0,
+
     oneCheck: 0
+
 };
 
 
@@ -2202,23 +2446,38 @@ const stats = {
 
 function showScreen(screen) {
 
+
     allScreens.forEach(
         function (item) {
-            item.classList.remove("active");
+
+            item.classList.remove(
+                "active"
+            );
+
         }
     );
 
 
-    screen.classList.add("active");
+    screen.classList.add(
+        "active"
+    );
 
 
-    if (screen === homeScreen) {
+    if (
+        screen === homeScreen
+    ) {
+
         renderHome();
+
     }
 
 
-    if (screen === statsScreen) {
+    if (
+        screen === statsScreen
+    ) {
+
         renderStats();
+
     }
 
 }
@@ -2232,14 +2491,20 @@ function showScreen(screen) {
 
 function shuffleArray(array) {
 
-    const copy = [...array];
+
+    const copy =
+        [...array];
 
 
     for (
-        let i = copy.length - 1;
+        let i =
+            copy.length - 1;
+
         i > 0;
+
         i--
     ) {
+
 
         const randomIndex =
             Math.floor(
@@ -2269,11 +2534,14 @@ function shuffleArray(array) {
 
 
 /* ======================================================
-   LIBRARY SCRAMBLE
+   SCRAMBLE
 ====================================================== */
 
 
-function createLibraryScramble(solution) {
+function createLibraryScramble(
+    solution
+) {
+
 
     const remaining =
         solution.slice(1);
@@ -2284,15 +2552,22 @@ function createLibraryScramble(solution) {
 
     do {
 
+
         shuffled =
-            shuffleArray(remaining);
+            shuffleArray(
+                remaining
+            );
+
 
     }
 
     while (
 
         shuffled.every(
-            function (word, index) {
+            function (
+                word,
+                index
+            ) {
 
                 return (
                     word ===
@@ -2306,170 +2581,12 @@ function createLibraryScramble(solution) {
 
 
     return [
+
         solution[0],
+
         ...shuffled
+
     ];
-
-}
-
-
-
-/* ======================================================
-   TIME FORMAT
-====================================================== */
-
-
-function formatTime(milliseconds) {
-
-    const totalSeconds =
-        Math.max(
-            0,
-            milliseconds
-        ) / 1000;
-
-
-    const minutes =
-        Math.floor(
-            totalSeconds / 60
-        );
-
-
-    const seconds =
-        Math.floor(
-            totalSeconds % 60
-        );
-
-
-    const tenths =
-        Math.floor(
-            (totalSeconds % 1) *
-            10
-        );
-
-
-    return (
-        minutes +
-        ":" +
-        String(seconds)
-            .padStart(2, "0") +
-        "." +
-        tenths
-    );
-
-}
-
-
-
-/* ======================================================
-   TIMER
-====================================================== */
-
-
-function startTimer() {
-
-    if (
-        !dailyMode ||
-        timerStart !== null ||
-        completed
-    ) {
-        return;
-    }
-
-
-    timerStart =
-        Date.now();
-
-
-    timerInterval =
-        setInterval(
-            function () {
-
-                elapsedMilliseconds =
-                    Date.now() -
-                    timerStart;
-
-
-                timerElement.textContent =
-                    formatTime(
-                        elapsedMilliseconds
-                    );
-
-
-                saveActiveGame();
-
-            },
-
-            100
-        );
-
-}
-
-
-
-function stopTimer() {
-
-    if (timerInterval) {
-
-        clearInterval(
-            timerInterval
-        );
-
-
-        timerInterval = null;
-
-    }
-
-}
-
-
-
-/* ======================================================
-   CORRECT COUNT
-====================================================== */
-
-
-function correctCount() {
-
-    if (!currentPuzzle) {
-        return 0;
-    }
-
-
-    return order.reduce(
-        function (
-            total,
-            word,
-            index
-        ) {
-
-            if (
-                word ===
-                currentPuzzle
-                    .solution[index]
-            ) {
-
-                return total + 1;
-
-            }
-
-
-            return total;
-
-        },
-
-        0
-    );
-
-}
-
-
-
-function isSolved() {
-
-    return (
-        order.length === 11 &&
-        correctCount() === 11
-    );
 
 }
 
@@ -2482,45 +2599,26 @@ function isSolved() {
 
 function renderHome() {
 
+
     const canResume =
+
         activeGame &&
         !activeGame.completed;
 
 
     resumeButton.classList.toggle(
+
         "show",
-        Boolean(canResume)
+
+        Boolean(
+            canResume
+        )
+
     );
 
 
-    if (dailySolved) {
-
-        dailyStatus.textContent =
-            "✓ Daily #001 completed · Best " +
-            formatTime(dailyBest);
-
-    }
-
-    else if (
-        activeGame &&
-        activeGame.dailyMode &&
-        !activeGame.completed
-    ) {
-
-        dailyStatus.textContent =
-            "Daily #001: In progress";
-
-    }
-
-    else {
-
-        dailyStatus.textContent =
-            "Today's Relay: Not played";
-
-    }
-
-
-    relayList.innerHTML = "";
+    relayList.innerHTML =
+        "";
 
 
     library.forEach(
@@ -2528,6 +2626,7 @@ function renderHome() {
             puzzle,
             index
         ) {
+
 
             const button =
                 document.createElement(
@@ -2544,7 +2643,9 @@ function renderHome() {
 
 
             const finished =
-                solvedLibrary.has(index);
+                solvedLibrary.has(
+                    index
+                );
 
 
             button.innerHTML =
@@ -2553,19 +2654,28 @@ function renderHome() {
 
                     '<span class="relay-number">' +
 
-                        String(index + 1)
-                            .padStart(2, "0") +
+                        String(
+                            index + 1
+                        )
+                        .padStart(
+                            2,
+                            "0"
+                        ) +
 
                     '</span>' +
 
                     '<span>' +
 
                         '<span class="relay-name">' +
+
                             puzzle.name +
+
                         '</span>' +
 
                         '<span class="relay-subtitle">' +
+
                             'Untimed Relay' +
+
                         '</span>' +
 
                     '</span>' +
@@ -2573,16 +2683,22 @@ function renderHome() {
                 '</span>' +
 
                 '<span class="' +
+
                     (
                         finished
+
                         ? "relay-done"
+
                         : "relay-arrow"
                     ) +
+
                 '">' +
 
                     (
                         finished
+
                         ? "✓"
+
                         : "›"
                     ) +
 
@@ -2593,7 +2709,9 @@ function renderHome() {
                 "click",
                 function () {
 
-                    openLibraryPuzzle(index);
+                    openLibraryPuzzle(
+                        index
+                    );
 
                 }
             );
@@ -2615,45 +2733,39 @@ function renderHome() {
 ====================================================== */
 
 
-function setupGame({
-
-    puzzle,
-    isDaily,
-    puzzleIndex,
-    startingOrder
-
-}) {
-
-    stopTimer();
+function setupGame(
+    index
+) {
 
 
-    currentPuzzle = puzzle;
-
-    dailyMode = isDaily;
-
-    currentIndex = puzzleIndex;
-
-    order = [...startingOrder];
-
-    selectedIndex = -1;
-
-    checked = false;
-
-    checks = 0;
-
-    completed = false;
-
-    timerStart = null;
-
-    elapsedMilliseconds = 0;
+    currentPuzzle =
+        library[index];
 
 
-    timerElement.textContent =
-        "0:00.0";
+    currentIndex =
+        index;
 
 
-    penaltyElement.textContent =
-        "+0 sec";
+    order =
+        createLibraryScramble(
+            currentPuzzle.solution
+        );
+
+
+    selectedIndex =
+        -1;
+
+
+    checked =
+        false;
+
+
+    checks =
+        0;
+
+
+    completed =
+        false;
 
 
     legend.classList.remove(
@@ -2676,126 +2788,32 @@ function setupGame({
     );
 
 
-    sharePreview.classList.remove(
-        "show"
+    relayBadge.textContent =
+
+        "RELAY " +
+
+        String(
+            currentIndex + 1
+        )
+        .padStart(
+            2,
+            "0"
+        );
+
+
+    statusElement.textContent =
+        "Select a word to begin.";
+
+
+    saveActiveGame();
+
+
+    showScreen(
+        gameScreen
     );
-
-
-    timerRow.classList.toggle(
-        "show",
-        dailyMode
-    );
-
-
-    relayBadge.classList.toggle(
-        "daily",
-        dailyMode
-    );
-
-
-    if (dailyMode) {
-
-        relayBadge.textContent =
-            "DAILY #001";
-
-
-        gameTitle.textContent =
-            "Daily Relay";
-
-
-        statusElement.textContent =
-            "Timer starts on your first move.";
-
-    }
-
-    else {
-
-        relayBadge.textContent =
-            "RELAY " +
-            String(currentIndex + 1)
-                .padStart(2, "0");
-
-
-        gameTitle.textContent =
-            "Build the Relay";
-
-
-        statusElement.textContent =
-            "Select a word to begin.";
-
-    }
-
-
-    activeGame = {
-
-        dailyMode:
-            dailyMode,
-
-        index:
-            currentIndex,
-
-        order:
-            [...order],
-
-        checks:
-            checks,
-
-        completed:
-            false,
-
-        timerStart:
-            null,
-
-        elapsedMilliseconds:
-            0
-
-    };
-
-
-    showScreen(gameScreen);
 
 
     renderGame();
-
-}
-
-
-
-/* ======================================================
-   OPEN DAILY
-====================================================== */
-
-
-function openDailyRelay() {
-
-    if (
-        activeGame &&
-        activeGame.dailyMode &&
-        !activeGame.completed
-    ) {
-
-        resumeGame();
-
-        return;
-
-    }
-
-
-    setupGame({
-
-        puzzle:
-            dailyRelay,
-
-        isDaily:
-            true,
-
-        puzzleIndex:
-            -1,
-
-        startingOrder:
-            dailyRelay.scramble
-
-    });
 
 }
 
@@ -2806,29 +2824,14 @@ function openDailyRelay() {
 ====================================================== */
 
 
-function openLibraryPuzzle(index) {
+function openLibraryPuzzle(
+    index
+) {
 
-    const puzzle =
-        library[index];
 
-
-    setupGame({
-
-        puzzle:
-            puzzle,
-
-        isDaily:
-            false,
-
-        puzzleIndex:
-            index,
-
-        startingOrder:
-            createLibraryScramble(
-                puzzle.solution
-            )
-
-    });
+    setupGame(
+        index
+    );
 
 }
 
@@ -2841,33 +2844,33 @@ function openLibraryPuzzle(index) {
 
 function saveActiveGame() {
 
-    if (!currentPuzzle) {
+
+    if (
+        !currentPuzzle
+    ) {
+
         return;
+
     }
 
 
     activeGame = {
 
-        dailyMode:
-            dailyMode,
 
         index:
             currentIndex,
 
+
         order:
             [...order],
+
 
         checks:
             checks,
 
+
         completed:
-            completed,
-
-        timerStart:
-            timerStart,
-
-        elapsedMilliseconds:
-            elapsedMilliseconds
+            completed
 
     };
 
@@ -2876,22 +2879,20 @@ function saveActiveGame() {
 
 
 /* ======================================================
-   RESUME GAME
+   RESUME
 ====================================================== */
 
 
 function resumeGame() {
 
-    if (!activeGame) {
+
+    if (
+        !activeGame
+    ) {
+
         return;
+
     }
-
-
-    stopTimer();
-
-
-    dailyMode =
-        activeGame.dailyMode;
 
 
     currentIndex =
@@ -2899,9 +2900,9 @@ function resumeGame() {
 
 
     currentPuzzle =
-        dailyMode
-        ? dailyRelay
-        : library[currentIndex];
+        library[
+            currentIndex
+        ];
 
 
     order =
@@ -2924,66 +2925,17 @@ function resumeGame() {
         false;
 
 
-    timerStart =
-        activeGame.timerStart;
+    relayBadge.textContent =
 
+        "RELAY " +
 
-    elapsedMilliseconds =
-        activeGame
-            .elapsedMilliseconds;
-
-
-    timerRow.classList.toggle(
-        "show",
-        dailyMode
-    );
-
-
-    relayBadge.classList.toggle(
-        "daily",
-        dailyMode
-    );
-
-
-    if (dailyMode) {
-
-        relayBadge.textContent =
-            "DAILY #001";
-
-
-        gameTitle.textContent =
-            "Daily Relay";
-
-    }
-
-    else {
-
-        relayBadge.textContent =
-            "RELAY " +
-            String(currentIndex + 1)
-                .padStart(2, "0");
-
-
-        gameTitle.textContent =
-            "Build the Relay";
-
-    }
-
-
-    timerElement.textContent =
-        formatTime(
-            elapsedMilliseconds
+        String(
+            currentIndex + 1
+        )
+        .padStart(
+            2,
+            "0"
         );
-
-
-    penaltyElement.textContent =
-        "+" +
-        (
-            dailyMode
-            ? checks * 5
-            : 0
-        ) +
-        " sec";
 
 
     legend.classList.remove(
@@ -3006,60 +2958,13 @@ function resumeGame() {
     );
 
 
-    sharePreview.classList.remove(
-        "show"
-    );
-
-
     statusElement.textContent =
         "Welcome back. Keep building.";
 
 
-    if (
-        dailyMode &&
-        timerStart !== null &&
-        !completed
-    ) {
-
-        const savedElapsed =
-            elapsedMilliseconds;
-
-
-        const resumedAt =
-            Date.now();
-
-
-        timerInterval =
-            setInterval(
-                function () {
-
-                    elapsedMilliseconds =
-
-                        savedElapsed +
-
-                        (
-                            Date.now() -
-                            resumedAt
-                        );
-
-
-                    timerElement.textContent =
-                        formatTime(
-                            elapsedMilliseconds
-                        );
-
-
-                    saveActiveGame();
-
-                },
-
-                100
-            );
-
-    }
-
-
-    showScreen(gameScreen);
+    showScreen(
+        gameScreen
+    );
 
 
     renderGame();
@@ -3069,13 +2974,15 @@ function resumeGame() {
 
 
 /* ======================================================
-   CLEAR CHECK FEEDBACK
+   CLEAR FEEDBACK
 ====================================================== */
 
 
 function clearFeedback() {
 
-    checked = false;
+
+    checked =
+        false;
 
 
     legend.classList.remove(
@@ -3087,9 +2994,53 @@ function clearFeedback() {
         "show"
     );
 
+}
 
-    sharePreview.classList.remove(
-        "show"
+
+
+/* ======================================================
+   CORRECT COUNT
+====================================================== */
+
+
+function correctCount() {
+
+
+    if (
+        !currentPuzzle
+    ) {
+
+        return 0;
+
+    }
+
+
+    return order.reduce(
+        function (
+            total,
+            word,
+            index
+        ) {
+
+
+            if (
+
+                word ===
+                currentPuzzle
+                    .solution[index]
+
+            ) {
+
+                return total + 1;
+
+            }
+
+
+            return total;
+
+        },
+
+        0
     );
 
 }
@@ -3103,8 +3054,13 @@ function clearFeedback() {
 
 function renderGame() {
 
-    if (!currentPuzzle) {
+
+    if (
+        !currentPuzzle
+    ) {
+
         return;
+
     }
 
 
@@ -3121,7 +3077,8 @@ function renderGame() {
         'Build outward from there.';
 
 
-    wordChain.innerHTML = "";
+    wordChain.innerHTML =
+        "";
 
 
     order.forEach(
@@ -3129,6 +3086,7 @@ function renderGame() {
             word,
             index
         ) {
+
 
             const tile =
                 document.createElement(
@@ -3148,7 +3106,9 @@ function renderGame() {
                 word;
 
 
-            if (index === 0) {
+            if (
+                index === 0
+            ) {
 
                 tile.classList.add(
                     "locked"
@@ -3158,10 +3118,16 @@ function renderGame() {
 
 
             if (
-                index === selectedIndex &&
+
+                index ===
+                    selectedIndex &&
+
                 !checked &&
+
                 !completed &&
+
                 index !== 0
+
             ) {
 
                 tile.classList.add(
@@ -3171,12 +3137,17 @@ function renderGame() {
             }
 
 
-            if (checked) {
+            if (
+                checked
+            ) {
+
 
                 if (
+
                     word ===
                     currentPuzzle
                         .solution[index]
+
                 ) {
 
                     tile.classList.add(
@@ -3184,6 +3155,7 @@ function renderGame() {
                     );
 
                 }
+
 
                 else {
 
@@ -3200,12 +3172,20 @@ function renderGame() {
                 "click",
                 function () {
 
-                    if (completed) {
+
+                    if (
+                        completed
+                    ) {
+
                         return;
+
                     }
 
 
-                    if (index === 0) {
+                    if (
+                        index === 0
+                    ) {
+
 
                         statusElement.textContent =
 
@@ -3245,9 +3225,12 @@ function renderGame() {
 
 
             if (
+
                 index <
-                order.length - 1
+                    order.length - 1
+
             ) {
+
 
                 const arrow =
                     document.createElement(
@@ -3298,44 +3281,66 @@ function renderGame() {
 ====================================================== */
 
 
-function moveWord(direction) {
+function moveWord(
+    direction
+) {
+
 
     if (
+
         selectedIndex < 1 ||
+
         completed
+
     ) {
+
         return;
+
     }
 
 
     const targetIndex =
+
         selectedIndex +
+
         direction;
 
 
     if (
+
         targetIndex < 1 ||
+
         targetIndex >=
             order.length
+
     ) {
+
         return;
+
     }
-
-
-    startTimer();
 
 
     clearFeedback();
 
 
     [
-        order[selectedIndex],
-        order[targetIndex]
+        order[
+            selectedIndex
+        ],
+
+        order[
+            targetIndex
+        ]
 
     ] = [
 
-        order[targetIndex],
-        order[selectedIndex]
+        order[
+            targetIndex
+        ],
+
+        order[
+            selectedIndex
+        ]
 
     ];
 
@@ -3366,7 +3371,9 @@ moveLeft.addEventListener(
     "click",
     function () {
 
-        moveWord(-1);
+        moveWord(
+            -1
+        );
 
     }
 );
@@ -3376,7 +3383,9 @@ moveRight.addEventListener(
     "click",
     function () {
 
-        moveWord(1);
+        moveWord(
+            1
+        );
 
     }
 );
@@ -3392,12 +3401,14 @@ checkButton.addEventListener(
     "click",
     function () {
 
-        if (completed) {
+
+        if (
+            completed
+        ) {
+
             return;
+
         }
-
-
-        startTimer();
 
 
         checks++;
@@ -3406,30 +3417,17 @@ checkButton.addEventListener(
         stats.totalChecks++;
 
 
-        checked = true;
+        checked =
+            true;
 
 
-        selectedIndex = -1;
+        selectedIndex =
+            -1;
 
 
         legend.classList.add(
             "show"
         );
-
-
-        if (dailyMode) {
-
-            penaltyElement.textContent =
-
-                "+" +
-
-                (
-                    checks * 5
-                ) +
-
-                " sec";
-
-        }
 
 
         const correct =
@@ -3448,25 +3446,13 @@ checkButton.addEventListener(
         );
 
 
-        if (correct === 11) {
-
-            completed = true;
-
-
-            stopTimer();
+        if (
+            correct === 11
+        ) {
 
 
-            if (
-                dailyMode &&
-                timerStart !== null
-            ) {
-
-                elapsedMilliseconds =
-
-                    Date.now() -
-                    timerStart;
-
-            }
+            completed =
+                true;
 
 
             statusElement.textContent =
@@ -3483,113 +3469,45 @@ checkButton.addEventListener(
             );
 
 
-            if (dailyMode) {
-
-                const penaltyMilliseconds =
-                    checks *
-                    5000;
+            finalTime.textContent =
+                "SOLVED";
 
 
-                const finalMilliseconds =
+            resultDetail.textContent =
 
-                    elapsedMilliseconds +
+                checks +
 
-                    penaltyMilliseconds;
+                (
+                    checks === 1
 
+                    ? " check"
 
-                finalTime.textContent =
-                    formatTime(
-                        finalMilliseconds
-                    );
+                    : " checks"
+                ) +
 
-
-                resultDetail.textContent =
-
-                    "Raw " +
-
-                    formatTime(
-                        elapsedMilliseconds
-                    ) +
-
-                    " · " +
-
-                    checks +
-
-                    (
-                        checks === 1
-                        ? " check"
-                        : " checks"
-                    ) +
-
-                    " · +" +
-
-                    (
-                        checks * 5
-                    ) +
-
-                    " sec";
+                " · Untimed Relay";
 
 
-                if (!dailySolved) {
-
-                    dailySolved = true;
-
-                    stats.dailySolved++;
-
-                }
+            if (
+                !solvedLibrary.has(
+                    currentIndex
+                )
+            ) {
 
 
-                if (
-                    dailyBest === null ||
-                    finalMilliseconds <
-                        dailyBest
-                ) {
-
-                    dailyBest =
-                        finalMilliseconds;
-
-                }
-
-            }
-
-            else {
-
-                finalTime.textContent =
-                    "SOLVED";
+                solvedLibrary.add(
+                    currentIndex
+                );
 
 
-                resultDetail.textContent =
-
-                    checks +
-
-                    (
-                        checks === 1
-                        ? " check"
-                        : " checks"
-                    ) +
-
-                    " · Untimed Relay";
-
-
-                if (
-                    !solvedLibrary.has(
-                        currentIndex
-                    )
-                ) {
-
-                    solvedLibrary.add(
-                        currentIndex
-                    );
-
-
-                    stats.librarySolved++;
-
-                }
+                stats.librarySolved++;
 
             }
 
 
-            if (checks === 1) {
+            if (
+                checks === 1
+            ) {
 
                 stats.oneCheck++;
 
@@ -3600,7 +3518,9 @@ checkButton.addEventListener(
 
         }
 
+
         else {
+
 
             statusElement.textContent =
                 "Use the colors to plan your next move.";
@@ -3628,129 +3548,78 @@ shareButton.addEventListener(
     async function () {
 
 
-        let shareText;
+        const shareText =
+
+            "WORD RELAY · RELAY " +
+
+            String(
+                currentIndex + 1
+            )
+            .padStart(
+                2,
+                "0"
+            ) +
+
+            "\n" +
+
+            "🔗 Solved in " +
+
+            checks +
+
+            (
+                checks === 1
+
+                ? " check"
+
+                : " checks"
+            );
 
 
-        if (dailyMode) {
+        if (
+            navigator.share
+        ) {
 
-            const finalMilliseconds =
-
-                elapsedMilliseconds +
-
-                (
-                    checks *
-                    5000
-                );
-
-
-            shareText =
-
-                "WORD RELAY DAILY #001\n" +
-
-                "⏱ " +
-
-                formatTime(
-                    finalMilliseconds
-                ) +
-
-                "\n" +
-
-                "✓ " +
-
-                checks +
-
-                (
-                    checks === 1
-                    ? " check"
-                    : " checks"
-                ) +
-
-                "\n" +
-
-                "🔗 Can you beat me?";
-
-        }
-
-        else {
-
-            shareText =
-
-                "WORD RELAY · RELAY " +
-
-                String(
-                    currentIndex + 1
-                )
-                .padStart(2, "0") +
-
-                "\n" +
-
-                "🔗 Solved in " +
-
-                checks +
-
-                (
-                    checks === 1
-                    ? " check"
-                    : " checks"
-                );
-
-        }
-
-
-        if (navigator.share) {
 
             try {
 
+
                 await navigator.share({
+
 
                     title:
                         "Word Relay",
 
+
                     text:
                         shareText,
+
 
                     url:
                         window.location.href
 
+
                 });
 
 
-                return;
-
             }
 
-            catch (error) {
+            catch (
+                error
+            ) {
 
             }
 
         }
 
 
-        sharePreview.textContent =
-            shareText;
+        else {
 
 
-        sharePreview.classList.add(
-            "show"
-        );
+            alert(
+                shareText
+            );
 
-    }
-);
-
-
-
-/* ======================================================
-   RESULT HOME
-====================================================== */
-
-
-resultHomeButton.addEventListener(
-    "click",
-    function () {
-
-        showScreen(
-            homeScreen
-        );
+        }
 
     }
 );
@@ -3758,7 +3627,7 @@ resultHomeButton.addEventListener(
 
 
 /* ======================================================
-   GAME BACK
+   HOME BUTTONS
 ====================================================== */
 
 
@@ -3769,6 +3638,7 @@ document
 .addEventListener(
     "click",
     function () {
+
 
         saveActiveGame();
 
@@ -3781,26 +3651,16 @@ document
 );
 
 
-
-/* ======================================================
-   DAILY BUTTON
-====================================================== */
-
-
-dailyPlay.addEventListener(
+resultHomeButton.addEventListener(
     "click",
     function () {
 
-        openDailyRelay();
+        showScreen(
+            homeScreen
+        );
 
     }
 );
-
-
-
-/* ======================================================
-   RESUME BUTTON
-====================================================== */
 
 
 resumeButton.addEventListener(
@@ -3892,6 +3752,7 @@ document
 
 function renderStats() {
 
+
     document
     .getElementById(
         "librarySolvedStat"
@@ -3910,33 +3771,10 @@ function renderStats() {
 
     document
     .getElementById(
-        "dailySolvedStat"
-    )
-    .textContent =
-        stats.dailySolved;
-
-
-    document
-    .getElementById(
         "oneCheckStat"
     )
     .textContent =
         stats.oneCheck;
-
-
-    document
-    .getElementById(
-        "bestTime"
-    )
-    .textContent =
-
-        dailyBest === null
-
-        ? "—"
-
-        : formatTime(
-            dailyBest
-        );
 
 }
 
@@ -3952,5 +3790,7 @@ renderHome();
 
 </script>
 
+
 </body>
+
 </html>
