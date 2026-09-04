@@ -198,10 +198,26 @@
           <input id="jointDepth" value="1/2" />
           <span class="unit">in</span>
         </div>
+        <div class="field wide">
+          <label for="manufacturer">Manufacturer</label>
+          <select id="manufacturer"></select>
+        </div>
+
         <div class="field">
-          <label for="yield">Mortar yield per bag</label>
-          <input id="yield" value="0.50" />
-          <span class="unit">ft³</span>
+          <label for="product">Product</label>
+          <select id="product"></select>
+        </div>
+
+        <div class="field">
+          <label for="bagWeight">Bag weight</label>
+          <select id="bagWeight"></select>
+        </div>
+
+        <div class="field wide">
+          <label for="yield">Selected mortar yield</label>
+          <input id="yield" value="0.83" readonly />
+          <span class="unit">ft³/bag</span>
+          <div class="helper">Yield is selected automatically from the manufacturer, product, and bag weight.</div>
         </div>
 
         <div class="field wide">
@@ -274,7 +290,7 @@
   </main>
 
   <footer>
-    Prototype only. Final production logic should be validated against product-specific yield data, installation practice, and the desired company estimating policy before publication.
+    Prototype only. Product yields shown here are based on the values supplied for this prototype. Final production logic should be validated against approved product-specific yield data, installation practice, and company estimating policy before publication.
   </footer>
 
 <script>
@@ -292,6 +308,89 @@ function parseMeasurement(value) {
 
 function fmt(n, digits=2) {
   return Number.isFinite(n) ? n.toLocaleString(undefined, {minimumFractionDigits:digits, maximumFractionDigits:digits}) : "—";
+}
+
+
+const productData = {
+  "QUIKRETE": {
+    "Mason Mix": {
+      "60 lb": 0.62,
+      "80 lb": 0.83
+    },
+    "Mortar Mix": {
+      "60 lb": 0.62,
+      "80 lb": 0.83
+    },
+    "Veneer Stone Mortar": {
+      "60 lb": 0.62,
+      "80 lb": 0.83
+    }
+  },
+  "SPEC MIX": {
+    "Tuckpoint Mortar": {
+      "80 lb": 0.75
+    }
+  }
+};
+
+function populateManufacturers() {
+  const manufacturer = document.getElementById('manufacturer');
+  manufacturer.innerHTML = '';
+  Object.keys(productData).forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    manufacturer.appendChild(option);
+  });
+
+  manufacturer.value = 'QUIKRETE';
+  populateProducts();
+}
+
+function populateProducts() {
+  const manufacturer = document.getElementById('manufacturer').value;
+  const product = document.getElementById('product');
+  product.innerHTML = '';
+
+  Object.keys(productData[manufacturer]).forEach(name => {
+    const option = document.createElement('option');
+    option.value = name;
+    option.textContent = name;
+    product.appendChild(option);
+  });
+
+  populateWeights();
+}
+
+function populateWeights() {
+  const manufacturer = document.getElementById('manufacturer').value;
+  const product = document.getElementById('product').value;
+  const bagWeight = document.getElementById('bagWeight');
+  bagWeight.innerHTML = '';
+
+  Object.keys(productData[manufacturer][product]).forEach(weight => {
+    const option = document.createElement('option');
+    option.value = weight;
+    option.textContent = weight;
+    bagWeight.appendChild(option);
+  });
+
+  // Default QUIKRETE products to 80 lb when available.
+  if ([...bagWeight.options].some(o => o.value === '80 lb')) {
+    bagWeight.value = '80 lb';
+  }
+
+  updateYield();
+}
+
+function updateYield() {
+  const manufacturer = document.getElementById('manufacturer').value;
+  const product = document.getElementById('product').value;
+  const bagWeight = document.getElementById('bagWeight').value;
+  const selectedYield = productData[manufacturer][product][bagWeight];
+
+  document.getElementById('yield').value = selectedYield.toFixed(2);
+  calculate();
 }
 
 function calculate() {
@@ -328,14 +427,22 @@ function calculate() {
   document.getElementById('volume').textContent = fmt(mortarVolume,2);
   document.getElementById('bagsRaw').textContent = fmt(bagsRaw,2);
   document.getElementById('bagsBuy').textContent = bagsBuy + (bagsBuy === 1 ? ' bag' : ' bags');
-  document.getElementById('bagNote').textContent = `includes ${fmt(W,0)}% allowance and rounds up to full bags`;
+  const selectedManufacturer = document.getElementById('manufacturer').value;
+  const selectedProduct = document.getElementById('product').value;
+  const selectedBagWeight = document.getElementById('bagWeight').value;
+  document.getElementById('bagNote').textContent = `includes ${fmt(W,0)}% allowance; ${selectedManufacturer} ${selectedProduct}, ${selectedBagWeight}, ${fmt(Y,2)} ft³/bag`;
 
   document.getElementById('formula').textContent = `Joint fraction = 1 − (${L} × ${H}) ÷ ((${L} + ${J}) × (${H} + ${J})) = ${fmt(jointFraction*100,2)}%`;
   document.getElementById('formula2').textContent = `Mortar volume = ${A} × ${jointFraction.toFixed(4)} × (${D} ÷ 12) = ${fmt(mortarVolume,2)} ft³`;
 }
 
-document.querySelectorAll('input').forEach(el => el.addEventListener('input', calculate));
-calculate();
+document.querySelectorAll('input:not([readonly])').forEach(el => el.addEventListener('input', calculate));
+
+document.getElementById('manufacturer').addEventListener('change', populateProducts);
+document.getElementById('product').addEventListener('change', populateWeights);
+document.getElementById('bagWeight').addEventListener('change', updateYield);
+
+populateManufacturers();
 </script>
 </body>
 </html>
