@@ -188,12 +188,6 @@
         </div>
 
         <div class="field">
-          <label for="thickness">Brick thickness</label>
-          <input id="thickness" value="1/2" />
-          <span class="unit">in</span>
-          <div class="helper">Used as a reference/check.</div>
-        </div>
-        <div class="field">
           <label for="jointWidth">Average joint width</label>
           <input id="jointWidth" value="1/2" />
           <span class="unit">in</span>
@@ -319,12 +313,7 @@ function calculate() {
     return;
   }
 
-  if (D > T) {
-    warning.style.display='block';
-    warning.textContent='Joint fill depth is greater than the entered brick thickness. Verify the field dimensions.';
-  } else {
-    warning.style.display='none';
-  }
+  warning.style.display='none';
 
   const moduleArea = (L + J) * (H + J);
   const brickArea = L * H;
