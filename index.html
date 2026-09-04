@@ -75,6 +75,14 @@
     position:absolute; right:11px; bottom:12px;
     font-size:12px; color:var(--muted); pointer-events:none;
   }
+
+  .yieldInputWrap { position:relative; }
+  .yieldInputWrap input { padding-right:78px; }
+  .yieldInputWrap .unit {
+    top:50%;
+    bottom:auto;
+    transform:translateY(-50%);
+  }
   .wide { grid-column:1 / -1; }
   .helper { font-size:11px; color:var(--muted); margin-top:5px; line-height:1.35; }
   .warning {
@@ -215,8 +223,10 @@
 
         <div class="field wide">
           <label for="yield">Selected mortar yield</label>
-          <input id="yield" value="0.83" readonly />
-          <span class="unit">ft³/bag</span>
+          <div class="yieldInputWrap">
+            <input id="yield" value="0.83" readonly />
+            <span class="unit">ft³/bag</span>
+          </div>
           <div class="helper">Yield is selected automatically from the manufacturer, product, and bag weight.</div>
         </div>
 
@@ -245,12 +255,12 @@
           <div class="u">ft²</div>
         </div>
         <div class="metric">
-          <div class="k">Theoretical mortar</div>
+          <div class="k">Mortar needed</div>
           <div class="v" id="volume">2.04</div>
           <div class="u">ft³ before waste</div>
         </div>
         <div class="metric">
-          <div class="k">Theoretical bags</div>
+          <div class="k">Bags needed</div>
           <div class="v" id="bagsRaw">4.08</div>
           <div class="u">bags before waste</div>
         </div>
