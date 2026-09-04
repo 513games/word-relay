@@ -76,9 +76,14 @@
     font-size:12px; color:var(--muted); pointer-events:none;
   }
 
-  .yieldInputWrap { position:relative; }
+  .yieldInputWrap,
+  .areaInputWrap { position:relative; }
+
   .yieldInputWrap input { padding-right:78px; }
-  .yieldInputWrap .unit {
+  .areaInputWrap input { padding-right:58px; }
+
+  .yieldInputWrap .unit,
+  .areaInputWrap .unit {
     top:50%;
     bottom:auto;
     transform:translateY(-50%);
@@ -179,8 +184,10 @@
       <div class="inputs">
         <div class="field wide">
           <label for="area">Net wall area</label>
-          <input id="area" value="300" inputmode="decimal" />
-          <span class="unit">ft²</span>
+          <div class="areaInputWrap">
+            <input id="area" value="300" inputmode="decimal" />
+            <span class="unit">ft²</span>
+          </div>
           <div class="helper">Use the area actually receiving thin brick; deduct large openings if appropriate.</div>
         </div>
 
